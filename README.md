@@ -1,4 +1,5 @@
 # philoso-tree 🌳📖
+![philoso-tree](https://github.com/user-attachments/assets/076a054d-69e0-4dce-99a5-4884401ae494)
 
 ## 1. Overview
 
