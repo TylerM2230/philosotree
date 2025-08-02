@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hegel Explorer | Unfolding Geist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for Avant-Garde theme */
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #000;
+            border-bottom: 1px solid #444;
+            padding: 2rem 1rem;
+        }
+        header h1 {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2.5rem;
+            color: #ffffff;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        header p {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            color: #a0a0a0;
+        }
+
+        /* Main content area */
+        main .content-container {
+            background-color: #262626;
+            border: 1px solid #444;
+            border-radius: 0; /* Avant-garde: sharp corners */
+            box-shadow: none;
+            padding: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            main .content-container { padding: 2.5rem; }
+        }
+
+
+        /* Navigation Tabs */
+        nav {
+            border-bottom: 1px solid #555;
+            overflow-x: auto; /* Allow horizontal scroll for tabs */
+            white-space: nowrap; /* Prevent tabs from wrapping */
+        }
+        nav ul {
+            display: flex;
+            flex-wrap: nowrap; /* Ensure tabs stay in one line */
+        }
+        .nav-tab {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            border-bottom-width: 2px;
+            border-color: transparent;
+            padding: 0.75rem 1rem;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            flex-shrink: 0; /* Prevent tabs from shrinking */
+        }
+        .nav-tab:hover {
+            color: #ffffff;
+            border-color: #666;
+        }
+        .nav-tab.active {
+            color: #ffffff;
+            border-color: #e0e0e0;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        .content-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .content-section h2 {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.75rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #555;
+            padding-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+        .content-section p, .content-section ul, .content-section li {
+            font-size: 1.15rem; /* Slightly larger base font for readability */
+            color: #d0d0d0;
+            margin-bottom: 1.25rem;
+        }
+         .content-section strong {
+            color: #ffffff;
+            font-weight: 700;
+         }
+         .content-section ul:not(.source-list) { /* Avoid styling source list */
+            list-style: square;
+            padding-left: 1.5rem;
+         }
+         .content-section .source-note {
+             font-size: 0.9rem;
+             font-style: italic;
+             color: #888;
+             margin-top: -0.75rem; /* Pull up slightly */
+             margin-bottom: 1.25rem;
+         }
+         /* Style for the added clarification note */
+         .clarification-note {
+            font-size: 1.0rem;
+            font-style: italic;
+            color: #a0a0a0;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem 1rem;
+            border-left: 3px solid #555;
+            background-color: #2f2f2f;
+         }
+         .content-section .source-list li {
+             font-size: 1rem;
+             margin-bottom: 0.5rem;
+         }
+         .content-section .source-list strong {
+             font-style: italic; /* Often used for titles */
+             font-weight: normal;
+         }
+
+
+        /* Style for clickable terms */
+        .concept {
+            cursor: pointer;
+            color: #60a5fa; /* Brighter blue for visibility */
+            font-weight: normal; /* Keep normal weight */
+            font-style: italic;
+            text-decoration: none; /* Remove underline */
+            border-bottom: 1px dotted #60a5fa; /* Use dotted underline */
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .concept:hover {
+            color: #93c5fd; /* Lighter blue on hover */
+            border-bottom-color: #93c5fd;
+        }
+
+        /* Style for the modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .modal-content {
+            background-color: #1f1f1f; /* Darker modal background */
+            margin: auto; /* Auto margins for centering */
+            padding: 2.5rem;
+            border: 1px solid #555;
+            width: 90%; /* Responsive width */
+            max-width: 550px; /* Max width */
+            border-radius: 0; /* Sharp corners */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            position: relative;
+            color: #e0e0e0;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #fff;
+            text-decoration: none;
+        }
+        #modalTitle {
+             font-family: 'Roboto Mono', monospace;
+             font-size: 1.5rem;
+             color: #ffffff;
+             margin-bottom: 1rem;
+             letter-spacing: 0.05em;
+         }
+        #modalDefinition {
+            font-family: 'Roboto Mono', monospace; /* Consistent font */
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        /* Footer styling */
+        footer {
+            font-family: 'Roboto Mono', monospace;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            color: #777;
+            font-size: 0.8rem;
+            border-top: 1px solid #444;
+        }
+
+        /* Diagram Styles (General Container) - Kept for other diagrams */
+        .diagram-container {
+            margin: 2.5rem auto;
+            padding: 1.5rem;
+            border: 1px dashed #555;
+            background-color: #2f2f2f; /* Slightly lighter than main content */
+            max-width: 95%; /* Allow slightly more width */
+            text-align: center; /* Centers title/note */
+            overflow-x: auto; /* Add scroll if content overflows */
+        }
+        .diagram-title {
+            font-size: 1rem;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .diagram-note {
+             margin-top: 1.5rem;
+             color: #aaa;
+             font-size: 0.9rem;
+             font-style: italic;
+             white-space: normal; /* Allow note text to wrap */
+             max-width: 450px; /* Constrain note width */
+             margin-left: auto;
+             margin-right: auto;
+             line-height: 1.5;
+         }
+
+
+        /* Dialectic Diagram Styles */
+        .dialectic-diagram .dialectic-stage {
+            font-family: 'Roboto Mono', monospace;
+            display: inline-block; /* Keep inline for simple flow */
+            padding: 0.75rem 1.25rem;
+            margin: 0.5rem;
+            border: 1px solid #777;
+            color: #e0e0e0;
+            min-width: 120px;
+        }
+        .dialectic-diagram .dialectic-arrow {
+            font-size: 1.5rem;
+            color: #888;
+            margin: 0 0.5rem;
+            display: inline-block; /* Align with stages */
+            vertical-align: middle; /* Center vertically */
+        }
+        .dialectic-diagram .synthesis {
+            background-color: #444;
+            color: #fff;
+            border-color: #aaa;
+        }
+
+        /* --- REMOVED Geist Progression Diagram Styles --- */
+        /* .geist-progression, .geist-stage, .geist-arrow rules removed */
+
+
+        /* History Progression Diagram Styles */
+        .history-progression {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Wrap allowed here if needed */
+            gap: 0.5rem;
+        }
+        .history-stage {
+            border: 1px solid #777;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            background-color: #3a3a3a;
+            min-width: 140px;
+        }
+         .history-stage strong {
+            display: block;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.25rem;
+         }
+        .history-stage span {
+            font-size: 0.85em;
+            color: #ccc;
+        }
+        .history-arrow {
+            font-size: 1.5rem;
+            color: #888;
+            margin: 0 0.5rem;
+        }
+         .history-stage.final {
+             border-color: #aaa;
+             background-color: #444;
+         }
+
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <header>
+        <div class="container mx-auto max-w-5xl px-4">
+            <h1>Hegel Explorer</h1>
+            <p class="mt-1">Unfolding the Movement of Spirit</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-5xl p-4 mt-8">
+        <div class="content-container">
+
+            <nav class="mb-8">
+                <ul class="flex flex-nowrap -mb-px text-sm font-medium text-center">
+                    <li>
+                        <button class="nav-tab active" data-target="introduction">Introduction</button>
+                    </li>
+                    <li>
+                        <button class="nav-tab" data-target="dialectic">The Dialectic</button>
+                    </li>
+                    <li>
+                        <button class="nav-tab" data-target="geist">Spirit (Geist)</button>
+                    </li>
+                     <li>
+                        <button class="nav-tab" data-target="history">Philosophy of History</button>
+                    </li>
+                     <li>
+                        <button class="nav-tab" data-target="sources">Sources</button>
+                    </li>
+                </ul>
+            </nav>
+
+            <div id="content-area">
+                <section id="introduction" class="content-section active">
+                    <h2>Welcome: Entering the System</h2>
+                    <p>Georg Wilhelm Friedrich Hegel (1770-1831) stands as a monumental, often intimidating, figure in Western philosophy. As a key proponent of German Idealism, he constructed a comprehensive philosophical system attempting to map the entirety of reality, logic, history, and consciousness as a unified, rational process.</p>
+                    <p>His work is characterized by its density and specialized vocabulary, yet it offers profound, enduring insights into change, self-consciousness, freedom, and the relationship between the individual and society. Central to navigating his thought are concepts like the <span class="concept" data-concept="dialectic">Dialectic</span>, the pervasive notion of <span class="concept" data-concept="geist">Spirit (Geist)</span>, and the crucial mechanism of <span class="concept" data-concept="aufhebung">Aufhebung</span> (sublation).</p>
+                    <p>This explorer offers pathways into Hegel's complex world. Use the navigation above to delve into specific concepts. Engage with the highlighted terms (like <span class="concept" data-concept="geist">this one</span>) to reveal concise definitions and deepen your understanding. Consider this not a final map, but a series of entry points into an ongoing philosophical journey.</p>
+                </section>
+
+                <section id="dialectic" class="content-section">
+                    <h2>The Dialectic: Logic in Motion</h2>
+                    <p>The Hegelian <span class="concept" data-concept="dialectic">Dialectic</span> is the engine of his philosophical system, describing the dynamic process through which concepts, consciousness, and history itself unfold. It is often simplified using the triad: <strong>Thesis → Antithesis → Synthesis</strong>. However, it's crucial to note that this formula, while offering a basic structure, is an <strong>oversimplification</strong> not frequently employed by Hegel himself and often more closely associated with interpretations by thinkers like Fichte and later commentators.</p>
+                    <p class="source-note">(See Gustav E. Mueller, "The Hegel Legend of 'Thesis-Antithesis-Synthesis'", Journal of the History of Ideas, 1958)</p>
+                    <p>Hegel's actual process is more nuanced. It begins with a concept or form ('thesis') that, upon examination, reveals internal contradictions or limitations. These inherent tensions generate opposition or negation ('antithesis'). The crucial step is the resolution of this conflict, not merely by compromise, but through a higher, more complex stage ('synthesis') that overcomes the limitations of the previous stages while preserving their partial truths. This 'synthesis' then becomes a new starting point, itself containing contradictions, thus perpetuating the <span class="concept" data-concept="dialectic">dialectical</span> movement towards greater determinacy and comprehension.</p>
+
+                    <div class="diagram-container dialectic-diagram">
+                         <div class="diagram-title">Simplified Dialectic Model</div>
+                        <div class="dialectic-stage">Initial Concept<br>(Thesis - Simplified)</div>
+                        <span class="dialectic-arrow">→</span>
+                        <div class="dialectic-stage">Contradiction<br>(Antithesis - Simplified)</div>
+                        <span class="dialectic-arrow">→</span>
+                        <div class="dialectic-stage synthesis">Resolution<br>(Synthesis - Simplified)</div>
+                         <div class="diagram-note">(Note: This is a common but simplified model of the dialectical movement)</div>
+                    </div>
+
+                    <p>This dynamic is not just an abstract logical tool but, for Hegel, the very structure of reality's unfolding. It is the process by which <span class="concept" data-concept="geist">Spirit (Geist)</span> comes to know itself. The term <span class="concept" data-concept="aufhebung">Aufhebung</span> captures the essence of this transition: an idea or stage is simultaneously <strong>negated</strong> (cancelled, overcome), <strong>preserved</strong> (its essential truth retained), and <strong>elevated</strong> (lifted up into a more comprehensive whole).</p>
+                 </section>
+
+                <section id="geist" class="content-section">
+                    <h2>Spirit (Geist): The Unfolding Subject</h2>
+                     <p class="source-note">(Primary source: Hegel's <strong>Phenomenology of Spirit</strong>, 1807)</p>
+                    <p><span class="concept" data-concept="geist">Geist</span> is arguably the most fundamental and challenging concept in Hegel. Often translated as "Spirit" or "Mind," it signifies far more than an individual's intellect or a disembodied entity. It represents the collective human consciousness, rationality, culture, and self-awareness as it dynamically evolves through time and history.</p>
+                    <p><span class="concept" data-concept="geist">Geist</span> is not a static substance but a subject whose essence is activity and self-realization through a <span class="concept" data-concept="dialectic">dialectical</span> process. Hegel traces its development through distinct stages, particularly elaborated in his <em>Phenomenology of Spirit</em> and later in the <em>Philosophy of Spirit</em> (part of his <em>Encyclopaedia of the Philosophical Sciences</em>):</p>
+                    <ul>
+                        <li><strong>Subjective Spirit:</strong> Concerns the individual consciousness – sensation, perception, understanding, and the emergence of self-awareness.</li>
+                        <li><strong>Objective Spirit:</strong> Manifests in the external world through social structures, ethical life (<em>Sittlichkeit</em>), law, morality, and the State.</li>
+                        <li><strong>Absolute Spirit:</strong> The highest stage, where <span class="concept" data-concept="geist">Geist</span> achieves complete self-consciousness through Art, Religion, and Philosophy.</li>
+                    </ul>
+
+                    <div class="my-8 text-center">
+                        <img src="https://placehold.co/600x400/2f2f2f/e0e0e0?text=Representation+of+Geist"
+                             alt="Placeholder image representing the concept of Geist or Spirit"
+                             class="w-full max-w-md h-auto mx-auto block rounded border border-gray-600"
+                             onerror="this.onerror=null; this.src='https://placehold.co/600x400/2f2f2f/e0e0e0?text=Image+Not+Found';">
+                        <p class="text-sm text-gray-500 italic mt-2">(Conceptual representation of Geist's unfolding)</p>
+                    </div>
+
+                    <p class="clarification-note">
+                        It is important to note that while Absolute Spirit represents the culmination of Geist's journey towards self-understanding, there is scholarly debate regarding whether Hegel conceived of this as a final, static endpoint or as a continuously active process of self-comprehension. (See Beiser, <em>Hegel</em>, Ch. 11 for further discussion on interpretations of Absolute Spirit).
+                    </p>
+                    <p>History, for Hegel, is the grand narrative of <span class="concept" data-concept="geist">Geist</span> striving for, and progressively achieving, freedom – understood not as arbitrary choice, but as rational self-determination and living in accordance with reason, fully realized within the structures of Objective and Absolute Spirit.</p>
+                </section>
+
+                 <section id="history" class="content-section">
+                    <h2>Philosophy of History: Reason's Trajectory</h2>
+                     <p class="source-note">(Primary source: Hegel's lectures, published posthumously as <strong>Lectures on the Philosophy of History</strong>)</p>
+                    <p>Hegel famously declared, "The history of the world is none other than the progress of the consciousness of freedom." He viewed history not as a chaotic jumble of events ("a slaughter-bench," as he acknowledged its violence) but as a fundamentally rational process: the progressive unfolding and self-realization of <span class="concept" data-concept="geist">Spirit (Geist)</span> in time.</p>
+                    <p>This unfolding follows the logic of the <span class="concept" data-concept="dialectic">Dialectic</span>. Each major historical epoch or civilization represents a specific stage in the development of freedom and self-consciousness. Each stage embodies a particular principle, contains inherent contradictions, and is eventually overcome and preserved (<span class="concept" data-concept="aufhebung">Aufhebung</span>) in a subsequent, more developed stage.</p>
+
+                     <div class="diagram-container">
+                         <div class="diagram-title">Progress of the Consciousness of Freedom</div>
+                         <div class="history-progression">
+                             <div class="history-stage">
+                                 <strong>'Oriental World'</strong>
+                                 <span>(One is Free)</span>
+                             </div>
+                             <div class="history-arrow">→</div>
+                              <div class="history-stage">
+                                 <strong>'Greek/Roman World'</strong>
+                                 <span>(Some are Free)</span>
+                             </div>
+                             <div class="history-arrow">→</div>
+                              <div class="history-stage final">
+                                 <strong>'Germanic World'</strong>
+                                 <span>(All are Free - Principle)</span>
+                             </div>
+                         </div>
+                          <div class="diagram-note">(Simplified view of historical stages leading towards the realization of freedom in the rational state)</div>
+                     </div>
+
+
+                    <p>For example, he argued the 'Oriental World' understood only that *one* is free (the despot), the Greek and Roman worlds that *some* are free (citizens, not slaves), and the 'Germanic World' (representing modern Europe) that *all* are free, at least in principle, through Christianity and the rational state.</p>
+                    <p>So-called "World-Historical Individuals" (figures like Alexander the Great, Caesar, Napoleon) play a unique role. Driven by their own ambitions and passions (the "cunning of reason," *List der Vernunft*), they unknowingly act as agents of the universal <span class="concept" data-concept="geist">Geist</span>, pushing history forward to its next stage, often through conflict and upheaval.</p>
+                    <p>The ultimate goal (telos) of history, in Hegel's view, is the establishment of a rational state that reconciles individual freedom with universal law, allowing <span class="concept" data-concept="geist">Geist</span> to achieve full self-awareness. This teleological and Eurocentric perspective has drawn significant criticism, but his conception of history as a dynamic, interconnected process driven by internal contradictions remains profoundly influential.</p>
+                </section>
+
+                 <section id="sources" class="content-section">
+                    <h2>Sources & Further Reading</h2>
+                    <p>This site provides a very brief introduction. For deeper understanding, consulting primary texts and scholarly secondary sources is essential.</p>
+
+                    <h3 class="text-lg font-semibold mt-6 mb-3 text-gray-300 font-mono uppercase tracking-wide">Key Primary Works by Hegel:</h3>
+                    <ul class="source-list list-none pl-0">
+                        <li><strong>Phenomenology of Spirit</strong> (<em>Phänomenologie des Geistes</em>, 1807) - A foundational work tracing the development of consciousness.</li>
+                        <li><strong>Science of Logic</strong> (<em>Wissenschaft der Logik</em>, 1812-1816) - Hegel's complex metaphysical core.</li>
+                        <li><strong>Encyclopaedia of the Philosophical Sciences</strong> (<em>Enzyklopädie der philosophischen Wissenschaften</em>, 1817, revised 1827, 1830) - A systematic overview of his entire philosophy (Logic, Philosophy of Nature, Philosophy of Spirit).</li>
+                        <li><strong>Elements of the Philosophy of Right</strong> (<em>Grundlinien der Philosophie des Rechts</em>, 1821) - His major work on political philosophy, ethics, and law.</li>
+                        <li><strong>Lectures on the Philosophy of History</strong> (Published posthumously) - Outlines his view of history as the progress of freedom.</li>
+                    </ul>
+
+                     <h3 class="text-lg font-semibold mt-6 mb-3 text-gray-300 font-mono uppercase tracking-wide">Selected Secondary Sources / Introductions:</h3>
+                     <ul class="source-list list-none pl-0">
+                         <li>Beiser, Frederick C. <strong>Hegel</strong> (Routledge Philosophers, 2005) - A highly regarded overview.</li>
+                         <li>Pinkard, Terry. <strong>Hegel: A Biography</strong> (Cambridge University Press, 2000) - An excellent intellectual biography providing context.</li>
+                         <li>Stern, Robert. <strong>The Routledge Guidebook to Hegel's Phenomenology of Spirit</strong> (Routledge, 2013) - A helpful guide to a difficult text.</li>
+                         <li>Taylor, Charles. <strong>Hegel</strong> (Cambridge University Press, 1975) - A classic, comprehensive interpretation.</li>
+                         <li>Mueller, Gustav E. "The Hegel Legend of 'Thesis-Antithesis-Synthesis'". <em>Journal of the History of Ideas</em>, Vol. 19, No. 3 (Jun., 1958), pp. 411-414 - Discusses the origin of the triad simplification.</li>
+                     </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>:: Hegel Explorer :: Navigating the Absolute ::</p>
+    </footer>
+
+    <div id="conceptModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Concept</h3>
+            <p id="modalDefinition">Definition goes here.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Concept Definitions ---
+        const concepts = {
+            dialectic: {
+                title: "Dialectic",
+                definition: "The core logic and dynamic process in Hegel's system. It describes development through the emergence of internal contradictions within a concept or form, leading to its negation and subsequent resolution ('Aufhebung') into a higher, more complex stage. While often simplified as 'thesis-antithesis-synthesis' (a model Hegel rarely used explicitly and associated more with Fichte), the essence is development through conflict and sublation."
+            },
+            geist: {
+                title: "Spirit (Geist)",
+                definition: "Translated as 'Mind' or 'Spirit'. Represents the collective human consciousness, reason, culture, and self-awareness as a dynamic entity evolving through history. It progresses through Subjective (individual), Objective (social/political), and Absolute (art, religion, philosophy) stages towards complete self-knowledge and freedom. Explored extensively in the 'Phenomenology of Spirit'."
+            },
+            aufhebung: {
+                title: "Aufhebung (Sublation)",
+                definition: "A crucial German term in the dialectic with a triple meaning: to cancel/negate (abolish limitations), to preserve (retain the essential truth), and to lift up/transcend (elevate to a higher level). It describes how one stage transitions to the next in the dialectical process, overcoming but also incorporating aspects of what came before."
+            }
+            // Add more concepts here as needed
+        };
+
+        // --- Modal Logic ---
+        const modal = document.getElementById('conceptModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDefinition = document.getElementById('modalDefinition');
+
+        function openModal(conceptKey) {
+            if (concepts[conceptKey]) {
+                modalTitle.textContent = concepts[conceptKey].title;
+                modalDefinition.textContent = concepts[conceptKey].definition;
+                modal.style.display = 'flex'; // Use flex to center
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Close modal if user clicks outside the content area or presses Esc
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        window.onkeydown = function(event) {
+             if (event.key === 'Escape' && modal.style.display === 'flex') {
+                 closeModal();
+             }
+        }
+
+
+        // Add click listeners to all elements with the 'concept' class
+        document.querySelectorAll('.concept').forEach(element => {
+            element.addEventListener('click', function() {
+                const conceptKey = this.getAttribute('data-concept');
+                openModal(conceptKey);
+            });
+        });
+
+        // --- Navigation Tab Logic ---
+        const tabs = document.querySelectorAll('.nav-tab');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+
+                // Update tab appearance
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Hide all content sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                // Show the target content section
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                     // Add active class slightly delayed for CSS transition
+                     setTimeout(() => targetSection.classList.add('active'), 50);
+                }
+            });
+        });
+
+        // Ensure the first tab's content is visible on load and correct tab is active
+        document.addEventListener('DOMContentLoaded', () => {
+             const firstSection = document.getElementById('introduction');
+             const firstTab = document.querySelector('.nav-tab[data-target="introduction"]');
+
+             // Make sure intro section is active by default
+             if(firstSection) {
+                 firstSection.classList.add('active');
+             }
+             // Make sure intro tab is styled as active by default
+             tabs.forEach(t => t.classList.remove('active'));
+             if(firstTab) {
+                  firstTab.classList.add('active');
+             }
+        });
+
+    </script>
+
+</body>
+</html>

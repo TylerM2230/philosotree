@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Søren Kierkegaard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-accent: #008080; /* Deep Teal */
+            --background-dark: #1f1f1f;
+            --background-medium: #2b2b2b;
+            --background-light: #333333;
+            --text-light: #dcdcdc;
+            --text-medium: #c0c0c0;
+            --text-dark: #888888;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #111111;
+            border-bottom: 1px solid var(--primary-accent);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        h1 {
+             color: var(--text-light);
+             font-family: 'EB Garamond', serif;
+             padding: 0.75rem 0;
+             text-align: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            padding: 2rem 1rem;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        /* Navigation container */
+        nav {
+            width: 220px;
+            flex-shrink: 0;
+            padding-top: 1rem;
+        }
+
+        /* Navigation button styles - Scattered Pages Effect */
+        .nav-button {
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #4a4a4a;
+            border-radius: 3px;
+            font-family: 'EB Garamond', serif;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            width: 95%;
+            margin-bottom: -10px;
+            margin-left: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .nav-button:nth-child(odd) { transform: rotate(-1.5deg); margin-left: 0px; }
+        .nav-button:nth-child(even) { transform: rotate(1deg); z-index: 2; }
+        .nav-button:nth-child(3n) { transform: rotate(0.5deg); z-index: 3; }
+        .nav-button:nth-child(4n) { transform: rotate(-1deg); margin-left: 8px; }
+        .nav-button:nth-child(5n) { transform: rotate(1.8deg); z-index: 4; }
+        /* Adjusting for new button */
+        .nav-button:nth-child(6n) { transform: rotate(1.2deg); z-index: 2; margin-left: 3px;}
+
+
+        .nav-button:hover {
+            background-color: #444444;
+            color: #ffffff;
+            transform: rotate(0deg) scale(1.03);
+            z-index: 10;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .nav-button.active {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            font-weight: bold;
+            border: 1px solid var(--primary-accent);
+            box-shadow: 3px 3px 8px rgba(0, 128, 128, 0.5); /* Adjusted shadow color */
+            transform: rotate(0deg) scale(1.01);
+            z-index: 5;
+        }
+         .nav-button.active:hover { transform: rotate(0deg) scale(1.03); }
+
+        /* Content area style */
+        #content-area {
+            background-color: var(--background-medium);
+            border: 1px solid #444444;
+            border-radius: 8px;
+            flex-grow: 1;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-family: 'EB Garamond', serif;
+            flex-shrink: 0;
+        }
+
+        .content-body {
+            font-size: 1.1em;
+            line-height: 1.9;
+            flex-grow: 1;
+        }
+        .content-body p {
+            margin-bottom: 1.2em;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-medium);
+        }
+        .content-body ul {
+            list-style-type: square;
+            margin-left: 2rem;
+            margin-bottom: 1em;
+            font-family: 'Courier New', Courier, monospace;
+             color: var(--text-medium);
+        }
+        .content-body li { margin-bottom: 0.7em; }
+        .content-body blockquote {
+            border-left: 3px solid var(--primary-accent); /* Teal border */
+            padding-left: 1.2rem;
+            margin: 1.5rem 0.5rem;
+            font-style: italic;
+            color: #b8b8b8;
+            font-family: 'EB Garamond', serif;
+        }
+         .content-body strong {
+             color: var(--text-light);
+             font-weight: 600;
+        }
+
+        /* Quote Card Container (Home Section) */
+        #quote-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 1rem;
+            min-height: 50vh;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        /* Individual Quote Card Styling */
+        .quote-card {
+            background-color: var(--background-light);
+            color: var(--text-medium);
+            border: 1px solid #4a4a4a;
+            border-radius: 4px;
+            padding: 1.5rem 1rem;
+            width: 220px;
+            height: 160px;
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s ease 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.9em;
+            line-height: 1.5;
+            z-index: 1;
+        }
+        .quote-card:nth-child(1) { transform: rotate(-4deg) translate(-10px, 5px); z-index: 1; }
+        .quote-card:nth-child(2) { transform: rotate(3deg) translate(5px, -8px); z-index: 2; }
+        .quote-card:nth-child(3) { transform: rotate(-2deg) translate(15px, 10px); z-index: 3; }
+        .quote-card:nth-child(4) { transform: rotate(5deg) translate(-5px, -5px); z-index: 1; }
+        .quote-card:nth-child(5) { transform: rotate(-3.5deg) translate(10px, 0px); z-index: 2; }
+
+         .quote-card::before {
+             content: '“';
+             position: absolute;
+             font-size: 6em;
+             color: var(--primary-accent); /* Teal quote mark */
+             opacity: 0.15;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             font-family: 'EB Garamond', serif;
+             z-index: 0;
+         }
+        .quote-card:hover {
+            transform: rotate(0deg) scale(1.08);
+            box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            border-color: var(--primary-accent);
+        }
+
+        /* Refresh Button Styling */
+         #refresh-quotes-button {
+            display: block;
+            margin: 1.5rem auto 0 auto;
+            background-color: #4a4a4a;
+            color: var(--text-light);
+            padding: 0.7rem 1.4rem;
+            border: 1px solid var(--primary-accent); /* Teal border */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        #refresh-quotes-button:hover {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 128, 128, 0.5); /* Adjusted shadow color */
+        }
+
+
+        /* Modal Styles */
+        #quote-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); z-index: 99;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        #quote-modal-overlay.visible { opacity: 1; visibility: visible; }
+        #quote-modal {
+            background-color: var(--background-medium); padding: 2.5rem; border-radius: 8px;
+            border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%; width: 600px; position: relative;
+            transform: scale(0.9); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+         #quote-modal-overlay.visible #quote-modal { transform: scale(1); opacity: 1; }
+        #modal-quote-text {
+            font-family: 'EB Garamond', serif; font-size: 1.5em; font-style: italic;
+            color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;
+            border-left: 3px solid var(--primary-accent); padding-left: 1rem; /* Teal border */
+        }
+        #modal-quote-source {
+            font-family: 'EB Garamond', serif; font-size: 1em; color: var(--text-dark);
+            text-align: right; margin-top: 1rem;
+        }
+        #modal-close-button {
+            position: absolute; top: 10px; right: 15px; background: none; border: none;
+            font-size: 2rem; color: var(--text-dark); cursor: pointer; line-height: 1; padding: 0.2rem;
+        }
+        #modal-close-button:hover { color: var(--primary-accent); }
+
+
+        .source-note {
+            font-size: 0.85em; color: #999999; margin-top: 2rem; display: block;
+            font-style: italic; text-align: right; font-family: 'EB Garamond', serif;
+        }
+
+        footer {
+            background-color: #111111; border-top: 1px solid var(--primary-accent); /* Teal border */
+            color: var(--text-dark); font-family: 'EB Garamond', serif;
+            width: 100%; margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+             .main-wrapper { flex-direction: column; padding: 1rem; gap: 1.5rem; }
+             nav {
+                 width: 100%; display: flex; flex-wrap: wrap; justify-content: center;
+                 gap: 0.5rem; padding-top: 0;
+             }
+             .nav-button {
+                 width: auto; flex-basis: calc(50% - 0.5rem); margin: 0 0 0.5rem 0;
+                 transform: rotate(0deg); text-align: center; z-index: 1;
+             }
+             .nav-button:nth-child(n) { transform: rotate(0deg); margin-left: 0; z-index: 1; }
+             .nav-button.sub-item { flex-basis: calc(50% - 0.5rem); width: auto; padding-left: 1rem; margin-left: 0; }
+             .nav-button:hover { transform: scale(1.02); }
+             .nav-button.active { transform: scale(1.01); z-index: 2; }
+
+             #quote-card-container { padding: 1rem 0; gap: 1rem; min-height: 40vh;}
+             .quote-card {
+                 width: 70%; height: auto; min-height: 120px; margin-top: 0;
+                 transform: rotate(0deg) translate(0,0);
+             }
+              .quote-card:hover { transform: scale(1.03); }
+
+             #content-area { width: 100%; padding: 1rem 1.5rem; }
+             #quote-modal { width: 90%; padding: 1.5rem; }
+             #modal-quote-text { font-size: 1.3em; }
+             #refresh-quotes-button { margin-top: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h1 class="text-3xl font-bold text-center py-4">Understanding Søren Kierkegaard</h1>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+
+        <nav>
+            <button data-content="home" class="nav-button active">Home (Quote)</button>
+            <button data-content="intro" class="nav-button">Introduction</button>
+            <button data-content="subjectivity" class="nav-button">Subjectivity is Truth</button>
+            <button data-content="three-stages" class="nav-button">Three Stages on Life's Way</button>
+            <button data-content="either-or" class="nav-button">Either/Or</button>
+            <button data-content="leap-faith" class="nav-button">Leap of Faith</button>
+            <button data-content="anxiety" class="nav-button">Anxiety (Angst)</button>
+            <button data-content="knight-faith" class="nav-button">The Knight of Faith</button>
+            <button data-content="indirect-comm" class="nav-button">Indirect Communication</button>
+        </nav>
+
+        <section id="content-area">
+            {/* Content loads here */}
+        </section>
+
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quote-modal-overlay">
+        <div id="quote-modal">
+            <button id="modal-close-button" aria-label="Close modal">&times;</button>
+            <p id="modal-quote-text"></p>
+            <small id="modal-quote-source"></small>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container mx-auto px-4 max-w-7xl py-4">
+            <p class="text-center">&copy; 2025 Kierkegaard Explorer. Content for educational purposes.</p>
+            <p class="text-center text-xs">Sources primarily include Kierkegaard's works (Either/Or, Fear and Trembling, etc.) and reputable philosophical resources.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Kierkegaard Quotes
+        const quotes = [
+            { text: "Life can only be understood backwards; but it must be lived forwards.", source: "Journals and Papers" },
+            { text: "Anxiety is the dizziness of freedom.", source: "The Concept of Anxiety" },
+            { text: "Life is not a problem to be solved, but a reality to be experienced.", source: "Attributed / Paraphrase" },
+            { text: "The most common form of despair is not being who you are.", source: "The Sickness Unto Death" },
+            { text: "To dare is to lose one's footing momentarily. Not to dare is to lose oneself.", source: "Attributed / Paraphrase" },
+            { text: "People demand freedom of speech as a compensation for the freedom of thought which they seldom use.", source: "Attributed" },
+            { text: "The function of prayer is not to influence God, but rather to change the nature of the one who prays.", source: "Attributed / Paraphrase" },
+            { text: "Face the facts of being what you are, for that is what changes what you are.", source: "Attributed / Paraphrase" },
+            { text: "Above all, do not lose your desire to walk: every day I walk myself into a state of well-being and walk away from every illness...", source: "Letter to Jette (1847)" },
+            { text: "What is a poet? An unhappy man who hides deep anguish in his heart, but whose lips are so formed that when the sigh and cry pass through them, it sounds like lovely music.", source: "Either/Or, Part I" },
+            { text: "The tyrant dies and his rule is over, the martyr dies and his rule begins.", source: "Journals and Papers" },
+            { text: "There are two ways to be fooled. One is to believe what isn't true; the other is to refuse to believe what is true.", source: "Attributed / Paraphrase" },
+            { text: "Marry, and you will regret it; don’t marry, you will also regret it...", source: "Either/Or, Part I" },
+            { text: "To be a woman is something so strange, so confused, so complicated that only a woman could put up with it.", source: "Journals and Papers" },
+            { text: "The crowd is untruth.", source: "The Present Age / On the Dedication to 'That Single Individual'" },
+            { text: "Purity of heart is to will one thing.", source: "Purity of Heart is to Will One Thing" },
+            { text: "If I were to wish for anything, I should not wish for wealth and power, but for the passionate sense of the potential, for the eye which, ever young and ardent, sees the possible.", source: "Either/Or, Part I" },
+            { text: "Faith is the highest passion in a human being.", source: "Fear and Trembling" },
+            { text: "The Bible is very easy to understand. But we Christians are a bunch of scheming swindlers.", source: "Attack Upon Christendom" },
+            { text: "What the age needs is not a genius – it has had geniuses enough, but a martyr...", source: "The Present Age" },
+            { text: "Boredom is the root of all evil - the despairing refusal to be oneself.", source: "Either/Or, Part I" },
+            { text: "It belongs to the imperfection of everything human that man can only attain his desire by passing through its opposite.", source: "Journals and Papers" },
+            { text: "The self is a relation which relates itself to its own self...", source: "The Sickness Unto Death" },
+            { text: "Hope is a passion for the possible.", source: "Attributed / Paraphrase" },
+            { text: "A 'no' uttered from the deepest conviction is better than a 'yes' merely uttered to please, or worse, to avoid trouble.", source: "Attributed / Paraphrase" },
+            { text: "Personality is only ripe when a man has made the truth his own.", source: "Concluding Unscientific Postscript" },
+            { text: "The greatest hazard of all, losing one’s self, can occur very quietly in the world, as if it were nothing at all.", source: "The Sickness Unto Death" },
+            { text: "Prayer does not change God, but it changes him who prays.", source: "Attributed / Variant" },
+            { text: "The highest and most beautiful things in life are not to be heard about, nor read about, nor seen but, if one will, are to be lived.", source: "Attributed" },
+            { text: "Subjectivity is truth, truth is subjectivity.", source: "Concluding Unscientific Postscript" }
+        ];
+
+        // Content data for Kierkegaard sections
+        const content = {
+            "home": {
+                title: "Scattered Thoughts",
+            },
+            "intro": {
+                title: "Introduction: Kierkegaard, Father of Existentialism?",
+                body: `
+                    <p>Søren Aabye Kierkegaard (1813–1855) was a Danish philosopher, theologian, poet, social critic, and religious author, widely considered a foundational figure in existentialist philosophy and theology. Writing often under various pseudonyms, Kierkegaard explored themes of individual existence, subjectivity, faith, anxiety, choice, and the nature of truth in a way that profoundly challenged the dominant Hegelian philosophy and conventional Christianity of his time.</p>
+                    <p>His work is characterized by its passionate intensity, psychological depth, literary artistry, and persistent focus on the concrete, lived experience of the 'single individual' facing fundamental life choices. He emphasized the subjective nature of truth, particularly religious truth, arguing that objective certainty is impossible in matters of ultimate concern and that commitment requires a passionate, personal 'leap of faith'.</p>
+                    <p>Key themes and concepts include:
+                        <ul>
+                            <li><strong>Subjectivity is Truth:</strong> The idea that for existential matters, truth is not objective correspondence but the individual's passionate, inward commitment.</li>
+                            <li><strong>Three Stages on Life's Way:</strong> A model of human existence progressing through the Aesthetic, Ethical, and Religious spheres, each characterized by different values and modes of being.</li>
+                            <li><strong>The Leap of Faith:</strong> The non-rational, passionate commitment required to enter the Religious stage, particularly in relation to Christian faith and the paradox of the God-man.</li>
+                            <li><strong>Anxiety (Angst):</strong> Explored as the 'dizziness of freedom,' the fundamental human condition arising from the awareness of possibility and the burden of choice.</li>
+                            <li><strong>Despair (The Sickness Unto Death):</strong> Analyzed as the state of imbalance in the self, particularly the failure to relate oneself to God or to fully become oneself.</li>
+                            <li><strong>Indirect Communication & Pseudonyms:</strong> His frequent use of pseudonyms and indirect styles (irony, paradox, parables) to force the reader into active engagement and personal reflection, rather than passively accepting doctrines.</li>
+                            <li><strong>Critique of Christendom:</strong> A sharp critique of the established Danish church and the complacency of 'cultural Christianity,' which he saw as a betrayal of the radical demands of New Testament faith.</li>
+                        </ul>
+                    </p>
+                    <p>Though relatively obscure during his lifetime, Kierkegaard's influence grew immensely in the 20th century, impacting existentialism (Sartre, Camus), phenomenology, psychoanalysis, postmodernism, and various strands of theology. He remains a challenging and provocative thinker, compelling readers to confront the fundamental questions of human existence and commitment.</p>
+                    <blockquote>"The thing is to understand myself, to see what God really wishes me to do; the thing is to find a truth which is true *for me*, to find *the idea for which I can live and die*." - Journals and Papers (Gilleleje Entry, August 1, 1835)</blockquote>
+                    <small class="source-note">Primary Sources: Either/Or, Fear and Trembling, The Concept of Anxiety, The Sickness Unto Death, Concluding Unscientific Postscript. Secondary: SEP, IEP entries on Kierkegaard.</small>
+                `
+            },
+            "subjectivity": {
+                title: "Subjectivity is Truth",
+                body: `
+                    <p>One of Kierkegaard's most famous and challenging claims, articulated most forcefully by his pseudonym Johannes Climacus in the 'Concluding Unscientific Postscript to Philosophical Fragments,' is that <strong>"subjectivity is truth."</strong> This statement is often misunderstood as simple relativism, but its meaning is far more nuanced and central to Kierkegaard's existential project.</p>
+                    <p><strong>Context and Meaning:</strong>
+                        <ul>
+                            <li><strong>Critique of Objectivity:</strong> Kierkegaard was reacting against the Hegelian philosophical system prevalent in his time, which aimed for objective, systematic, and universally valid knowledge, including knowledge of God and ultimate reality. Kierkegaard found this approach detached, abstract, and existentially irrelevant to the passionate concerns of the 'single individual.'</li>
+                            <li><strong>Focus on Existential Truth:</strong> For Kierkegaard, the most important truths are not objective facts about the external world but truths related to human existence, meaning, value, and faith. These truths cannot be proven objectively or grasped through detached reason alone.</li>
+                            <li><strong>Passionate Inwardness:</strong> "Truth" in this context refers to the relationship between the individual subject and the object of their concern. An objective uncertainty (like the existence of God or the paradoxical nature of Christ) held with infinite passion and inwardness constitutes the highest truth for an existing individual. The 'how' (the subjective passion and commitment) becomes more important than the 'what' (the objective content, which may remain uncertain or paradoxical).</li>
+                            <li><strong>Appropriation:</strong> Truth is not something merely to be known intellectually but something to be lived, appropriated, and existentially realized. It requires personal commitment, decision, and risk.</li>
+                            <li><strong>Not Relativism:</strong> Kierkegaard is not claiming that any subjective belief is true. He is specifically concerned with questions of ultimate meaning and religious faith where objective certainty is unattainable. He distinguishes between objective truths (like mathematics or historical facts) and subjective, existential truths.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The Task of Becoming Subjective:</strong> The challenge for the individual, according to Climacus, is to *become* subjective – to engage with ultimate questions with infinite passion, interest, and commitment, rather than seeking refuge in objective detachment or the security of the crowd. This subjective engagement is where genuine faith and authentic existence are found.</p>
+                    <p>This doctrine highlights the primacy of individual choice, commitment, and passionate engagement in the face of objective uncertainty, forming the bedrock of Kierkegaard's existentialism.</p>
+                    <blockquote>"An objective uncertainty held fast in an appropriation-process of the most passionate inwardness is the truth, the highest truth attainable for an existing individual." - Concluding Unscientific Postscript</blockquote>
+                    <small class="source-note">Primary Source: Concluding Unscientific Postscript to Philosophical Fragments. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "three-stages": {
+                title: "The Three Stages on Life's Way",
+                body: `
+                    <p>Kierkegaard, often through his pseudonyms, described three fundamental modes or spheres of existence, representing different ways an individual can orient their life: the <strong>Aesthetic</strong>, the <strong>Ethical</strong>, and the <strong>Religious</strong> stages. These are not necessarily sequential developmental phases one *must* pass through, but rather distinct possibilities for existence, often in tension with each other.</p>
+                    <p><strong>1. The Aesthetic Stage:</strong>
+                        <ul>
+                            <li>Characterized by the pursuit of pleasure, novelty, interesting experiences, and the avoidance of boredom and commitment.</li>
+                            <li>Life is lived moment-to-moment, driven by sensory desires, imagination, and intellectual curiosity without overarching commitment.</li>
+                            <li>The aesthete avoids choices that involve lasting responsibility or self-definition (like marriage or a specific vocation). Examples include the seducer (like Johannes in 'Either/Or') or the detached intellectual observer.</li>
+                            <li>Ultimately leads to despair ('The Sickness Unto Death') because it lacks grounding, continuity, and genuine selfhood. It results in boredom, meaninglessness, and the inability to truly choose oneself.</li>
+                        </ul>
+                    </p>
+                    <p><strong>2. The Ethical Stage:</strong>
+                        <ul>
+                            <li>Involves choosing oneself and taking responsibility within the universal norms and duties of society.</li>
+                            <li>Characterized by commitment, duty, marriage, vocation, and adherence to moral principles. The individual defines themselves through their choices and relationships within the community.</li>
+                            <li>Represents a significant advance over the aesthetic stage by providing structure, continuity, and self-definition through commitment. Judge Wilhelm in 'Either/Or' represents this stage.</li>
+                            <li>However, the ethical stage can also lead to despair if the individual relies solely on their own finite power to fulfill universal duties, leading to guilt and an awareness of sin (the gap between the ideal and the actual). It fails to address the individual's absolute relationship with the Absolute (God).</li>
+                        </ul>
+                    </p>
+                    <p><strong>3. The Religious Stage:</strong>
+                        <ul>
+                            <li>Involves a direct, personal relationship with God, characterized by faith, passion, suffering, and the awareness of sin and grace.</li>
+                            <li>Requires a 'leap of faith' beyond rational understanding and ethical universals.</li>
+                            <li>Kierkegaard distinguishes between:
+                                <ul>
+                                    <li><em>Religiousness A:</em> Immanent religiosity, characterized by guilt-consciousness, resignation, and suffering before God within the ethical framework (akin to Socratic piety or general theism).</li>
+                                    <li><em>Religiousness B:</em> Transcendent or paradoxical religiosity, specifically Christianity, involving faith in the absurd paradox of the eternal God entering time as an individual human being (Christ). This requires suspending the ethical and embracing the paradox through faith alone. Abraham in 'Fear and Trembling' is a key figure illustrating the suspension of the ethical for a higher religious duty.</li>
+                                </ul>
+                            </li>
+                            <li>This stage offers the only true resolution to despair by grounding the self in its relationship to God.</li>
+                        </ul>
+                    </p>
+                    <p>The movement between stages, particularly from the ethical to the religious, is not a smooth transition but requires a decisive, subjective choice – a leap.</p>
+                    <blockquote>"The aesthetic sphere is that of immediacy, the ethical is that of requirement (and this requirement is so infinite that the individual always goes bankrupt), the religious sphere is that of fulfillment..." - Stages on Life's Way (paraphrased)</blockquote>
+                    <small class="source-note">Primary Sources: Either/Or, Stages on Life's Way, Fear and Trembling, Concluding Unscientific Postscript. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "either-or": { // NEW SECTION CONTENT
+                title: "Either/Or: A Fragment of Life",
+                body: `
+                    <p>'Either/Or' (Enten-Eller), published in 1843 under the pseudonym Victor Eremita (Victor the Hermit), is Kierkegaard's first major pseudonymous work and a complex literary and philosophical exploration primarily contrasting the <strong>Aesthetic</strong> and <strong>Ethical</strong> stages of existence.</p>
+                    <p>The book is presented as a collection of papers found by Eremita, divided into two parts:
+                        <ul>
+                            <li><strong>Part I (Either):</strong> Contains papers attributed to 'A,' an unnamed young aesthete. This section includes aphorisms, essays on music (Mozart's Don Giovanni), tragedy, boredom, and the famous "Seducer's Diary," which chronicles the calculated seduction and abandonment of a young woman named Cordelia by the manipulative Johannes. Part I embodies the aesthetic lifestyle – characterized by detachment, irony, the pursuit of interesting moments, avoidance of commitment, and ultimately, an underlying despair and boredom.</li>
+                            <li><strong>Part II (Or):</strong> Contains two long letters and a sermon attributed to Judge Wilhelm ('B'), an older, married man representing the Ethical stage. He writes to 'A,' arguing for the superiority of the ethical life, characterized by choice, commitment (especially marriage), duty, self-transparency, and finding meaning through fulfilling universal obligations. He advocates for choosing oneself ethically rather than drifting aesthetically.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The Central Dilemma:</strong> The title 'Either/Or' points to the fundamental choice Kierkegaard believed individuals face between these two ways of life. The aesthetic life, while potentially captivating, ultimately leads to fragmentation and despair. The ethical life offers coherence and selfhood through commitment, but Kierkegaard subtly suggests (both here and more explicitly elsewhere) that it too has limitations, particularly in facing sin and achieving an absolute relationship with God, thus pointing towards the necessity of a further stage (the Religious).</p>
+                    <p><strong>Indirect Communication:</strong> By presenting these conflicting viewpoints through distinct pseudonyms, Kierkegaard avoids simply stating which is 'correct.' He forces the reader to engage with both perspectives, weigh their merits and limitations, and ultimately make their own existential choice. The structure itself embodies the act of choosing that is central to the ethical stage.</p>
+                    <blockquote>"Marry, and you will regret it; don’t marry, you will also regret it; marry or don’t marry, you will regret it either way... Laugh at the world’s foolishness, you will regret it; weep over it, you will regret that too... This, gentlemen, is the sum and substance of all philosophy." - Either/Or, Part I ('Diapsalmata')</blockquote>
+                    <small class="source-note">Primary Source: Either/Or. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "leap-faith": {
+                title: "The Leap of Faith",
+                body: `
+                    <p>The concept of the <strong>"Leap of Faith"</strong> is central to Kierkegaard's understanding of religious commitment, particularly the transition into the Religious stage of existence (specifically Religiousness B, or Christianity). It signifies a radical, non-rational commitment made in the face of objective uncertainty and paradox.</p>
+                    <p><strong>Context and Meaning:</strong>
+                        <ul>
+                            <li><strong>Beyond Reason and Ethics:</strong> Kierkegaard argued that reason and objective evidence cannot provide sufficient grounds for Christian faith. The core tenets of Christianity, especially the Incarnation (God becoming human in Christ), are inherently paradoxical and absurd from a purely rational standpoint. Similarly, the demands of faith may sometimes require a "teleological suspension of the ethical," as illustrated by Abraham's willingness to sacrifice Isaac in 'Fear and Trembling,' an act incomprehensible within universal ethical norms but demanded by God.</li>
+                            <li><strong>Objective Uncertainty:</strong> Because faith deals with the infinite and the paradoxical, objective proof is impossible. Attempting to base faith on historical evidence or philosophical arguments misses its essential nature.</li>
+                            <li><strong>Subjective Commitment:</strong> The leap is therefore not an intellectual conclusion but a passionate, subjective commitment made by the individual 'in spite of' the lack of objective certainty and the offense to reason. It involves risk, passion, and the engagement of the whole person.</li>
+                            <li><strong>Decision and Will:</strong> It emphasizes the role of decision and volition. Faith is not merely assenting to doctrines but actively choosing to believe and relate to God, embracing the absurd.</li>
+                            <li><strong>Not Irrationalism:</strong> While non-rational, the leap is not necessarily irrational in the sense of being arbitrary or nonsensical *within the framework of faith*. It's a movement beyond the limits of finite human reason into a relationship with the Absolute.</li>
+                        </ul>
+                    </p>
+                    <p>The leap signifies the transition from seeking objective security and rational understanding to embracing subjective passion, risk, and commitment as the defining characteristics of authentic religious existence. It highlights the gap between finite human understanding and the infinite nature of God, a gap that can only be bridged by the individual's passionate decision of faith.</p>
+                    <blockquote>"The leap is the category of decision." - Concluding Unscientific Postscript (paraphrased concept)</blockquote>
+                    <blockquote>"Faith is precisely the contradiction between the infinite passion of the individual's inwardness and the objective uncertainty." - Concluding Unscientific Postscript</blockquote>
+                    <small class="source-note">Primary Sources: Concluding Unscientific Postscript, Fear and Trembling, Philosophical Fragments. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "anxiety": {
+                title: "Anxiety (Angst): The Dizziness of Freedom",
+                body: `
+                    <p>Kierkegaard provides a profound psychological and theological analysis of <strong>Anxiety (Angst)</strong>, particularly in 'The Concept of Anxiety.' He distinguishes anxiety sharply from fear: fear has a specific object, while anxiety's object is 'nothing' – the vast, indeterminate realm of possibility and freedom.</p>
+                    <p><strong>Key Aspects of Anxiety:</strong>
+                        <ul>
+                            <li><strong>The Dizziness of Freedom:</strong> Anxiety arises from the human condition of freedom. When faced with infinite possibilities for action and self-creation, the individual experiences a 'dizziness' – a simultaneous attraction towards and repulsion from the potential to actualize possibilities, including the possibility of sin or failure.</li>
+                            <li><strong>Relation to Possibility:</strong> Anxiety is directed towards the future and the unknown possibilities it holds. It's the realization that 'I can,' which is both exhilarating and terrifying.</li>
+                            <li><strong>Innocence and the Fall:</strong> Kierkegaard links anxiety to the state of innocence before the 'fall' (using Adam as a prototype). Innocence is ignorance, but it contains the seed of anxiety because the *possibility* of freedom (and thus, of sinning) is present. The prohibition ("Do not eat") awakens the anxious sense of possibility.</li>
+                            <li><strong>Anxiety vs. Fear:</strong> Fear relates to something definite in the world, whereas anxiety relates to the ambiguous possibility inherent in freedom itself.</li>
+                            <li><strong>Ambiguity:</strong> Anxiety is an ambiguous state – a "sympathetic antipathy and an antipathetic sympathy." We are drawn to the possibilities freedom offers, yet simultaneously dread the responsibility and potential consequences of choosing.</li>
+                            <li><strong>Connection to Sin and Faith:</strong> Anxiety is the precondition for both sin (choosing against God or oneself) and faith (leaping into relationship with God despite uncertainty). How one navigates anxiety determines their existential path.</li>
+                            <li><strong>Educational Value:</strong> Kierkegaard suggests that anxiety, when properly understood and confronted, can be profoundly educational. It reveals our nature as free, spiritual beings and can drive us towards authentic selfhood and faith, away from the despair of spiritlessness.</li>
+                        </ul>
+                    </p>
+                    <p>Kierkegaard's analysis positions anxiety not merely as a negative psychological symptom to be eliminated, but as an essential, unavoidable aspect of the human condition tied intrinsically to freedom, possibility, and the task of becoming a self before God.</p>
+                    <blockquote>"Anxiety may be compared with dizziness. He whose eye happens to look down into the yawning abyss becomes dizzy... Anxiety is the dizziness of freedom." - The Concept of Anxiety</blockquote>
+                    <small class="source-note">Primary Source: The Concept of Anxiety. Secondary: SEP, IEP entries.</small>
+                `
+            },
+             "knight-faith": {
+                title: "The Knight of Faith",
+                body: `
+                    <p>In 'Fear and Trembling,' writing under the pseudonym Johannes de Silentio, Kierkegaard introduces the enigmatic figure of the <strong>Knight of Faith</strong> as the embodiment of the highest religious existence (Religiousness B). This figure is contrasted with the 'knight of infinite resignation' and the 'tragic hero'.</p>
+                    <p>The primary example used to illustrate the Knight of Faith is the biblical patriarch <strong>Abraham</strong> during the ordeal of being commanded by God to sacrifice his son, Isaac.</p>
+                    <p><strong>Characteristics and Distinctions:</strong>
+                        <ul>
+                            <li><strong>Infinite Resignation (Preliminary Movement):</strong> Both the knight of infinite resignation and the Knight of Faith make the 'movement of infinite resignation.' They renounce their claim on the finite world and their dearest earthly loves (like Abraham giving up Isaac) in recognition of a higher, absolute duty or reality. They find peace in this renunciation.</li>
+                            <li><strong>The Leap of Faith (Second Movement):</strong> The Knight of Faith makes a *second* movement, unique to them: the leap of faith. Having resigned everything, they believe, by virtue of the absurd, that they will receive it back from God in this life. Abraham believes he will get Isaac back, even as he raises the knife.</li>
+                            <li><strong>Belief by Virtue of the Absurd:</strong> This belief is not based on rational calculation or ethical justification but solely on faith in God's power to make the impossible possible. It embraces the paradox that God demands the sacrifice yet can also restore what is sacrificed.</li>
+                            <li><strong>Teleological Suspension of the Ethical:</strong> The Knight of Faith's actions may appear unethical or incomprehensible from the standpoint of universal morality (the Ethical stage). Abraham's willingness to kill Isaac suspends the ethical prohibition against murder due to a higher, absolute duty to God that cannot be mediated or understood by universal reason.</li>
+                            <li><strong>Incommunicability:</strong> The Knight of Faith's relationship with God and the basis for their actions are radically individual and cannot be fully communicated or justified to others within the framework of the ethical. They are solitary figures before God.</li>
+                            <li><strong>Appearance:</strong> Paradoxically, the Knight of Faith may appear perfectly ordinary, like a "bourgeois philistine," fully participating in finite life while simultaneously grounded in their absolute relationship with the Absolute. They don't renounce the world externally like the knight of infinite resignation might; they receive it back through faith.</li>
+                        </ul>
+                    </p>
+                    <p>The Knight of Faith represents the pinnacle of religious existence for Kierkegaard – an existence defined by absolute faith in God, embracing paradox and the absurd, living fully in the finite world while grounded in an absolute, personal relationship with the divine, even if it requires suspending universal ethical norms.</p>
+                    <blockquote>"Faith is this paradox, that the particular is higher than the universal... there is an absolute duty towards God." - Fear and Trembling</blockquote>
+                    <small class="source-note">Primary Source: Fear and Trembling. Secondary: SEP, IEP entries.</small>
+                `
+            },
+             "indirect-comm": {
+                title: "Indirect Communication & Pseudonyms",
+                body: `
+                    <p>A distinctive feature of Kierkegaard's authorship is his extensive use of <strong>indirect communication</strong> and multiple <strong>pseudonyms</strong>. He rarely wrote under his own name, instead attributing most of his major philosophical and psychological works to fictional authors with distinct personalities, viewpoints, and literary styles (e.g., Johannes de Silentio of 'Fear and Trembling,' Judge Wilhelm and 'A' of 'Either/Or,' Johannes Climacus of 'Philosophical Fragments' and 'Concluding Unscientific Postscript').</p>
+                    <p><strong>Reasons for Indirect Communication:</strong>
+                        <ul>
+                            <li><strong>Reflecting Subjectivity:</strong> Since existential and religious truth is subjective and must be personally appropriated, direct communication (like laying down doctrines) is often ineffective or counterproductive. Indirect methods aim to provoke the reader into active thought and personal engagement.</li>
+                            <li><strong>Avoiding Authority:</strong> Kierkegaard did not want readers to passively accept his ideas based on his authority. The pseudonyms create distance, forcing readers to evaluate the arguments and perspectives on their own merits and decide for themselves.</li>
+                            <li><strong>Presenting Stages/Perspectives:</strong> Each pseudonym often embodies a particular stage of existence (Aesthetic, Ethical) or a specific philosophical viewpoint, allowing Kierkegaard to explore these perspectives from the inside, with their own logic and limitations, without necessarily endorsing them himself.</li>
+                            <li><strong>Maieutic Method (Socratic):</strong> Like Socrates acting as an intellectual midwife, Kierkegaard used irony, paradox, parables, and varied literary styles to help the reader 'give birth' to their own understanding and commitment, rather than simply receiving information.</li>
+                            <li><strong>Deception into Truth:</strong> Sometimes, the aim was to 'deceive' the reader into the truth by first engaging them on their own level (e.g., the aesthetic) before revealing its inadequacy and pointing towards a higher stage.</li>
+                            <li><strong>Nature of Religious Truth:</strong> For paradoxical religious truths (like the Incarnation), direct communication is inherently inadequate. Indirect methods, employing paradox and irony, better reflect the nature of the subject matter.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Kierkegaard's Own Voice:</strong> While most philosophical works are pseudonymous, Kierkegaard published explicitly religious discourses under his own name, indicating a distinction between the exploratory, indirect philosophical works and his direct religious pronouncements.</p>
+                    <p>Understanding Kierkegaard's use of indirect communication and pseudonyms is crucial for interpreting his work. It requires careful attention to the specific voice and perspective of each pseudonym and active engagement from the reader to grapple with the existential questions being posed.</p>
+                    <blockquote>"In the pseudonymous works there is not a single word which is mine... I am indebted to the pseudonyms for...'my' whole philosophy." - Point of View for My Work as an Author (somewhat ironically stated)</blockquote>
+                    <small class="source-note">Primary Sources: Point of View for My Work as an Author, Concluding Unscientific Postscript. Secondary: SEP, IEP entries.</small>
+                `
+            }
+
+        };
+
+        const contentArea = document.getElementById('content-area');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const modalOverlay = document.getElementById('quote-modal-overlay');
+        const modal = document.getElementById('quote-modal');
+        const modalQuoteText = document.getElementById('modal-quote-text');
+        const modalQuoteSource = document.getElementById('modal-quote-source');
+        const modalCloseButton = document.getElementById('modal-close-button');
+
+        function openModal(quoteText, quoteSource) {
+            modalQuoteText.textContent = quoteText;
+            modalQuoteSource.textContent = `Source: ${quoteSource}`;
+            modalOverlay.classList.add('visible');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('visible');
+        }
+
+        function getRandomQuotes(numQuotes) {
+            const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, numQuotes);
+        }
+
+        function loadContent(contentId) {
+            let sectionTitle = '';
+            let sectionBodyHtml = '';
+            contentArea.innerHTML = ''; // Clear previous content
+
+            if (contentId === 'home') {
+                const numCards = 5; // Number of quote cards
+                const selectedQuotes = getRandomQuotes(numCards);
+                sectionTitle = content['home'].title;
+
+                const cardContainer = document.createElement('div');
+                cardContainer.id = 'quote-card-container';
+
+                selectedQuotes.forEach(quote => {
+                    const card = document.createElement('div');
+                    card.classList.add('quote-card');
+                    card.dataset.fullQuote = quote.text;
+                    card.dataset.source = quote.source;
+                    // Card remains blank
+                    card.addEventListener('click', () => {
+                        openModal(card.dataset.fullQuote, card.dataset.source);
+                    });
+                    cardContainer.appendChild(card);
+                });
+
+                const refreshButton = document.createElement('button');
+                refreshButton.id = 'refresh-quotes-button';
+                refreshButton.textContent = 'Refresh Quotes';
+                refreshButton.addEventListener('click', () => loadContent('home'));
+
+                sectionBodyHtml = cardContainer.outerHTML + refreshButton.outerHTML;
+                contentArea.style.display = 'block'; // Use block for container + button layout
+            }
+            else if (content[contentId]) {
+                const section = content[contentId];
+                sectionTitle = section.title;
+                sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+                 contentArea.style.display = 'block';
+            }
+            else {
+                sectionTitle = "Error";
+                sectionBodyHtml = '<div class="content-body"><p>Content not found.</p></div>';
+                 contentArea.style.display = 'block';
+            }
+
+            contentArea.style.opacity = 0;
+            setTimeout(() => {
+                 const titleElement = document.createElement('h2');
+                 titleElement.className = 'text-3xl font-semibold mb-6';
+                 titleElement.textContent = sectionTitle;
+                 contentArea.appendChild(titleElement);
+
+                 const bodyWrapper = document.createElement('div');
+                 bodyWrapper.innerHTML = sectionBodyHtml; // Parse HTML
+                 while (bodyWrapper.firstChild) { // Append parsed elements
+                     contentArea.appendChild(bodyWrapper.firstChild);
+                 }
+
+                 // Re-attach listeners after innerHTML update for home section
+                 if (contentId === 'home') {
+                     const cards = contentArea.querySelectorAll('.quote-card');
+                     cards.forEach(card => {
+                         const fullQuote = card.dataset.fullQuote;
+                         const source = card.dataset.source;
+                         card.addEventListener('click', () => {
+                             openModal(fullQuote, source);
+                         });
+                     });
+                     const refreshBtn = contentArea.querySelector('#refresh-quotes-button');
+                     if(refreshBtn) {
+                         refreshBtn.addEventListener('click', () => loadContent('home'));
+                     }
+                 }
+
+                contentArea.style.opacity = 1;
+            }, 200);
+
+            navButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.content === contentId);
+            });
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const contentId = e.currentTarget.dataset.content;
+                loadContent(contentId);
+            });
+        });
+
+        modalCloseButton.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            loadContent('home');
+        });
+
+    </script>
+
+</body>
+</html>

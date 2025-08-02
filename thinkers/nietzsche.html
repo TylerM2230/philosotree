@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Nietzsche</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom styles for a classical dark theme */
+      body {
+        font-family: "EB Garamond", serif; /* Default serif font */
+        background-color: #1f1f1f;
+        color: #dcdcdc;
+      }
+      /* Header style */
+      header {
+        background-color: #111111;
+        border-bottom: 1px solid #bda55d;
+      }
+      h1 {
+        color: #bda55d;
+        font-family: "EB Garamond", serif; /* Ensure header uses Garamond */
+      }
+      /* Navigation button styles */
+      .nav-button {
+        background-color: #333333;
+        color: #dcdcdc;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        font-family: "EB Garamond", serif; /* Ensure nav uses Garamond */
+      }
+      .nav-button:hover {
+        background-color: #444444;
+        color: #ffffff;
+      }
+      /* Style for the active navigation button */
+      .nav-button.active {
+        background-color: #2a2a2a;
+        color: #bda55d;
+        font-weight: bold;
+        border-left: 3px solid #bda55d;
+      }
+      /* Content area style */
+      #content-area {
+        background-color: #2b2b2b;
+        border: 1px solid #444444;
+        min-height: 60vh;
+        transition: opacity 0.2s ease-in-out;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+      }
+      /* Style for section headings */
+      h2 {
+        color: #bda55d;
+        border-bottom: 1px solid #555555;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        flex-shrink: 0;
+        font-family: "EB Garamond", serif; /* Ensure section headings use Garamond */
+      }
+      /* Container for the main content body */
+      .content-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.1em;
+        line-height: 1.9;
+      }
+      /* Style for content paragraphs - UPDATED FONT */
+      .content-body p {
+        margin-bottom: 1.2em;
+        font-family: "Courier New", Courier, monospace; /* Monospace font for paragraphs */
+        color: #c0c0c0; /* Slightly adjust color for monospace readability */
+      }
+      /* Style for lists within content body */
+      .content-body ul {
+        list-style-type: square;
+        margin-left: 2rem;
+        margin-bottom: 1em;
+        font-family: "Courier New", Courier, monospace; /* Monospace font for lists */
+        color: #c0c0c0;
+      }
+      .content-body li {
+        margin-bottom: 0.7em;
+      }
+      /* Style for blockquotes (used for regular quotes in sections) */
+      .content-body blockquote {
+        border-left: 3px solid #bda55d;
+        padding-left: 1.2rem;
+        margin-left: 0.5rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+        color: #b8b8b8;
+        font-family: "EB Garamond", serif; /* Keep blockquotes in Garamond */
+      }
+      /* Style for strong text within content body */
+      .content-body strong {
+        color: #d4c38a;
+        font-weight: 600;
+        /* Monospace font will be inherited, which is acceptable */
+      }
+
+      /* Specific style for the random aphorism display container */
+      #aphorism-display {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 1rem 0;
+      }
+
+      /* Style for the aphorism quote itself */
+      #aphorism-display blockquote {
+        position: relative;
+        font-size: 1.6em;
+        color: #e0e0e0;
+        text-align: center;
+        margin: 2rem auto;
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        border: none;
+        border-top: 1px solid #555;
+        border-bottom: 1px solid #555;
+        max-width: 80%;
+        line-height: 1.6;
+        font-family: "EB Garamond", serif; /* Keep aphorism quote in Garamond */
+      }
+
+      /* Style for the decorative quotation mark */
+      #aphorism-display blockquote::before {
+        content: "“";
+        position: absolute;
+        top: -0.1em;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 4em;
+        color: #bda55d;
+        font-family: "EB Garamond", serif;
+        opacity: 0.6;
+        line-height: 1;
+      }
+
+      #aphorism-display small {
+        display: block;
+        text-align: center;
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.9em;
+        color: #888;
+        font-family: "EB Garamond", serif; /* Keep source in Garamond */
+      }
+
+      /* Style for the "New Quote" button */
+      #new-quote-button {
+        background-color: #4a4a4a;
+        color: #bda55d;
+        padding: 0.6rem 1.2rem;
+        border: 1px solid #bda55d;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-family: "EB Garamond", serif; /* Keep button in Garamond */
+        font-size: 1em;
+        margin-top: 1rem;
+      }
+      #new-quote-button:hover {
+        background-color: #bda55d;
+        color: #1f1f1f;
+      }
+
+      /* Style for source notes in regular sections */
+      .source-note {
+        font-size: 0.85em;
+        color: #999999;
+        margin-top: 2rem;
+        display: block;
+        font-style: italic;
+        text-align: right;
+        font-family: "EB Garamond", serif; /* Keep source notes in Garamond */
+      }
+      /* Footer style */
+      footer {
+        background-color: #111111;
+        border-top: 1px solid #bda55d;
+        color: #888888;
+        font-family: "EB Garamond", serif; /* Ensure footer uses Garamond */
+      }
+    </style>
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header class="text-center mb-6 mt-4">
+      <h1 class="text-4xl font-bold text-gray-100 mb-2">Understanding Nietzsche</h1>
+      <p class="text-xl text-gray-400 italic">"Transvaluation of Values: Beyond Good & Evil"</p>
+    </header>
+
+    <main
+      class="flex-grow container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8 max-w-7xl"
+    >
+      <nav class="w-full md:w-1/4 lg:w-1/5 flex-shrink-0">
+        <ul class="space-y-2 list-none ml-0">
+          <li>
+            <button
+              data-content="home"
+              class="nav-button w-full text-left p-3 rounded-md active"
+            >
+              Home (Aphorism)
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="intro"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Introduction
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="free-spirit"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              The Free Spirit
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="self-overcoming"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Self-Overcoming
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="will-to-power"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Will to Power
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="ubermensch"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Übermensch
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="eternal-recurrence"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Eternal Recurrence
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="god-is-dead"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              "God is Dead"
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="master-slave"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Master-Slave Morality
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="apollonian-dionysian"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Apollonian & Dionysian
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="zarathustra"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Thus Spoke Zarathustra
+            </button>
+          </li>
+          <li>
+            <button
+              data-content="hammer"
+              class="nav-button w-full text-left p-3 rounded-md"
+            >
+              Philosophizing with a Hammer
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <section
+        id="content-area"
+        class="w-full md:w-3/4 lg:w-4/5 p-6 rounded-lg shadow-lg"
+      ></section>
+    </main>
+
+    <footer class="text-center py-4 mt-auto">
+      <p>&copy; 2025 Nietzsche Explorer. Content for educational purposes.</p>
+      <p class="text-xs">
+        Sources primarily include the Stanford Encyclopedia of Philosophy,
+        Internet Encyclopedia of Philosophy, and Nietzsche's works.
+      </p>
+    </footer>
+
+    <script>
+      // Array of Nietzsche Aphorisms (remains the same)
+      const aphorisms = [
+        {
+          text: "He who has a why to live for can bear almost any how.",
+          source: "Twilight of the Idols",
+        },
+        {
+          text: "That which does not kill us makes us stronger.",
+          source: "Twilight of the Idols",
+        },
+        {
+          text: "Become what you are.",
+          source: "Thus Spoke Zarathustra / Ecce Homo",
+        },
+        {
+          text: "Without music, life would be a mistake.",
+          source: "Twilight of the Idols",
+        },
+        {
+          text: "In individuals, insanity is rare; but in groups, parties, nations and epochs, it is the rule.",
+          source: "Beyond Good and Evil",
+        },
+        {
+          text: "The higher we soar, the smaller we appear to those who cannot fly.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "There are no beautiful surfaces without a terrible depth.",
+          source: "Notebooks (Nachlass)",
+        },
+        {
+          text: "The surest way to corrupt a youth is to instruct him to hold in higher esteem those who think alike than those who think differently.",
+          source: "Daybreak",
+        },
+        {
+          text: "Is man merely a mistake of God's? Or God merely a mistake of man's?",
+          source: "Twilight of the Idols",
+        },
+        {
+          text: "Thoughts are the shadows of our feelings -- always darker, emptier, simpler.",
+          source: "The Gay Science",
+        },
+        {
+          text: "The snake which cannot cast its skin has to die. As well the minds which are prevented from changing their opinions; they cease to be mind.",
+          source: "Daybreak",
+        },
+        {
+          text: "To live is to suffer, to survive is to find some meaning in the suffering.",
+          source: "Attributed, likely paraphrase",
+        },
+        {
+          text: "The lonely one offers his hand too quickly to whomever he encounters.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "One must still have chaos in oneself to be able to give birth to a dancing star.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "The voice of beauty speaks softly; it creeps only into the most fully awakened souls.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "What is done out of love always takes place beyond good and evil.",
+          source: "Beyond Good and Evil",
+        },
+        {
+          text: "There is always some madness in love. But there is also always some reason in madness.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "The true man wants two things: danger and play. For that reason he wants woman, as the most dangerous plaything.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "All truly great thoughts are conceived while walking.",
+          source: "Twilight of the Idols",
+        },
+        {
+          text: "We have art in order not to die of the truth.",
+          source: "The Will to Power (Nachlass)",
+        },
+        {
+          text: "Hope in reality is the worst of all evils because it prolongs the torments of man.",
+          source: "Human, All Too Human",
+        },
+        {
+          text: "Convictions are more dangerous enemies of truth than lies.",
+          source: "Human, All Too Human",
+        },
+        {
+          text: "He who cannot obey himself will be commanded. That is the nature of living creatures.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "No one can construct for you the bridge upon which precisely you must cross the stream of life, no one but you yourself alone.",
+          source: "Untimely Meditations",
+        },
+        {
+          text: "The secret of reaping the greatest fruitfulness and the greatest enjoyment from life is to live dangerously!",
+          source: "The Gay Science",
+        },
+        {
+          text: "The most common sort of lie is that by which a man deceives himself: deceiving others is relatively rare.",
+          source: "The Antichrist",
+        },
+        {
+          text: "He who would learn to fly one day must first learn to stand and walk and run and climb and dance; one cannot fly into flying.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "A casual stroll through the lunatic asylum shows that faith does not prove anything.",
+          source: "The Antichrist",
+        },
+        {
+          text: "The thought of suicide is a great consolation: by means of it one gets through many a dark night.",
+          source: "Beyond Good and Evil",
+        },
+        {
+          text: "Man is the cruelest animal.",
+          source: "Thus Spoke Zarathustra",
+        },
+        {
+          text: "Whoever fights monsters should see to it that in the process he does not become a monster.",
+          source: "Beyond Good and Evil",
+        },
+        {
+          text: "It is not a lack of love, but a lack of friendship that makes unhappy marriages.",
+          source: "Human, All Too Human",
+        },
+        {
+          text: "To forget one's purpose is the commonest form of stupidity.",
+          source: "Human, All Too Human",
+        },
+        {
+          text: "Today as always, men fall into two groups: slaves and free men. Whoever does not have two-thirds of his day for himself, is a slave, whatever he may be: a statesman, a businessman, an official, or a scholar.",
+          source: "Human, All Too Human",
+        },
+        {
+          text: "What is the seal of liberation? — No longer being ashamed in front of oneself.",
+          source: "Daybreak",
+        },
+        {
+          text: "A thinker sees his own actions as experiments and questions--as attempts to find out something. Success and failure are for him answers above all.",
+          source: "Daybreak",
+        },
+        {
+          text: "The Christian resolution to find the world ugly and bad has made the world ugly and bad.",
+          source: "Daybreak",
+        },
+        {
+          text: "There is not enough love and goodness in the world to permit giving any of it away to imaginary beings.",
+          source: "Daybreak",
+        },
+        {
+          text: "To predict the behavior of ordinary people in advance, you only have to assume that they will always try to escape a disagreeable situation with the smallest possible expenditure of intelligence.",
+          source: "Daybreak",
+        },
+        {
+          text: "The origin of morality may be traced to two ideas: 'The community is of more importance than the individual,' and 'The permanent interest is to be preferred to the temporary.'",
+          source: "Daybreak",
+        },
+        {
+          text: "We are accustomed to finding the validity of a thing in its cost.",
+          source: "Daybreak",
+        },
+        {
+          text: "He who humbleth himself wants to be exalted.",
+          source: "Daybreak",
+        },
+        {
+          text: "Distrust all in whom the impulse to punish is powerful.",
+          source: "Daybreak",
+        },
+      ];
+
+      // Content data for regular sections (remains the same)
+      const content = {
+        home: {
+          title: "Aphorism of the Moment",
+        },
+        intro: {
+          title: "Introduction: The Enigmatic Philosopher",
+          body: `
+                    <p>Friedrich Wilhelm Nietzsche (1844–1900) stands as one of modern philosophy's most influential, yet controversial and often misunderstood, figures. A German thinker whose work traversed classical philology, philosophy, cultural criticism, poetry, and composition, Nietzsche's writings are characterized by their aphoristic style, passionate engagement, and radical questioning of the foundations of Western morality, religion, and philosophy.</p>
+                    <p>Initially a brilliant young professor of classical philology at the University of Basel, Nietzsche's path diverged sharply due to ill health and a growing disillusionment with academia. His subsequent solitary life was marked by intense intellectual creativity, producing works that challenged the prevailing assumptions of his time. His thought is not easily systematized; rather, it unfolds through a series of interconnected themes and critiques, often presented with rhetorical force and psychological insight.</p>
+                    <p>Key areas of his exploration include:
+                        <ul>
+                            <li><strong>Critique of Morality:</strong> Examining the historical origins and psychological underpinnings of values, particularly Judeo-Christian morality, which he argued was life-denying ('Master-Slave Morality').</li>
+                            <li><strong>Perspectivism:</strong> Challenging the notion of objective truth, suggesting that all knowledge is interpreted from a particular perspective, conditioned by psychological and physiological factors.</li>
+                            <li><strong>The Will to Power:</strong> Positing a fundamental drive in all entities not just to survive, but to overcome, grow, and exert influence – a concept often misinterpreted as mere political domination but more deeply related to self-mastery and creativity.</li>
+                            <li><strong>The Death of God & Nihilism:</strong> Diagnosing the cultural decline of religious belief and the resulting crisis of meaninglessness (nihilism) in the modern West.</li>
+                            <li><strong>The Übermensch & Eternal Recurrence:</strong> Proposing ideals for overcoming nihilism through self-creation, life-affirmation, and the embrace of one's fate, even its infinite repetition.</li>
+                            <li><strong>Apollonian & Dionysian:</strong> Analyzing the interplay of order/reason (Apollonian) and chaos/passion (Dionysian) as fundamental forces in art and life.</li>
+                        </ul>
+                    </p>
+                    <p>Nietzsche's influence extends across existentialism, postmodernism, psychoanalysis, literature, and art. His work remains a potent challenge, demanding active engagement and interpretation rather than passive acceptance. His legacy is complex, partly due to the posthumous manipulation of his writings (especially 'The Will to Power') by his sister, Elisabeth Förster-Nietzsche, to align with anti-Semitic and nationalist ideologies, which Nietzsche himself largely opposed.</p>
+                    <blockquote>"Of all that is written, I love only what a person has written with his own blood. Write with blood, and you will find that blood is spirit." - Thus Spoke Zarathustra</blockquote>
+                    <small class="source-note">Primary Sources: Ecce Homo, Thus Spoke Zarathustra. Secondary: SEP, IEP entries on Nietzsche.</small>
+                `,
+        },
+        "free-spirit": {
+          title: "The Free Spirit (Der Freigeist)",
+          body: `
+                    <p>The figure of the <strong>Free Spirit</strong> (Freigeist) is central to Nietzsche's middle-period works, particularly 'Human, All Too Human,' 'Daybreak,' and 'The Gay Science,' and remains relevant throughout his writings. The free spirit represents a crucial stage of liberation from inherited values and conventional ways of thinking, serving as a necessary precursor to the potential emergence of the Übermensch.</p>
+                    <p>The free spirit is characterized by an intellectual independence and a courageous willingness to question everything, especially the most deeply ingrained moral, religious, and metaphysical assumptions of their society ("the herd"). They are experimenters in thought and life, driven by a powerful curiosity and a desire for truth, even if that truth is uncomfortable or dangerous.</p>
+                    <p><strong>Characteristics of the Free Spirit:</strong>
+                        <ul>
+                            <li><strong>Intellectual Liberation:</strong> They have "untied" themselves from traditional beliefs and prejudices, particularly religious dogma and herd morality. This often involves a painful process of self-examination and detachment from comforting illusions.</li>
+                            <li><strong>Skepticism and Experimentation:</strong> Free spirits adopt a skeptical stance towards absolutes and grand narratives. They treat ideas and values as hypotheses to be tested, embracing experimentation in both thought and action.</li>
+                            <li><strong>Solitude and Detachment:</strong> True independence of mind often requires a degree of solitude and detachment from the crowd, its opinions, and its pressures to conform. The free spirit is often misunderstood and walks a lonely path.</li>
+                            <li><strong>Perspectivism:</strong> They recognize the perspectival nature of knowledge – that all views are interpretations shaped by specific needs and conditions. This doesn't necessarily lead to relativism but to a more nuanced understanding of truth claims.</li>
+                            <li><strong>Courage:</strong> It takes courage to challenge deeply held beliefs, to face uncomfortable truths about oneself and the world, and to endure the potential isolation that comes with intellectual independence.</li>
+                            <li><strong>Self-Knowledge:</strong> A key task for the free spirit is rigorous self-scrutiny, understanding one's own drives, prejudices, and the historical conditioning that shapes one's perspective.</li>
+                        </ul>
+                    </p>
+                    <p>The free spirit is not yet the Übermensch, who actively creates new values. Rather, the free spirit is primarily engaged in the critical task of clearing away the debris of old values and achieving intellectual autonomy. They are convalescents, recovering from the "sickness" of traditional morality and metaphysics, preparing the ground for a potential future affirmation and creation. Nietzsche saw himself as such a free spirit and wrote for others who were undergoing or might undergo a similar process of liberation.</p>
+                    <blockquote>"He has become free, and wants again and again to show that he is free. [...] He roves about, consuming, importunate, inquisitive, spying, audacious; everything attracts him..." - Human, All Too Human (describing a stage of the free spirit)</blockquote>
+                    <small class="source-note">Primary Sources: Human, All Too Human, Daybreak, The Gay Science, Beyond Good and Evil. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "self-overcoming": {
+          title: "Self-Overcoming (Selbstüberwindung)",
+          body: `
+                    <p><strong>Self-Overcoming</strong> (Selbstüberwindung) is a fundamental concept woven throughout Nietzsche's philosophy, particularly emphasized in 'Thus Spoke Zarathustra.' It represents the dynamic process of transcending one's current state, limitations, and established nature through discipline, struggle, and the creative channeling of the Will to Power.</p>
+                    <p>For Nietzsche, life itself is characterized by this constant process: "And life itself confided this secret to me: 'Behold,' it said, 'I am *that which must always overcome itself*.'" (Zarathustra, "On Self-Overcoming"). This applies not just biologically but, more importantly for Nietzsche, psychologically, culturally, and ethically. Humanity, in its current state, is not an endpoint but something to be overcome.</p>
+                    <p><strong>Key Aspects of Self-Overcoming:</strong>
+                        <ul>
+                            <li><strong>Internal Struggle:</strong> It involves a conscious struggle against one's own ingrained habits, weaknesses, comfortable assumptions, and the allure of "herd" values. It is the mastery of one's own chaotic drives and impulses, not their elimination, but their integration and sublimation towards higher goals.</li>
+                            <li><strong>Expression of Will to Power:</strong> Self-overcoming is the primary way the Will to Power manifests constructively within the individual. Instead of merely seeking external dominance, the individual directs the drive for power inward, towards self-mastery and self-creation.</li>
+                            <li><strong>Path to the Übermensch:</strong> The Übermensch is the embodiment of successful self-overcoming. The journey towards this ideal is a continuous process of transcending the "human, all too human" through discipline, creativity, and the forging of one's own values. "Man is something that shall be overcome."</li>
+                            <li><strong>Discipline and Suffering:</strong> Self-overcoming is not easy; it requires rigorous self-discipline and the willingness to endure suffering. Nietzsche believed that struggle and resistance are necessary for growth and the development of strength. Comfort and ease lead to stagnation (the "last man").</li>
+                            <li><strong>Value Creation:</strong> Overcoming old values and limitations is intrinsically linked to the creation of new ones. By mastering oneself, the individual gains the perspective and strength needed to legislate new values grounded in life-affirmation.</li>
+                            <li><strong>Continuous Process:</strong> Self-overcoming is not a one-time event but an ongoing, dynamic process. Even the Übermensch, as an ideal, represents a continuous state of overcoming.</li>
+                        </ul>
+                    </p>
+                    <p>Self-overcoming stands in stark contrast to passive acceptance or seeking solace in external authorities (like God or tradition). It places the responsibility for growth and meaning squarely on the individual, demanding active engagement with one's own nature and the courage to continually strive beyond one's present self. It is the engine of personal evolution and the core ethical imperative in Nietzsche's affirmative philosophy.</p>
+                    <blockquote>"Physiologists should think before putting down the instinct of self-preservation as the cardinal instinct of an organic being. A living thing seeks above all to *discharge* its strength—life itself is will to power; self-preservation is only one of the indirect and most frequent *results*." - Beyond Good and Evil, §13 (Highlighting the drive beyond mere preservation)</blockquote>
+                    <small class="source-note">Primary Sources: Thus Spoke Zarathustra, Beyond Good and Evil, Ecce Homo. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "will-to-power": {
+          title: "The Will to Power (Wille zur Macht)",
+          body: `
+                    <p>The <strong>Will to Power</strong> is perhaps one of Nietzsche's most famous and debated concepts. It's not a systematic doctrine laid out in a single text but rather a recurring theme, particularly prominent in his notebooks (posthumously and controversially edited into the book 'The Will to Power') and later published works like 'Thus Spoke Zarathustra' and 'Beyond Good and Evil'.</p>
+                    <p>At its core, the Will to Power describes the fundamental drive Nietzsche believed underlies all reality, all change, and all life. It is more than a simple 'will to survive' (as in Darwinism) or a Schopenhauerian 'will to live'; it is an active, dynamic striving for growth, expansion, overcoming, and the discharge of strength. Nietzsche saw this principle operating everywhere: in the growth of a plant, the ambition of an artist, the formation of societies, and the interpretation of knowledge itself. Every force, he suggested, seeks to discharge itself, to expand its sphere of influence, and to overcome resistance.</p>
+                    <p><strong>Nuances and Interpretations:</strong>
+                        <ul>
+                            <li><strong>Not Just Domination:</strong> While the Will to Power can manifest as a desire to dominate others, this is considered a primitive or incomplete form. Nietzsche often emphasized its role in <strong>self-overcoming</strong> – the struggle to master one's own impulses, achieve discipline, and channel energies creatively. The artist creating a masterpiece, the philosopher forging new values, or the individual cultivating virtues are higher expressions of this will.</li>
+                            <li><strong>Interpretation as Will to Power:</strong> Nietzsche extended the concept to epistemology. He argued that even the act of knowing or interpreting the world is an expression of the Will to Power – we impose meaning, structure, and form onto chaos. There is no 'objective' view from nowhere; all knowledge is perspectival, driven by our needs and our will to shape reality.</li>
+                            <li><strong>Cosmological vs. Psychological:</strong> Scholars debate whether Nietzsche intended the Will to Power as a metaphysical principle governing the entire cosmos or primarily as a psychological drive within living beings, especially humans. Evidence exists for both readings in his scattered remarks.</li>
+                            <li><strong>Relationship to Values:</strong> The Will to Power is intimately linked to value creation. Those who exert their Will to Power most effectively are those who can establish their interpretations and values as dominant, shaping the perspectives of others.</li>
+                        </ul>
+                    </p>
+                    <p>The concept was unfortunately misused by Nietzsche's sister and later by the Nazis to promote a crude ideology of domination and racial superiority. However, a careful reading of Nietzsche reveals a far more complex and psychologically nuanced idea, focused significantly on individual self-mastery, creativity, and the affirmation of life's inherent striving nature.</p>
+                    <blockquote>"And life itself confided this secret to me: 'Behold,' it said, 'I am *that which must always overcome itself*.'" - Thus Spoke Zarathustra, Part 2, "On Self-Overcoming"</blockquote>
+                    <small class="source-note">Primary Sources: Thus Spoke Zarathustra, Beyond Good and Evil, The Will to Power (Nachlass). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        ubermensch: {
+          title: "The Übermensch (Overman / Superman)",
+          body: `
+                    <p>The <strong>Übermensch</strong>, introduced dramatically in 'Thus Spoke Zarathustra', represents Nietzsche's vision of a higher type of human being, a goal for humanity to strive towards in the wake of the "death of God." Often translated as "Overman" (preferred by many scholars to avoid the comic-book connotations of "Superman"), the Übermensch is not a predetermined endpoint of evolution but an ideal of self-creation and transcended humanity.</p>
+                    <p>The Übermensch is defined in opposition to the "last man" ('der letzte Mensch'), Zarathustra's depiction of the complacent, comfort-seeking, uncreative modern individual who has lost all capacity for greatness and despises anything that disrupts their small happiness. The last man represents the ultimate consequence of nihilism and the leveling effect of modern democratic and Christian values, as Nietzsche saw them.</p>
+                    <p><strong>Characteristics and Significance:</strong>
+                        <ul>
+                            <li><strong>Creator of Values:</strong> Having overcome traditional, externally imposed morality (which Nietzsche saw as life-denying), the Übermensch creates their own values, grounded in the affirmation of this life, this earth, and the Will to Power.</li>
+                            <li><strong>Self-Mastery:</strong> The Übermensch embodies self-overcoming, having disciplined their passions and instincts, integrating them into a harmonious, powerful whole rather than being ruled by them or seeking their denial.</li>
+                            <li><strong>Affirmation of Life (Amor Fati):</strong> This figure embraces all aspects of existence, including suffering and struggle, without resentment. The ultimate test of this affirmation is the embrace of Eternal Recurrence – the willingness to live this same life, with all its details, infinitely.</li>
+                            <li><strong>Beyond Good and Evil:</strong> The Übermensch operates beyond the confines of traditional binary morality. Their actions stem from a position of strength, creativity, and affirmation, not from reactive concepts of good and evil derived from weakness or resentment.</li>
+                            <li><strong>Earth-Bound:</strong> Unlike religious ideals focused on an afterlife, the Übermensch finds meaning and purpose solely within terrestrial existence. "Remain faithful to the earth," Zarathustra implores.</li>
+                        </ul>
+                    </p>
+                    <p>It is crucial to understand that the Übermensch is an ideal, perhaps an unreachable one, representing a direction rather than a specific destination. It's a call for individuals to engage in the arduous task of self-transformation, to overcome the limitations of the "human, all too human," and to become legislators of new values in a world stripped of its old certainties. It is not about racial purity or physical power, but about spiritual strength, creativity, and the courage to shape one's own existence.</p>
+                    <blockquote>"I teach you the Übermensch. Man is something that shall be overcome. What have you done to overcome him?" - Thus Spoke Zarathustra, Prologue, §3</blockquote>
+                    <small class="source-note">Primary Source: Thus Spoke Zarathustra. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "eternal-recurrence": {
+          title: "Eternal Recurrence (Ewige Wiederkunft)",
+          body: `
+                    <p>The <strong>Eternal Recurrence of the Same</strong> is one of Nietzsche's most profound, challenging, and debated ideas. He introduces it most famously in 'The Gay Science' (§341) as a thought experiment posed by a demon, and it becomes a central teaching of Zarathustra.</p>
+                    <p>The core idea is the hypothesis that everything that happens has happened before and will happen again, in the exact same sequence, infinitely. Every joy, every sorrow, every thought, every sigh, the spider in the moonlight, your own life in all its details – all will return eternally. Nietzsche calls this "the heaviest weight" ('das schwerste Gewicht').</p>
+                    <p><strong>Significance and Interpretations:</strong>
+                        <ul>
+                            <li><strong>A Test of Life Affirmation:</strong> Primarily, Eternal Recurrence functions as an existential test. How would you react to this thought? Would you collapse in despair, curse the demon, or would you embrace it, declaring it divine? To affirm Eternal Recurrence is the ultimate expression of <strong>Amor Fati</strong> (love of fate) – to love life so completely that you would will its infinite repetition, changing nothing.</li>
+                            <li><strong>Ethical Imperative:</strong> It implies a revaluation of how one lives. If every moment will return eternally, each action, each choice, takes on an immense weight. One should strive to live in such a way that one *could* will the eternal return of every moment. It encourages living with intensity, purpose, and self-acceptance.</li>
+                            <li><strong>Overcoming Nihilism:</strong> In a world after the "death of God," where transcendent meaning has vanished, Eternal Recurrence offers a form of immanent meaning and "redemption." It redeems time not by promising a future heaven, but by affirming the value inherent in the perpetual cycle of becoming itself.</li>
+                            <li><strong>Cosmological Claim?:</strong> While primarily presented as a psychological and ethical test, some passages suggest Nietzsche might have entertained it as a possible cosmological reality, perhaps based on ideas of finite energy in infinite time. However, most scholars emphasize its role as a thought experiment designed to transform one's perspective on life.</li>
+                            <li><strong>Link to Übermensch:</strong> Only the Übermensch, the ideal figure who has overcome resentment and fully affirms life through the Will to Power, could truly welcome the Eternal Recurrence without reservation.</li>
+                        </ul>
+                    </p>
+                    <p>Eternal Recurrence forces a radical confrontation with one's own life and values. It shifts the focus from linear progress towards a final goal (like salvation or utopia) to the intrinsic value and weight of each present moment, demanding a profound commitment to living authentically and affirmatively.</p>
+                    <blockquote>"What, if some day or night a demon were to steal after you into your loneliest loneliness and say to you: 'This life as you now live it and have lived it, you will have to live once more and innumerable times more...' [...] Or have you once experienced a tremendous moment when you would have answered him: 'You are a god and never have I heard anything more divine!'" - The Gay Science, §341</blockquote>
+                    <small class="source-note">Primary Sources: The Gay Science, Thus Spoke Zarathustra, Ecce Homo. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "god-is-dead": {
+          title: '"God is Dead" (Gott ist tot)',
+          body: `
+                    <p>Nietzsche's provocative declaration, <strong>"God is dead"</strong> ('Gott ist tot'), most famously articulated by a madman in 'The Gay Science' (§125), is not a literal statement about the demise of a deity. Rather, it is a profound cultural diagnosis concerning the decline of the *belief* in the Christian God as a credible source of absolute truth, meaning, and moral order in Western civilization.</p>
+                    <p>Nietzsche argued that the Enlightenment's emphasis on reason, the rise of scientific thinking, historical criticism of the Bible, and the development of secular worldviews had progressively eroded the foundations upon which traditional Christian faith rested. For educated Europeans, God was no longer a living, commanding force shaping their understanding of the world and their place within it. The *idea* of God had lost its power.</p>
+                    <p><strong>Consequences and Implications:</strong>
+                        <ul>
+                            <li><strong>The Murderers:</strong> The madman proclaims, "We have killed him—you and I." This suggests that humanity itself, through its intellectual and cultural developments, is responsible for rendering the belief in God untenable. It's not a passive event but an active, albeit perhaps unconscious, "deicide."</li>
+                            <li><strong>The Advent of Nihilism:</strong> The "death of God" leaves a void. Without the divine guarantor of meaning and morality, the traditional value system collapses. This leads to <strong>nihilism</strong>: the realization that long-cherished values are baseless, that there is no objective meaning or purpose to existence. This is a state of disorientation, despair, and the feeling that "everything is permitted" but also that "nothing matters."</li>
+                            <li><strong>Danger and Opportunity:</strong> Nietzsche saw nihilism as an extremely dangerous transitional phase ("the uncanny guest"). It could lead to despair, decadence (the "last man"), or a desperate search for new idols (like nationalism or political ideologies). However, it also presented a unique opportunity: the possibility for humanity to finally stand on its own, to overcome the need for external authorities, and to create new, life-affirming values grounded in this world.</li>
+                            <li><strong>The Need for Revaluation:</strong> The "death of God" necessitates a "revaluation of all values." Humanity must move beyond the old moral framework, which Nietzsche saw as rooted in weakness and life-denial, and forge values that celebrate strength, creativity, and earthly existence – paving the way for the Übermensch.</li>
+                        </ul>
+                    </p>
+                    <p>Thus, "God is dead" is less a triumphant cry of atheism and more a somber recognition of a major cultural shift and the profound crisis it entails. It marks the end of an era defined by a shared metaphysical and moral framework and the beginning of a challenging new period demanding human responsibility for the creation of meaning.</p>
+                    <blockquote>"God is dead. God remains dead. And we have killed him. How shall we comfort ourselves, the murderers of all murderers? What was holiest and mightiest of all that the world has yet owned has bled to death under our knives: who will wipe this blood off us?" - The Gay Science, §125</blockquote>
+                    <small class="source-note">Primary Sources: The Gay Science, Thus Spoke Zarathustra. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "master-slave": {
+          title: "Master–Slave Morality (Herren- und Sklavenmoral)",
+          body: `
+                    <p>In 'Beyond Good and Evil' and especially 'On the Genealogy of Morality', Nietzsche undertakes a historical and psychological investigation into the origins of our moral concepts, proposing a fundamental distinction between two types of morality: <strong>Master Morality</strong> and <strong>Slave Morality</strong>.</p>
+                    <p><strong>Master Morality (Herrenmoral):</strong>
+                        <ul>
+                            <li><strong>Origin:</strong> Arises spontaneously within a ruling, noble, powerful class or type of individual (the "masters").</li>
+                            <li><strong>Value Creation:</strong> These individuals experience their own power, health, creativity, and nobility as 'good'. They create values affirmatively, based on self-glorification. 'Good' is what resembles them; 'bad' is merely an afterthought, designating the common, weak, or plebeian, viewed with distance or contempt, but not necessarily hatred.</li>
+                            <li><strong>Characteristics:</strong> Active, affirmative, self-confident, focused on excellence, strength, hierarchy, and shaping the world according to one's will. It values pride, courage, creativity, and a certain noble indifference to the judgments of the weak.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Slave Morality (Sklavenmoral):</strong>
+                        <ul>
+                            <li><strong>Origin:</strong> Arises reactively among the oppressed, weak, suffering, and powerless (the "slaves").</li>
+                            <li><strong>Value Creation:</strong> Begins with resentment ('ressentiment') towards the masters. The first act is to define the masters and their values (strength, power, health) as 'evil'. 'Good' is then defined in opposition: it becomes everything that alleviates the suffering of the weak – pity, humility, kindness, patience, helpfulness, equality.</li>
+                            <li><strong>Characteristics:</strong> Reactive, negative, rooted in impotence and the need for consolation. It seeks to condemn the strong and elevate the virtues of the herd. Nietzsche famously argues that this morality, fueled by the "priestly caste," achieved a "slave revolt in morality," particularly through Judaism and its inheritor, Christianity, eventually dominating Western values.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Nietzsche's Critique:</strong> Nietzsche is highly critical of the dominance of slave morality in modern Europe. He argues it promotes mediocrity, suppresses excellence, fosters resentment disguised as virtue, and is fundamentally life-denying because it condemns the very instincts and drives (aspects of the Will to Power) that lead to strength and creativity. His call for a "revaluation of all values" involves moving beyond this inherited morality, not necessarily to simply reinstate ancient master morality, but to create new values appropriate for a post-"God is dead" era, values that would affirm life and foster the development of higher human types (the Übermensch).</p>
+                    <p>It's important to note Nietzsche is describing psychological and historical types, not advocating for a literal master-slave society. His analysis aims to uncover the hidden origins and motivations behind our most cherished values.</p>
+                    <blockquote>"The slave revolt in morality begins when *ressentiment* itself becomes creative and gives birth to values..." - On the Genealogy of Morality, First Essay, §10</blockquote>
+                    <small class="source-note">Primary Sources: Beyond Good and Evil, On the Genealogy of Morality. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "apollonian-dionysian": {
+          title: "Apollonian and Dionysian: Art, Order, and Chaos",
+          body: `
+                    <p>Introduced in his first major work, 'The Birth of Tragedy' (1872), the concepts of the <strong>Apollonian</strong> and the <strong>Dionysian</strong> represent a fundamental duality that Nietzsche initially used to analyze Greek art, particularly tragedy, but later extended as principles for understanding culture and psychology.</p>
+                    <p><strong>The Apollonian:</strong>
+                        <ul>
+                            <li>Named after Apollo, the Greek god of light, prophecy, music (specifically the lyre), form, and rational order.</li>
+                            <li>Represents the principle of individuation ('principium individuationis'), clarity, measure, restraint, boundaries, and illusion.</li>
+                            <li>Associated with the visual arts (especially sculpture), epic poetry, dreams, and the creation of beautiful, ordered appearances that make life bearable by veiling its terrifying depths. It is the force of form, structure, and rational contemplation.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The Dionysian:</strong>
+                        <ul>
+                            <li>Named after Dionysus (Bacchus), the god of wine, fertility, ecstasy, intoxication, music (especially the flute and ecstatic rhythms), and the dissolution of boundaries.</li>
+                            <li>Represents the principle of primal unity, chaos, intoxication, frenzy, suffering, contradiction, and the ecstatic merging of the individual with the collective or the underlying reality of becoming.</li>
+                            <li>Associated with music (particularly choral music and dithyrambs), dance, tragedy's chorus, and the direct, often overwhelming, experience of life's fundamental drives and terrors. It is the force of raw energy, passion, and the breakdown of individual identity.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The Synthesis in Tragedy:</strong> Nietzsche's central argument in 'The Birth of Tragedy' is that the greatness of Attic tragedy (e.g., Aeschylus, Sophocles) arose from a unique, dynamic synthesis of these two opposing forces. The terrifying, chaotic insights of the Dionysian (represented by the chorus and the underlying myth) were given form, structure, and aesthetic distance by the Apollonian elements (dialogue, plot, individual characters). This fusion allowed the audience to confront the harsh realities of existence (suffering, chaos, the absurdity of individuation) without being destroyed by them, experiencing a form of metaphysical comfort through art.</p>
+                    <p><strong>Later Development:</strong> While Nietzsche later critiqued aspects of his youthful work, the Apollonian-Dionysian dichotomy remained a tool in his philosophical arsenal. He often diagnosed cultures or individuals based on the balance or imbalance between these forces, frequently lamenting the perceived over-emphasis on the Apollonian (rationality, order, Socratic intellectualism) in modern culture at the expense of the vital, passionate, and potentially destructive but necessary Dionysian element. A healthy culture, like a healthy individual, requires the integration and interplay of both.</p>
+                    <blockquote>"For it is only as an *aesthetic phenomenon* that existence and the world are eternally *justified*." - The Birth of Tragedy, §5</blockquote>
+                    <small class="source-note">Primary Source: The Birth of Tragedy. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        zarathustra: {
+          title: "Thus Spoke Zarathustra: A Book for All and None",
+          body: `
+                    <p>'Thus Spoke Zarathustra' (Also sprach Zarathustra, 1883-1885) occupies a unique place in Nietzsche's oeuvre and philosophical literature. Written in a distinctive, pseudo-biblical, prophetic style, it's a philosophical novel that presents many of Nietzsche's central mature ideas through the allegorical journey and teachings of the sage Zarathustra (a figure loosely inspired by the ancient Persian prophet Zoroaster).</p>
+                    <p>The narrative follows Zarathustra as he descends from ten years of solitary contemplation in the mountains to share his wisdom with humanity. He proclaims the "death of God" and teaches the concepts of the <strong>Übermensch</strong>, the <strong>Will to Power</strong>, and the <strong>Eternal Recurrence</strong>. The book is structured in four parts, filled with parables, songs, dialogues, and encounters with various figures representing different human types and failings (e.g., the "last man," the "higher men").</p>
+                    <p><strong>Key Themes and Style:</strong>
+                        <ul>
+                            <li><strong>Prophetic & Poetic Language:</strong> The style is deliberately elevated, using rich imagery, metaphors, and rhythmic prose, aiming to persuade and inspire rather than argue systematically. This makes interpretation challenging but also contributes to the work's enduring power.</li>
+                            <li><strong>Centrality of the Übermensch:</strong> Zarathustra's primary mission is to teach humanity to overcome itself and strive towards the Übermensch as the "meaning of the earth."</li>
+                            <li><strong>Critique of the Herd:</strong> Zarathustra expresses profound disappointment with the complacency and mediocrity of the masses ("the herd") and their inability or unwillingness to grasp his challenging teachings, particularly the ideal of the Übermensch and the weight of Eternal Recurrence.</li>
+                            <li><strong>Affirmation of Life:</strong> Despite the critiques, the work is fundamentally a hymn to life affirmation ('Amor Fati'), celebrating the body, the earth, laughter, dance, and the creative power inherent in existence.</li>
+                            <li><strong>The Journey of the Teacher:</strong> The book also charts Zarathustra's own development, his struggles with loneliness, pity, and the difficulty of conveying his profoundest thoughts, especially the Eternal Recurrence, which he reveals only gradually and with great hesitation.</li>
+                        </ul>
+                    </p>
+                    <p>Subtitled "A Book for All and None," 'Zarathustra' reflects Nietzsche's awareness of its demanding nature. It offers profound insights but resists easy comprehension, intended perhaps only for those "free spirits" capable of understanding its radical implications. It remains Nietzsche's most personal and artistically ambitious attempt to articulate his vision for humanity's future beyond God and nihilism.</p>
+                    <blockquote>"And Zarathustra spoke thus to the people: 'I teach you the Übermensch... The Übermensch is the meaning of the earth. Let your will say: the Übermensch *shall be* the meaning of the earth! I beseech you, my brothers, *remain faithful to the earth*, and do not believe those who speak to you of otherworldly hopes!'" - Thus Spoke Zarathustra, Prologue, §3</blockquote>
+                    <small class="source-note">Primary Source: Thus Spoke Zarathustra.</small>
+                `,
+        },
+        hammer: {
+          title: "Philosophizing with a Hammer",
+          body: `
+                    <p>The striking phrase <strong>"Philosophizing with a Hammer"</strong> serves as the subtitle to Nietzsche's late work, 'Twilight of the Idols' (Götzen-Dämmerung, 1889). It vividly encapsulates his critical methodology and confrontational approach towards the cherished beliefs, values, and concepts – the "idols" – of traditional Western philosophy, morality, and culture.</p>
+                    <p>The hammer, however, is not necessarily an instrument of brute destruction. Nietzsche clarifies its function in the preface: it's used like a tuning fork, or perhaps a physician's reflex hammer, to "sound out" these idols. By tapping on them, he tests their integrity. Are they solid, resonant with life, or are they hollow, inflated, perhaps decaying from within? The "famous hollow sound" reveals the emptiness or sickness of long-venerated concepts.</p>
+                    <p><strong>Aspects of the Hammer Method:</strong>
+                        <ul>
+                            <li><strong>Diagnostic Critique:</strong> The hammer probes beneath the surface of accepted truths and values, seeking their psychological and historical origins (genealogy). It asks: What kind of life, what physiological state, what configuration of the Will to Power, does this value serve? Often, Nietzsche diagnoses ostensibly noble values as symptoms of weakness, resentment, or decadence.</li>
+                            <li><strong>Challenging Foundations:</strong> It involves a radical questioning of fundamental assumptions – the value of truth itself, the nature of reason, the basis of morality, the existence of free will, the concept of the unified subject. Nietzsche strikes at the very pillars of traditional thought.</li>
+                            <li><strong>Exposing "Idols":</strong> The "idols" are not just religious figures but any concept treated as absolute and unquestionable: "Reason," "Virtue," "Progress," "Equality," "Objective Truth," "the Good." Nietzsche aims to show their historical contingency and often life-denying character.</li>
+                            <li><strong>Clearing the Ground:</strong> By revealing the hollowness of old idols, the hammer clears space for a "revaluation of all values" – the potential creation of new, life-affirming values grounded in the Will to Power and the perspective of the Übermensch.</li>
+                            <li><strong>Aphoristic Power:</strong> The concise, impactful nature of the aphorism itself acts like a hammer blow, designed to shatter complacency and provoke thought rather than build a laborious system.</li>
+                        </ul>
+                    </p>
+                    <p>Philosophizing with a hammer is therefore a dynamic, critical, and often polemical activity. It represents Nietzsche's break from traditional, systematic philosophy and his embrace of a more aggressive, psychologically astute, and genealogically informed method aimed at diagnosing the health of culture and challenging readers to reconsider their most fundamental beliefs.</p>
+                    <blockquote>"Ah, it seems to me that you are tinkling with your key, that you are sounding out stones! You like, perhaps, to hear how they sound hollow?" - Twilight of the Idols (Nietzsche quoting Mephistopheles from Goethe's Faust)</blockquote>
+                    <small class="source-note">Primary Source: Twilight of the Idols.</small>
+                `,
+        },
+      };
+
+      // Get references to DOM elements
+      const contentArea = document.getElementById("content-area");
+      const navButtons = document.querySelectorAll(".nav-button");
+
+      // Function to get a random aphorism
+      function getRandomAphorism() {
+        const randomIndex = Math.floor(Math.random() * aphorisms.length);
+        return aphorisms[randomIndex];
+      }
+
+      // Function to load content into the display area
+      function loadContent(contentId) {
+        let sectionTitle = "";
+        let sectionBodyHtml = "";
+
+        if (contentId === "home") {
+          const aphorism = getRandomAphorism();
+          sectionTitle = content["home"].title;
+          sectionBodyHtml = `
+                    <div id="aphorism-display">
+                        <blockquote>${aphorism.text}</blockquote>
+                        <small>Source: ${aphorism.source}</small>
+                        <button id="new-quote-button">Get New Quote</button>
+                    </div>
+                `;
+        } else if (content[contentId]) {
+          const section = content[contentId];
+          sectionTitle = section.title;
+          sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+        } else {
+          sectionTitle = "Error";
+          sectionBodyHtml =
+            '<div class="content-body"><p>Content not found.</p></div>';
+        }
+
+        // Fade out content
+        contentArea.style.opacity = 0;
+        setTimeout(() => {
+          // Update content using innerHTML
+          contentArea.innerHTML = `
+                    <h2 class="text-3xl font-semibold mb-6">${sectionTitle}</h2>
+                    ${sectionBodyHtml}
+                `;
+
+          // Add event listener *after* the button is added to the DOM
+          if (contentId === "home") {
+            const newQuoteButton = document.getElementById("new-quote-button");
+            if (newQuoteButton) {
+              newQuoteButton.addEventListener("click", () =>
+                loadContent("home")
+              );
+            }
+          }
+
+          // Fade in new content
+          contentArea.style.opacity = 1;
+        }, 200);
+
+        // Update active state for buttons
+        navButtons.forEach((button) => {
+          button.classList.toggle(
+            "active",
+            button.dataset.content === contentId
+          );
+        });
+      }
+
+      // Add event listeners to navigation buttons
+      navButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const contentId = button.dataset.content;
+          loadContent(contentId);
+        });
+      });
+
+      // Load initial content (Home/Aphorism) when the page loads
+      window.addEventListener("load", () => {
+        loadContent("home");
+      });
+    </script>
+  </body>
+</html>

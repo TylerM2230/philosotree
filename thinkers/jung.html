@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Carl Jung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-accent: #A31F34; /* Deep Red */
+            --background-dark: #1f1f1f;
+            --background-medium: #2b2b2b;
+            --background-light: #333333;
+            --text-light: #dcdcdc;
+            --text-medium: #c0c0c0;
+            --text-dark: #888888;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #111111;
+            border-bottom: 1px solid var(--primary-accent);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        h1 {
+             color: var(--text-light);
+             font-family: 'EB Garamond', serif;
+             padding: 0.75rem 0;
+             text-align: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            padding: 2rem 1rem;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        nav {
+            width: 220px;
+            flex-shrink: 0;
+            padding-top: 1rem;
+        }
+
+        .nav-button {
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #4a4a4a;
+            border-radius: 3px;
+            font-family: 'EB Garamond', serif;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            width: 95%;
+            margin-bottom: -10px;
+            margin-left: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .nav-button:nth-child(odd) { transform: rotate(-1.5deg); margin-left: 0px; }
+        .nav-button:nth-child(even) { transform: rotate(1deg); z-index: 2; }
+        .nav-button:nth-child(3n) { transform: rotate(0.5deg); z-index: 3; }
+        .nav-button:nth-child(4n) { transform: rotate(-1deg); margin-left: 8px; }
+        .nav-button:nth-child(5n) { transform: rotate(1.8deg); z-index: 4; }
+
+        .nav-button:hover {
+            background-color: #444444;
+            color: #ffffff;
+            transform: rotate(0deg) scale(1.03);
+            z-index: 10;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .nav-button.active {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            font-weight: bold;
+            border: 1px solid var(--primary-accent);
+            box-shadow: 3px 3px 8px rgba(163, 31, 52, 0.5);
+            transform: rotate(0deg) scale(1.01);
+            z-index: 5;
+        }
+         .nav-button.active:hover { transform: rotate(0deg) scale(1.03); }
+
+        .nav-button.sub-item {
+             font-size: 0.9em;
+             padding-left: 1.5rem;
+             background-color: #2a2a2a;
+             border-color: #444;
+             width: 90%;
+             margin-left: 15px;
+        }
+         .nav-button.sub-item:nth-child(odd) { margin-left: 10px; }
+         .nav-button.sub-item:nth-child(even) { margin-left: 20px; }
+
+         .nav-button.sub-item.active {
+             background-color: var(--primary-accent);
+             border-color: var(--primary-accent);
+             transform: rotate(0deg) scale(1.01);
+         }
+
+        #content-area {
+            background-color: var(--background-medium);
+            border: 1px solid #444444;
+            border-radius: 8px;
+            flex-grow: 1;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease-in-out;
+            display: flex; /* Use flex to manage internal layout */
+            flex-direction: column; /* Stack title, content, button */
+        }
+
+        h2 {
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-family: 'EB Garamond', serif;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .content-body {
+            font-size: 1.1em;
+            line-height: 1.9;
+            flex-grow: 1; /* Allow body to take space */
+        }
+        .content-body p {
+            margin-bottom: 1.2em;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-medium);
+        }
+        .content-body ul {
+            list-style-type: square;
+            margin-left: 2rem;
+            margin-bottom: 1em;
+            font-family: 'Courier New', Courier, monospace;
+             color: var(--text-medium);
+        }
+        .content-body li { margin-bottom: 0.7em; }
+        .content-body blockquote {
+            border-left: 3px solid var(--primary-accent);
+            padding-left: 1.2rem;
+            margin: 1.5rem 0.5rem;
+            font-style: italic;
+            color: #b8b8b8;
+            font-family: 'EB Garamond', serif;
+        }
+         .content-body strong {
+             color: var(--text-light);
+             font-weight: 600;
+        }
+
+        /* Quote Card Container (Home Section) */
+        #quote-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 1rem;
+            min-height: 50vh; /* Adjust min height */
+            position: relative;
+            flex-grow: 1; /* Allow container to grow */
+        }
+
+        /* Individual Quote Card Styling */
+        .quote-card {
+            background-color: var(--background-light);
+            color: var(--text-medium);
+            border: 1px solid #4a4a4a;
+            border-radius: 4px;
+            padding: 1.5rem 1rem;
+            width: 220px;
+            height: 160px;
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s ease 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.9em;
+            line-height: 1.5;
+            z-index: 1;
+        }
+        .quote-card:nth-child(1) { transform: rotate(-4deg) translate(-10px, 5px); z-index: 1; }
+        .quote-card:nth-child(2) { transform: rotate(3deg) translate(5px, -8px); z-index: 2; }
+        .quote-card:nth-child(3) { transform: rotate(-2deg) translate(15px, 10px); z-index: 3; }
+        .quote-card:nth-child(4) { transform: rotate(5deg) translate(-5px, -5px); z-index: 1; }
+        .quote-card:nth-child(5) { transform: rotate(-3.5deg) translate(10px, 0px); z-index: 2; }
+
+         .quote-card::before {
+             content: '“';
+             position: absolute;
+             font-size: 6em;
+             color: var(--primary-accent);
+             opacity: 0.15;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             font-family: 'EB Garamond', serif;
+             z-index: 0;
+         }
+        .quote-card:hover {
+            transform: rotate(0deg) scale(1.08);
+            box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            border-color: var(--primary-accent);
+        }
+
+        /* Refresh Button Styling */
+         #refresh-quotes-button {
+            display: block; /* Make it block to center easily */
+            margin: 1.5rem auto 0 auto; /* Top margin, auto horizontal margins for center */
+            background-color: #4a4a4a;
+            color: var(--text-light);
+            padding: 0.7rem 1.4rem;
+            border: 1px solid var(--primary-accent);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1em; /* Slightly larger font */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        #refresh-quotes-button:hover {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(163, 31, 52, 0.5);
+        }
+
+
+        /* Modal Styles */
+        #quote-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); z-index: 99;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        #quote-modal-overlay.visible { opacity: 1; visibility: visible; }
+        #quote-modal {
+            background-color: var(--background-medium); padding: 2.5rem; border-radius: 8px;
+            border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%; width: 600px; position: relative;
+            transform: scale(0.9); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+         #quote-modal-overlay.visible #quote-modal { transform: scale(1); opacity: 1; }
+        #modal-quote-text {
+            font-family: 'EB Garamond', serif; font-size: 1.5em; font-style: italic;
+            color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;
+            border-left: 3px solid var(--primary-accent); padding-left: 1rem;
+        }
+        #modal-quote-source {
+            font-family: 'EB Garamond', serif; font-size: 1em; color: var(--text-dark);
+            text-align: right; margin-top: 1rem;
+        }
+        #modal-close-button {
+            position: absolute; top: 10px; right: 15px; background: none; border: none;
+            font-size: 2rem; color: var(--text-dark); cursor: pointer; line-height: 1; padding: 0.2rem;
+        }
+        #modal-close-button:hover { color: var(--primary-accent); }
+
+
+        .source-note {
+            font-size: 0.85em; color: #999999; margin-top: 2rem; display: block;
+            font-style: italic; text-align: right; font-family: 'EB Garamond', serif;
+        }
+
+        footer {
+            background-color: #111111; border-top: 1px solid var(--primary-accent);
+            color: var(--text-dark); font-family: 'EB Garamond', serif;
+            width: 100%; margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+             .main-wrapper { flex-direction: column; padding: 1rem; gap: 1.5rem; }
+             nav {
+                 width: 100%; display: flex; flex-wrap: wrap; justify-content: center;
+                 gap: 0.5rem; padding-top: 0;
+             }
+             .nav-button {
+                 width: auto; flex-basis: calc(50% - 0.5rem); margin: 0 0 0.5rem 0;
+                 transform: rotate(0deg); text-align: center; z-index: 1;
+             }
+             .nav-button:nth-child(n) { transform: rotate(0deg); margin-left: 0; z-index: 1; }
+             .nav-button.sub-item { flex-basis: calc(50% - 0.5rem); width: auto; padding-left: 1rem; margin-left: 0; }
+             .nav-button:hover { transform: scale(1.02); }
+             .nav-button.active { transform: scale(1.01); z-index: 2; }
+
+             #quote-card-container { padding: 1rem 0; gap: 1rem; min-height: 40vh;}
+             .quote-card {
+                 width: 70%;
+                 height: auto;
+                 min-height: 120px;
+                 margin-top: 0;
+                 transform: rotate(0deg) translate(0,0);
+             }
+              .quote-card:hover { transform: scale(1.03); }
+
+             #content-area { width: 100%; padding: 1rem 1.5rem; }
+             #quote-modal { width: 90%; padding: 1.5rem; }
+             #modal-quote-text { font-size: 1.3em; }
+             #refresh-quotes-button { margin-top: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h1 class="text-3xl font-bold text-center py-4">Understanding Carl Jung</h1>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+
+        <nav>
+            <button data-content="home" class="nav-button active">Home (Quote)</button>
+            <button data-content="intro" class="nav-button">Introduction to Jung</button>
+            <button data-content="psyche" class="nav-button">The Psyche</button>
+            <button data-content="archetypes" class="nav-button">Archetypes</button>
+            <button data-content="persona" class="nav-button sub-item">↳ Persona</button>
+            <button data-content="shadow" class="nav-button sub-item">↳ Shadow</button>
+            <button data-content="anima-animus" class="nav-button sub-item">↳ Anima / Animus</button>
+            <button data-content="self-archetype" class="nav-button sub-item">↳ The Self</button>
+            <button data-content="individuation" class="nav-button">Individuation</button>
+            <button data-content="dreams" class="nav-button">Dreams & Symbolism</button>
+            <button data-content="red-book" class="nav-button">The Red Book</button>
+            <button data-content="synchronicity" class="nav-button">Synchronicity</button>
+        </nav>
+
+        <section id="content-area">
+        </section>
+
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quote-modal-overlay">
+        <div id="quote-modal">
+            <button id="modal-close-button" aria-label="Close modal">&times;</button>
+            <p id="modal-quote-text"></p>
+            <small id="modal-quote-source"></small>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container mx-auto px-4 max-w-7xl py-4">
+            <p class="text-center">&copy; 2025 Jung Explorer. Content for educational purposes.</p>
+            <p class="text-center text-xs">Sources include Jung's Collected Works, reputable Jungian psychology resources, and academic summaries.</p>
+        </div>
+    </footer>
+
+    <script>
+        const quotes = [
+            // Original Set
+            { text: "Until you make the unconscious conscious, it will direct your life and you will call it fate.", source: "Collected Works (CW) 9i / Attributed" },
+            { text: "Who looks outside, dreams; who looks inside, awakes.", source: "Letter to Fanny Bowditch Katz, 1916" },
+            { text: "The meeting of two personalities is like the contact of two chemical substances: if there is any reaction, both are transformed.", source: "Modern Man in Search of a Soul / CW 10" },
+            { text: "Everything that irritates us about others can lead us to an understanding of ourselves.", source: "Memories, Dreams, Reflections" },
+            { text: "Knowing your own darkness is the best method for dealing with the darknesses of other people.", source: "Letter to Christiana Morgan, 1930 / CW 18" },
+            { text: "I am not what happened to me, I am what I choose to become.", source: "Attributed / Paraphrase" },
+            { text: "The privilege of a lifetime is to become who you truly are.", source: "Attributed / Paraphrase" },
+            { text: "Your visions will become clear only when you can look into your own heart.", source: "Letter to Fanny Bowditch Katz, 1916 (variant)" },
+            { text: "There is no coming to consciousness without pain.", source: "Attributed / Paraphrase" },
+            { text: "The pendulum of the mind oscillates between sense and nonsense, not between right and wrong.", source: "Memories, Dreams, Reflections" },
+            { text: "We cannot change anything until we accept it. Condemnation does not liberate, it oppresses.", source: "Modern Man in Search of a Soul / CW 7" },
+            { text: "Loneliness does not come from having no people about one, but from being unable to communicate the things that seem important to oneself...", source: "Memories, Dreams, Reflections" },
+            { text: "The creation of something new is not accomplished by the intellect but by the play instinct acting from inner necessity. The creative mind plays with the objects it loves.", source: "Psychological Types / CW 6" },
+            { text: "As far as we can discern, the sole purpose of human existence is to kindle a light in the darkness of mere being.", source: "Memories, Dreams, Reflections" },
+            { text: "One does not become enlightened by imagining figures of light, but by making the darkness conscious.", source: "Alchemical Studies / CW 13" },
+            { text: "The debt we owe to the play of imagination is incalculable.", source: "Psychological Types / CW 6" },
+            { text: "Resistance to the organized mass can be effected only by the man who is as well organized in his individuality as the mass itself.", source: "The Undiscovered Self / CW 10" },
+            { text: "Where love rules, there is no will to power; and where power predominates, there love is lacking. The one is the shadow of the other.", source: "On the Psychology of the Unconscious / CW 7" },
+
+            // Additional Quotes Batch 1
+            { text: "The greatest and most important problems of life are all fundamentally insoluble. They can never be solved but only outgrown.", source: "Commentary on 'The Secret of the Golden Flower' / CW 13" },
+            { text: "Man needs difficulties; they are necessary for health.", source: "Modern Man in Search of a Soul" },
+            { text: "Neurosis is always a substitute for legitimate suffering.", source: "Psychology and Religion / CW 11" },
+            { text: "A man who has not passed through the inferno of his passions has never overcome them.", source: "Memories, Dreams, Reflections" },
+            { text: "The word 'happiness' would lose its meaning if it were not balanced by sadness.", source: "Letter to Olga Fröbe-Kapteyn, 1945" },
+            { text: "In all chaos there is a cosmos, in all disorder a secret order.", source: "The Archetypes and the Collective Unconscious / CW 9i" },
+            { text: "What you resist, persists.", source: "Attributed / Paraphrase" },
+            { text: "Show me a sane man and I will cure him for you.", source: "Attributed / Aphoristic saying" },
+            { text: "The healthy man does not torture others - generally it is the tortured who turn into torturers.", source: "Letter to R. C. Zaehner, 1959" },
+            { text: "People will do anything, no matter how absurd, to avoid facing their own souls.", source: "Psychology and Alchemy / CW 12" },
+            { text: "The first half of life is devoted to forming a healthy ego, the second half is going inward and letting go of it.", source: "Attributed / Paraphrase reflecting individuation stages" },
+            { text: "To find out what is truly individual in ourselves, profound reflection is needed; and suddenly we realize how uncommonly difficult the discovery of individuality is.", source: "The Undiscovered Self / CW 10" },
+            { text: "Every form of addiction is bad, no matter whether the narcotic be alcohol or morphine or idealism.", source: "Memories, Dreams, Reflections" },
+            { text: "We are not what we suppose ourselves to be. We are greater and richer than we imagine.", source: "Attributed / Paraphrase" },
+            { text: "Mistakes are, after all, the foundations of truth, and if a man does not know what a thing is, it is at least an increase in knowledge if he knows what it is not.", source: "Psychological Types / CW 6" },
+            { text: "The reason for evil in the world is that people are not able to tell their stories.", source: "Attributed" },
+            { text: "If one does not understand a person, one tends to regard him as a fool.", source: "Psychological Types / CW 6" },
+            { text: "Nothing has a stronger influence psychologically on their environment and especially on their children than the unlived life of the parent.", source: "Collected Works (CW)" },
+            { text: "Children are educated by what the grown-up is and not by his talk.", source: "The Development of Personality / CW 17" },
+            { text: "Life really does begin at forty. Up until then, you are just doing research.", source: "Attributed" },
+
+            // Additional Quotes Batch 2
+            { text: "The decisive question for man is: Is he related to something infinite or not?", source: "Memories, Dreams, Reflections" },
+            { text: "A psychoneurosis must be understood, ultimately, as the suffering of a soul which has not discovered its meaning.", source: "Modern Man in Search of a Soul" },
+            { text: "The shoe that fits one person pinches another; there is no recipe for living that suits all cases.", source: "Modern Man in Search of a Soul" },
+            { text: "It is a fact that cannot be denied: the wickedness of others becomes our own wickedness because it kindles something evil in our own hearts.", source: "Psychology and Religion / CW 11" },
+            { text: "An understanding heart is everything in a teacher, and cannot be esteemed highly enough.", source: "The Development of Personality / CW 17" },
+            { text: "Thinking is difficult, that's why most people judge.", source: "Attributed / Paraphrase" },
+            { text: "Faith, hope, love, and insight are the highest achievements of human effort.", source: "Psychological Reflections" },
+            { text: "We deem those happy who from the experience of life have learnt to bear its ills without being overcome by them.", source: "Psychological Types / CW 6" },
+            { text: "The wine of youth does not always clear with advancing years; sometimes it grows turbid.", source: "Modern Man in Search of a Soul" },
+            { text: "Often the hands will solve a mystery that the intellect has struggled with in vain.", source: "The Symbolic Life / CW 18" },
+            { text: "Find out what a person fears most and that is where he will develop next.", source: "Attributed / Paraphrase" },
+            { text: "The acceptance of oneself is the essence of the whole moral problem and the epitome of a whole outlook on life.", source: "Two Essays on Analytical Psychology / CW 7" },
+            { text: "The difference between a good life and a bad life is how well you walk through the fire.", source: "Attributed" },
+            { text: "A dream that is not understood remains a mere occurrence; understood, it becomes a living experience.", source: "Psychology and Alchemy / CW 12" },
+            { text: "If there is anything that we wish to change in the child, we should first examine it and see whether it is not something that could better be changed in ourselves.", source: "The Development of Personality / CW 17" },
+            { text: "To be normal is the ideal aim for the unsuccessful.", source: "Modern Man in Search of a Soul" },
+            { text: "The least of things with a meaning is worth more in life than the greatest of things without it.", source: "Modern Man in Search of a Soul" },
+            { text: "The capacity for directed thinking I call intellect; the capacity for passive or undirected thinking I call intellectual intuition.", source: "Psychological Types / CW 6" },
+            { text: "It all depends on how we look at things, and not how they are in themselves.", source: "Letter to Olga Fröbe-Kapteyn, 1945" },
+            { text: "Man cannot stand a meaningless life.", source: "Memories, Dreams, Reflections" },
+
+             // Additional Quotes Batch 3
+            { text: "The unconscious is not just evil by nature, it is also the source of the highest good: not only dark but also light, not only bestial, semihuman, and demonic but superhuman, spiritual, and, in the classical sense, 'divine.'", source: "The Practice of Psychotherapy / CW 16" },
+            { text: "Wholeness is not achieved by cutting off a portion of one's being, but by integration of the contraries.", source: "Attributed / Paraphrase reflecting core idea" },
+            { text: "Shrinking away from death is something unhealthy and abnormal which robs the second half of life of its purpose.", source: "The Soul and Death, from The Structure and Dynamics of the Psyche / CW 8" },
+            { text: "The creative impulse is deviant by nature.", source: "Attributed" },
+            { text: "We are born at a given moment, in a given place and, like vintage years of wine, we have the qualities of the year and of the season of which we are born.", source: "Attributed / Likely paraphrase" },
+            { text: "No tree, it is said, can grow to heaven unless its roots reach down to hell.", source: "Aion / CW 9ii" },
+            { text: "The world will ask you who you are, and if you don't know, the world will tell you.", source: "Attributed" },
+            { text: "The bigger the crowd, the more negligible the individual.", source: "The Undiscovered Self / CW 10" },
+            { text: "The high destiny of the individual is to serve rather than to rule.", source: "Psychological Reflections" },
+            { text: "What is not brought to consciousness, comes to us as fate.", source: "Aion / CW 9ii (variant of earlier quote)" },
+            { text: "We meet ourselves time and again in a thousand disguises on the path of life.", source: "Modern Man in Search of a Soul" },
+            { text: "The spirit of evil is negation of the life force by fear. Only boldness can deliver us from fear.", source: "Attributed" },
+            { text: "It is important to have a secret, a premonition of things unknown.", source: "Memories, Dreams, Reflections" },
+            { text: "The foundation of all mental illness is the avoidance of legitimate suffering.", source: "Attributed / Paraphrase of CW 11 quote" },
+            { text: "The images of the unconscious place a great responsibility upon a man.", source: "Memories, Dreams, Reflections" },
+            { text: "Knowledge rests not upon truth alone, but upon error also.", source: "Psychological Types / CW 6" },
+            { text: "It is often tragic to see how blatantly a man bungles his own life and the lives of others yet remains totally incapable of seeing how much the whole tragedy originates in himself...", source: "Modern Man in Search of a Soul" },
+            { text: "The experience of the Self is always a defeat for the Ego.", source: "Mysterium Coniunctionis / CW 14" },
+            { text: "Everything that is unconscious in ourselves we discover in our neighbour, and we treat him accordingly.", source: "Psychological Reflections" },
+            { text: "Without the playing with fantasy no creative work has ever yet come to birth.", source: "Psychological Types / CW 6 (variant)" },
+
+             // Additional Quotes Batch 4
+            { text: "In the final analysis, we count for something only because of the essential we embody, and if we do not embody that, life is wasted.", source: "Memories, Dreams, Reflections" },
+            { text: "Our heart glows, and secret unrest gnaws at the root of our being. Dealing with the unconscious has become a question of life for us.", source: "Two Essays on Analytical Psychology / CW 7" },
+            { text: "The serious problems in life, however, are never fully solved. If ever they should appear to be so it is a sure sign that something has been lost.", source: "The Structure and Dynamics of the Psyche / CW 8" },
+            { text: "Through pride we are ever deceiving ourselves. But deep down below the surface of the average conscience a still, small voice says to us, something is out of tune.", source: "Two Essays on Analytical Psychology / CW 7" },
+            { text: "Great talents are the most lovely and often the most dangerous fruits on the tree of humanity.", source: "The Development of Personality / CW 17" },
+            { text: "Emotion is the chief source of all becoming-conscious. There can be no transforming of darkness into light and of apathy into movement without emotion.", source: "Psychological Aspects of the Mother Archetype / CW 9i" },
+            { text: "Man's task is to become conscious of the contents that press upward from the unconscious.", source: "Memories, Dreams, Reflections" },
+            { text: "Where wisdom reigns, there is no conflict between thinking and feeling.", source: "Attributed" },
+            { text: "The first step towards the new is the demolition of the old.", source: "Attributed / General principle" },
+            { text: "Individuation does not shut one out from the world, but gathers the world to oneself.", source: "Attributed / Paraphrase" },
+            { text: "The dream is the small hidden door in the deepest and most intimate sanctum of the soul...", source: "The Meaning of Psychology for Modern Man / CW 10 (variant)" },
+            { text: "A particularly beautiful woman is a source of terror. As a rule, a beautiful woman is a terrible disappointment.", source: "Memories, Dreams, Reflections" },
+            { text: "What is essential in a work of art is that it should rise far above the realm of personal life and speak to the spirit and heart of the poet as man...", source: "Psychology and Literature / CW 15" },
+            { text: "The artist is not a person endowed with free will who seeks his own ends, but one who allows art to realize its purposes through him.", source: "Psychology and Literature / CW 15" },
+            { text: "Understanding does not cure evil, but it is a definite help, inasmuch as one can cope with a comprehensible darkness.", source: "Letter to James Kirsch, 1948" },
+            { text: "There is no birth of consciousness without pain.", source: "Attributed / Variant" },
+            { text: "The best way to deal with the dark side of yourself is to rather befriend it.", source: "Attributed / Paraphrase" },
+            { text: "We are living in what the Greeks called the right time for a metamorphosis of the gods.", source: "The Undiscovered Self / CW 10" },
+            { text: "The gods have become diseases; Zeus no longer rules Olympus but rather the solar plexus, and produces curious specimens for the doctor's consulting room...", source: "Commentary on 'The Secret of the Golden Flower' / CW 13" },
+            { text: "All the works of man have their origin in creative fantasy. What right have we then to depreciate imagination?", source: "Psychological Types / CW 6" }
+        ];
+
+        const content = {
+            "home": {
+                title: "Scattered Thoughts",
+            },
+            "intro": {
+                title: "Introduction: Carl Jung & Analytical Psychology",
+                body: `
+                    <p>Carl Gustav Jung (1875–1961) was a Swiss psychiatrist and psychoanalyst who founded analytical psychology. His work has been profoundly influential not only in psychiatry but also in anthropology, archaeology, literature, philosophy, and religious studies. Jung proposed a complex model of the human psyche, emphasizing the interplay between conscious and unconscious processes, and introduced concepts that have entered mainstream language, such as archetype, collective unconscious, persona, shadow, anima/animus, and synchronicity.</p>
+                    <p>Initially a close collaborator of Sigmund Freud, Jung eventually diverged due to significant theoretical disagreements, particularly regarding the nature of the libido (which Jung saw as a generalized psychic energy, not purely sexual) and the structure of the unconscious (which Jung expanded to include a collective layer). Jung's approach placed greater emphasis on the symbolic, spiritual, and mythological dimensions of human experience.</p>
+                    <p>Central to Jung's thought is the concept of <strong>Individuation</strong>: a lifelong psychological process of differentiation of the self out of the individual's conscious and unconscious elements. It is a journey towards wholeness, self-realization, and the integration of the various aspects of the personality, including those initially rejected or ignored. This process involves confronting the unconscious, integrating its contents (like the Shadow and Anima/Animus), differentiating the ego from the Persona, and ultimately centering the personality around the Self archetype.</p>
+                    <p>Jung believed this journey was often facilitated through the analysis of dreams, active imagination, and engagement with symbols found in myths, religions, and art, which he saw as expressions of the collective unconscious and its archetypes.</p>
+                    <blockquote>"My life is a story of the self-realization of the unconscious. Everything in the unconscious seeks outward manifestation, and the personality too desires to evolve out of its unconscious conditions..." - Memories, Dreams, Reflections</blockquote>
+                    <small class="source-note">Primary Sources: Memories, Dreams, Reflections; Collected Works (CW). Secondary: Various introductions to Jungian psychology.</small>
+                `
+            },
+            "psyche": {
+                title: "The Psyche: Conscious & Unconscious Realms",
+                body: `
+                    <p>Jung viewed the psyche as a totality encompassing both conscious and unconscious processes. Unlike Freud, who focused primarily on the personal unconscious derived from repressed experiences, Jung proposed a multi-layered model.</p>
+                    <p><strong>1. Consciousness (The Ego):</strong>
+                        <ul>
+                            <li>This is the center of the conscious mind, the part of the psyche concerned with identity, perception, thinking, feeling, and memory.</li>
+                            <li>The Ego provides a sense of continuity and identity, organizing conscious thoughts and perceptions. However, Jung saw the Ego as only a small part of the total psyche, often overly identified with the Persona (social mask) and unaware of the vast unconscious depths.</li>
+                            <li>Individuation involves differentiating the Ego from other complexes (like the Persona and Shadow) and establishing a dialogue between the Ego and the Self (the true center of the psyche).</li>
+                        </ul>
+                    </p>
+                    <p><strong>2. The Personal Unconscious:</strong>
+                        <ul>
+                            <li>Similar to Freud's concept, this layer contains forgotten memories, repressed experiences, and subliminal perceptions specific to the individual.</li>
+                            <li>It includes material that was once conscious but has been pushed away, as well as experiences that never reached full consciousness.</li>
+                            <li>Contents of the personal unconscious can cluster around specific themes, forming 'complexes' (e.g., a mother complex, a power complex) which can exert significant influence on conscious behavior and feelings. Bringing complexes into consciousness is a key part of therapy and individuation.</li>
+                        </ul>
+                    </p>
+                    <p><strong>3. The Collective Unconscious:</strong>
+                        <ul>
+                            <li>Jung's most distinctive contribution, this is a deeper, universal layer of the psyche inherited by all humans. It contains the psychic potential and shared ancestral experiences of humanity, expressed through universal patterns known as <strong>Archetypes</strong>.</li>
+                            <li>It is the source of myths, symbols found in religions and fairy tales, and universal patterns of behavior and imagery that emerge in dreams and psychosis across cultures.</li>
+                            <li>The collective unconscious is not directly knowable but manifests through archetypal images and symbols. Engaging with this layer is crucial for individuation, as it connects the individual to the broader human experience and the transpersonal dimension of the Self.</li>
+                        </ul>
+                    </p>
+                    <p>Understanding this structure is fundamental to grasping Jung's concept of individuation, which involves integrating contents from both the personal and collective unconscious into conscious awareness, leading to a more complete and balanced personality centered around the Self.</p>
+                    <blockquote>"The psyche is not of today; its ancestry goes back many millions of years. Individual consciousness is only the flower and the fruit of a season, sprung from the perennial rhizome beneath the earth..." - Contributions to Analytical Psychology / CW 15</blockquote>
+                    <small class="source-note">Primary Sources: CW 7, CW 8, CW 9i. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            },
+            "archetypes": {
+                title: "Archetypes: Blueprints of the Collective Unconscious",
+                body: `
+                    <p><strong>Archetypes</strong> are arguably Jung's most famous concept. They are innate, universal, inherited potentials within the human psyche, residing in the <strong>Collective Unconscious</strong>. They are not specific images or ideas, but rather predispositions or patterns that shape human experience, behavior, and imagery across all cultures and times.</p>
+                    <p>Think of them as psychic 'blueprints' or 'instincts of the imagination.' Just as birds are born with an instinct to build nests, humans are born with predispositions to experience and imagine the world in certain typical ways, represented by archetypes like the Mother, the Hero, the Child, the Wise Old Man/Woman, the Trickster, and many others.</p>
+                    <p><strong>Key Points about Archetypes:</strong>
+                        <ul>
+                            <li><strong>Universal Patterns:</strong> They manifest in similar forms in myths, legends, religions, fairy tales, art, and dreams across diverse cultures.</li>
+                            <li><strong>Potential, Not Content:</strong> An archetype itself is an empty form; it gains specific content and imagery through individual experience and cultural context. For example, the 'Mother' archetype can be projected onto one's personal mother, a stepmother, Mother Nature, the Church, or a nation.</li>
+                            <li><strong>Autonomous Energy:</strong> Archetypes possess a certain autonomy and numinosity (a sense of awe or fascination). When activated, they can powerfully influence emotions and behavior, often unconsciously.</li>
+                            <li><strong>Manifestation in Symbols:</strong> They express themselves primarily through symbols and archetypal images encountered in dreams, fantasies, and creative work.</li>
+                            <li><strong>Role in Individuation:</strong> Becoming conscious of the archetypes operating within one's psyche is crucial for individuation. This involves recognizing projections, integrating archetypal energies (like the Shadow and Anima/Animus), and ultimately relating to the central archetype, the Self.</li>
+                        </ul>
+                    </p>
+                    <p>While countless archetypes exist, Jung focused particularly on several that play major roles in psychological development and the individuation process, including the Persona, Shadow, Anima/Animus, and the Self.</p>
+                    <blockquote>"The archetype is a tendency to form such representations of a motif—representations that can vary a great deal in detail without losing their basic pattern... They are, indeed, an instinctive <em>trend</em>." - The Structure and Dynamics of the Psyche / CW 8</blockquote>
+                    <small class="source-note">Primary Sources: CW 9i (Archetypes and the Collective Unconscious), CW 8. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            },
+             "persona": {
+                title: "Archetype: The Persona - Our Social Mask",
+                body: `
+                    <p>The <strong>Persona</strong> is the archetype representing the social mask or role we adopt to navigate the external world and interact with others. Derived from the Latin word for an actor's mask, the Persona is the compromise between our individual identity and the expectations of society. It's how we present ourselves, the collection of roles (e.g., dutiful employee, loving parent, responsible citizen) we play in daily life.</p>
+                    <p><strong>Functions and Dangers:</strong>
+                        <ul>
+                            <li><strong>Necessary Adaptation:</strong> The Persona is essential for social functioning. It allows us to interact smoothly, fulfill social expectations, and protect our inner selves from constant exposure. A well-developed Persona facilitates adaptation and communication.</li>
+                            <li><strong>Danger of Identification:</strong> Problems arise when the Ego becomes overly identified with the Persona. The individual may mistake their social mask for their true identity, losing touch with their authentic feelings, needs, and potential. This leads to superficiality, conformity, and a sense of inner emptiness.</li>
+                            <li><strong>Neglect of the Inner World:</strong> Over-investment in the Persona often comes at the expense of developing one's inner life and confronting the unconscious, particularly the Shadow.</li>
+                            <li><strong>Inflation:</strong> Sometimes, an individual can become 'inflated' by identifying with a powerful or prestigious Persona (e.g., a successful CEO, a famous artist), leading to arrogance and a loss of human connection.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Individuation and the Persona:</strong> A crucial part of the individuation process involves recognizing the Persona for what it is – a necessary but partial aspect of the self. It requires differentiating the Ego from the Persona, acknowledging the roles we play without losing sight of the deeper, more authentic self beneath the mask. This allows for both effective social interaction and genuine inner development. It's not about destroying the Persona, but about achieving flexibility and conscious awareness of its function, preventing it from dominating the entire personality.</p>
+                    <blockquote>"The persona... is a compromise between individual and society as to what a man should appear to be. He takes a name, earns a title, exercises a function, he is this or that. In a certain sense all this is real, yet in relation to the essential individuality it is only a secondary reality..." - Two Essays on Analytical Psychology / CW 7</blockquote>
+                    <small class="source-note">Primary Sources: CW 7, CW 9i. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            },
+             "shadow": {
+                title: "Archetype: The Shadow - The Dark Side",
+                body: `
+                    <p>The <strong>Shadow</strong> archetype represents the "dark side" of our personality – the aspects of ourselves that we repress, deny, or are unconscious of because they are deemed unacceptable by our conscious Ego and the society we live in. It contains primitive instincts, negative emotions (like envy, greed, rage), socially disapproved desires, and underdeveloped potential that contradicts our self-image and Persona.</p>
+                    <p><strong>Characteristics and Manifestations:</strong>
+                        <ul>
+                            <li><strong>Personal and Collective:</strong> The Shadow has both personal elements (derived from individual repressed experiences) and collective elements (reflecting the darker aspects of shared human nature).</li>
+                            <li><strong>Projection:</strong> Because we tend to deny our own Shadow, we often project its contents onto others. We see the faults and evils we cannot accept in ourselves in other individuals, groups, or nations. This is the source of prejudice, scapegoating, and intense interpersonal conflicts.</li>
+                            <li><strong>Source of Vitality:</strong> While containing negative traits, the Shadow is not purely evil. It is also a source of vital energy, creativity, spontaneity, and authenticity that has been repressed. Integrating the Shadow can lead to greater wholeness and vitality.</li>
+                            <li><strong>Encounter in Dreams:</strong> The Shadow often appears in dreams as a dark, menacing, or rejected figure of the same sex as the dreamer.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Individuation and the Shadow:</strong> Confronting and integrating the Shadow is a crucial, albeit difficult, step in the individuation process. It requires:
+                        <ul>
+                            <li><strong>Withdrawal of Projections:</strong> Recognizing when we are projecting our own darkness onto others.</li>
+                            <li><strong>Moral Effort:</strong> Acknowledging and taking responsibility for the less desirable aspects of our own nature, without necessarily acting them out destructively.</li>
+                            <li><strong>Acceptance, Not Elimination:</strong> The goal is not to eliminate the Shadow but to make its contents conscious and integrate its energy into the personality in a constructive way. This leads to greater self-awareness, humility, and psychological wholeness.</li>
+                        </ul>
+                    </p>
+                    <p>Ignoring the Shadow allows it to operate autonomously, leading to destructive projections and unconscious self-sabotage. Consciously engaging with it, however painful, is essential for becoming a more complete and authentic human being.</p>
+                    <blockquote>"Unfortunately there can be no doubt that man is, on the whole, less good than he imagines himself or wants to be. Everyone carries a shadow, and the less it is embodied in the individual's conscious life, the blacker and denser it is." - Psychology and Religion / CW 11</blockquote>
+                    <small class="source-note">Primary Sources: CW 9i, CW 7, CW 11. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            },
+            "anima-animus": {
+                title: "Archetypes: Anima & Animus - The Inner Other",
+                body: `
+                    <p>The <strong>Anima</strong> (in men) and <strong>Animus</strong> (in women) are archetypes representing the unconscious, contrasexual aspect of the psyche. They embody the qualities of the opposite gender that are often underdeveloped or repressed in the conscious personality due to cultural conditioning and identification with one's biological sex.</p>
+                    <p><strong>The Anima (Man's Inner Feminine):</strong>
+                        <ul>
+                            <li>Represents the unconscious feminine psychological qualities in a man: relatedness, intuition, emotionality, capacity for love, connection to nature, and sensitivity.</li>
+                            <li>Often projected onto real women, leading to infatuation, idealization, or disappointment when the projection doesn't match reality.</li>
+                            <li>Can manifest negatively as moodiness, possessiveness, sentimentality, or irrationality if unconscious.</li>
+                            <li>Integration involves consciously developing qualities like empathy, emotional awareness, and connection, leading to greater psychological balance and creativity. The Anima acts as a guide to the deeper unconscious and the Self.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The Animus (Woman's Inner Masculine):</strong>
+                        <ul>
+                            <li>Represents the unconscious masculine psychological qualities in a woman: logic, reason, assertiveness, focused consciousness, capacity for discrimination, and objective thought.</li>
+                            <li>Often projected onto real men, leading to fascination with authority figures, intellectual heroes, or unrealistic expectations.</li>
+                            <li>Can manifest negatively as opinionatedness, argumentativeness, destructiveness, or rigid rationality if unconscious. Animus "possession" can lead to a woman being dominated by collective opinions presented as her own.</li>
+                            <li>Integration involves consciously developing qualities like clear thinking, assertiveness, focused intention, and objective judgment, connecting a woman to her creative potential and capacity for independent thought. The Animus helps mediate consciousness and the unconscious.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Individuation and Integration:</strong> Engaging with and integrating the Anima/Animus is a vital part of individuation for both sexes. It involves withdrawing projections from external figures and consciously developing the corresponding inner qualities. This leads to greater psychological wholeness, improved relationships (as projections lessen), enhanced creativity, and a bridge to the deeper layers of the unconscious, ultimately facilitating the connection with the Self archetype.</p>
+                    <blockquote>"The anima is the archetype of life itself." / "The animus is the deposit, as it were, of all woman's ancestral experiences of man - and not only that, he is also a creative and procreative being." - Aion / CW 9ii (paraphrased/combined concepts)</blockquote>
+                    <small class="source-note">Primary Sources: CW 9ii (Aion), CW 7, CW 9i. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            },
+            "self-archetype": {
+                 title: "Archetype: The Self - The Center of Wholeness",
+                 body: `
+                    <p>The <strong>Self</strong> is the central archetype in Jung's model, representing the totality of the psyche – encompassing both conscious and unconscious realms. It is the archetype of wholeness, order, and integration, the true center and organizing principle of the personality, distinct from the Ego, which is merely the center of consciousness.</p>
+                    <p>The Self is both the origin and the goal of the <strong>Individuation</strong> process. It represents the innate human potential for wholeness and self-realization. While the Ego manages daily life, the Self holds the blueprint for the complete personality.</p>
+                    <p><strong>Characteristics and Manifestations:</strong>
+                        <ul>
+                            <li><strong>Totality and Center:</strong> It embraces all aspects of the psyche, including opposing forces (conscious/unconscious, masculine/feminine, good/evil), striving for their integration and balance.</li>
+                            <li><strong>Transpersonal Dimension:</strong> The Self connects the individual psyche to the collective unconscious and the transpersonal or spiritual dimension of existence. Experiences of the Self often have a numinous or religious quality.</li>
+                            <li><strong>Symbolism:</strong> The Self cannot be fully grasped by the Ego and typically manifests through unifying symbols of wholeness and centeredness found across cultures: mandalas, circles, squares, quaternities (symbols based on four), divine figures (like Christ or Buddha, seen by Jung as symbols of the Self), the philosopher's stone in alchemy, etc.</li>
+                            <li><strong>Goal of Individuation:</strong> The aim of individuation is not to perfect the Ego but to subordinate it to the Self, establishing a conscious relationship between the Ego and the Self. This allows the individual to live more authentically, guided by their inner totality rather than just conscious intentions or social pressures.</li>
+                            <li><strong>Paradoxical Nature:</strong> The Self encompasses opposites and is often experienced paradoxically – as both unique and universal, immanent and transcendent, center and circumference.</li>
+                        </ul>
+                    </p>
+                    <p>Achieving a conscious connection with the Self is the culmination of the individuation journey. It doesn't mean perfection or the absence of conflict, but rather a state of greater integration, balance, self-awareness, and alignment with one's unique potential. The Ego remains necessary, but it recognizes its place within the larger psychic whole orchestrated by the Self.</p>
+                    <blockquote>"The Self is not only the centre but also the whole circumference which embraces both conscious and unconscious; it is the centre of this totality, just as the ego is the centre of consciousness." - Psychology and Alchemy / CW 12</blockquote>
+                    <small class="source-note">Primary Sources: CW 9ii (Aion), CW 11, CW 12, CW 7. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            },
+            "individuation": {
+                title: "The Process of Individuation: Journey to Wholeness",
+                body: `
+                    <p><strong>Individuation</strong> is the cornerstone of Jung's analytical psychology. It refers to the lifelong process through which a person becomes a psychologically distinct, integrated, and whole individual. It is the journey of self-realization, moving from unconscious identification with collective norms and archetypal patterns towards conscious differentiation and integration of all aspects of the psyche, centered around the <strong>Self</strong> archetype.</p>
+                    <p>It is not about becoming 'perfect' or conforming to an external ideal, but about becoming authentically oneself, realizing one's unique potential by integrating the conscious and unconscious parts of the personality. Jung saw this as the central task of human development, particularly in the second half of life.</p>
+                    <p><strong>Key Stages and Tasks in Individuation:</strong>
+                        <ul>
+                            <li><strong>Persona Awareness:</strong> Recognizing the social mask (Persona) one wears and differentiating the conscious Ego from it. Understanding the difference between one's social roles and one's authentic self.</li>
+                            <li><strong>Shadow Confrontation:</strong> Encountering and integrating the Shadow – the repressed, denied, and unconscious aspects of the personality. This involves withdrawing projections, acknowledging one's 'dark side,' and integrating its energy constructively.</li>
+                            <li><strong>Anima/Animus Integration:</strong> Engaging with the contrasexual archetype (Anima in men, Animus in women). This involves recognizing projections onto partners, understanding the nature of this inner figure, and consciously developing the corresponding psychological qualities (e.g., relatedness/logic). This builds a bridge to the deeper unconscious.</li>
+                            <li><strong>Dialogue with the Unconscious:</strong> Paying attention to dreams, fantasies, symbols, and synchronicities as messages from the unconscious. Techniques like dream analysis and active imagination facilitate this dialogue.</li>
+                            <li><strong>Emergence of the Self:</strong> As various aspects are integrated, the organizing principle of the Self becomes more prominent. The Ego learns to relate to and serve this deeper center, rather than trying to control everything. This leads to a sense of wholeness, meaning, and connection to something larger than oneself.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Individuation is Not:</strong>
+                        <ul>
+                            <li><strong>Individualism:</strong> It's not about selfish isolation but about becoming a unique individual who can relate more authentically to the collective.</li>
+                            <li><strong>Perfection:</strong> It doesn't eliminate flaws or suffering but leads to greater acceptance and integration of the whole personality, including its limitations.</li>
+                            <li><strong>A Linear Path:</strong> It's often a spiral journey with setbacks, requiring courage, persistence, and honesty.</li>
+                        </ul>
+                    </p>
+                    <p>Ultimately, individuation is the process of fulfilling the innate blueprint for wholeness carried within the Self archetype, leading to a more meaningful, authentic, and psychologically balanced life.</p>
+                    <blockquote>"Individuation means becoming an 'in-dividual,' and, in so far as 'individuality' embraces our innermost, last, and incomparable uniqueness, it also implies becoming one's own self. We could therefore translate individuation as 'coming to selfhood' or 'self-realization.'" - Two Essays on Analytical Psychology / CW 7</blockquote>
+                    <small class="source-note">Primary Sources: CW 7, CW 9i, CW 16. Secondary: Introductions to Jungian Psychology (e.g., Jolande Jacobi, Daryl Sharp).</small>
+                `
+            },
+            "dreams": {
+                title: "Dreams & Symbolism: Language of the Unconscious",
+                body: `
+                    <p>Dreams held a central place in Jung's analytical psychology, viewed not merely as disguised wish fulfillments (as Freud emphasized) but as direct, symbolic communications from the unconscious psyche, aiming towards balance and wholeness.</p>
+                    <p>Jung believed the unconscious uses the language of <strong>symbols</strong> to convey its messages through dreams. Unlike signs (which point to something known), symbols point towards something unknown or not fully grasped, often carrying multiple layers of meaning and emotional resonance. Dream images are often symbolic representations of unconscious conflicts, potentials, archetypal patterns, and steps needed for individuation.</p>
+                    <p><strong>Jung's Approach to Dreams:</strong>
+                        <ul>
+                            <li><strong>Compensatory Function:</strong> Dreams often compensate for imbalances in the conscious attitude. If consciousness is too one-sided (e.g., overly rational), dreams might emphasize emotion or intuition. They work to restore psychic equilibrium.</li>
+                            <li><strong>Prospective Function:</strong> Some dreams can anticipate future possibilities or point towards potential lines of development for the individual.</li>
+                            <li><strong>Personal and Archetypal Levels:</strong> Dream images can be interpreted on a personal level (relating to the dreamer's specific life experiences and complexes) and an archetypal level (connecting to universal patterns of the collective unconscious).</li>
+                            <li><strong>Subjective vs. Objective Interpretation:</strong> Figures in a dream can represent external people (objective) or, more often according to Jung, aspects of the dreamer's own psyche (subjective). For example, dreaming of an enemy might represent one's own repressed Shadow qualities.</li>
+                            <li><strong>Amplification:</strong> Jung used the method of amplification (rather than just free association) to understand dream symbols. This involves exploring the symbol's meaning across various contexts – personal associations, mythology, religion, folklore, alchemy, art – to uncover its deeper, often archetypal, significance.</li>
+                            <li><strong>The Dream Series:</strong> Jung emphasized looking at a series of dreams over time to discern recurring motifs, track psychological processes, and understand the overall direction the unconscious is pointing towards.</li>
+                        </ul>
+                    </p>
+                    <p>For Jung, working consciously with dreams – recording them, reflecting on their symbols, using amplification, and sometimes active imagination – is a primary way to engage in dialogue with the unconscious, gain self-understanding, and facilitate the process of individuation.</p>
+                    <blockquote>"The dream is a little hidden door in the innermost and most secret recesses of the psyche, opening into that cosmic night which was psyche long before there was any ego-consciousness..." - The Meaning of Psychology for Modern Man / CW 10</blockquote>
+                    <small class="source-note">Primary Sources: CW 8 (Structure & Dynamics of the Psyche), CW 16 (Practice of Psychotherapy), Man and His Symbols. Secondary: Introductions to Jungian Dream Analysis.</small>
+                `
+            },
+            "red-book": {
+                title: "The Red Book (Liber Novus): Confronting the Depths",
+                body: `
+                    <p><strong>The Red Book</strong>, or <strong>Liber Novus</strong> (Latin for "New Book"), is a unique and central work in understanding the genesis of Carl Jung's core psychological theories. Created between approximately 1914 and 1930, it documents Jung's intense period of self-exploration following his break with Freud, a time he described as his "confrontation with the unconscious."</p>
+                    <p>Bound in red leather, the large folio volume is filled with Jung's own intricate Gothic calligraphy and numerous, highly detailed symbolic paintings. It was a deeply personal work, a private journal of his imaginative and visionary experiences, which he did not intend for wide publication during his lifetime. Its existence was known to scholars, but it remained unpublished until 2009, causing considerable excitement and providing unprecedented insight into the experiential roots of his later concepts.</p>
+                    <p><strong>Nature and Content:</strong>
+                        <ul>
+                            <li><strong>Active Imagination:</strong> The Red Book is largely the product of Jung's experiments with "active imagination," a technique he developed to consciously engage with figures and images emerging from the unconscious. He would induce a state between waking and sleeping and interact with the figures that appeared.</li>
+                            <li><strong>Visionary Journey:</strong> It records a series of dialogues, fantasies, and visions featuring various figures emerging from his unconscious, such as Philemon (a wise old pagan figure representing superior insight), Salome (an erotic feminine figure related to the Anima), Elijah, and symbolic animals.</li>
+                            <li><strong>Symbolic Paintings:</strong> The striking illustrations are not mere decorations but integral parts of the exploration, visually representing the archetypal encounters and psychic states Jung experienced. They often depict mandalas, mythical scenes, and complex symbolic figures.</li>
+                            <li><strong>Search for Meaning:</strong> The entire work documents Jung's struggle to understand the chaotic psychic forces unleashed after his break with Freud and the rationalistic worldview. It was his attempt to find personal meaning in a "time without God" by turning inward and engaging directly with the soul's depths.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Significance:</strong>
+                        <ul>
+                            <li><strong>Foundation of Later Work:</strong> Jung himself stated that the experiences documented in the Red Book formed the "primal material" (prima materia) for his subsequent scientific work. Concepts like archetypes, the collective unconscious, the individuation process, and the importance of symbolism find their experiential roots here.</li>
+                            <li><strong>Personal Individuation:</strong> It is a raw, firsthand account of Jung's own individuation process, his personal descent into the unconscious to confront the Shadow, Anima, and ultimately encounter the Self.</li>
+                            <li><strong>Value of the Irrational:</strong> The Red Book underscores Jung's belief in the importance of the irrational, symbolic, and imaginative aspects of the psyche, which he felt were dangerously neglected by modern Western rationality.</li>
+                        </ul>
+                    </p>
+                    <p>While not a systematic theoretical text, The Red Book offers a powerful, artistic, and deeply personal testament to the reality and transformative potential of the unconscious psyche, providing the bedrock upon which much of analytical psychology was built.</p>
+                    <blockquote>"The years... when I pursued the inner images, were the most important time of my life. Everything else is to be derived from this. It began at that time, and the later details hardly matter anymore. My entire life consisted in elaborating what had burst forth from the unconscious and flooded me like an enigmatic stream..." - Memories, Dreams, Reflections (referring to the period of the Red Book)</blockquote>
+                    <small class="source-note">Primary Source: The Red Book: Liber Novus (edited by Sonu Shamdasani). Secondary: Memories, Dreams, Reflections; Introductions to Jungian Psychology.</small>
+                `
+            },
+            "synchronicity": {
+                title: "Synchronicity: Meaningful Coincidence",
+                body: `
+                    <p><strong>Synchronicity</strong> is a concept developed by Jung to describe occurrences that appear meaningfully related but lack a conventional causal connection. It refers to the simultaneous occurrence of an inner psychic state (like a dream, thought, or feeling) and an external event, where the connection between the two seems meaningful to the observer but cannot be explained by cause and effect.</p>
+                    <p>Jung termed synchronicity an "acausal connecting principle." While science typically relies on causality to explain relationships between events, synchronicity suggests another mode of connection based on meaning and archetypal patterns.</p>
+                    <p><strong>Examples and Characteristics:</strong>
+                        <ul>
+                            <li>Thinking intensely about a long-lost friend, and then receiving an unexpected call from them moments later.</li>
+                            <li>Having a dream about a specific, unusual symbol (e.g., a golden scarab beetle), and then encountering that exact symbol or object in the external world shortly after. (This was a famous example from Jung's own practice).</li>
+                            <li><strong>Meaningful Connection:</strong> The key element is the subjective experience of meaning. The coincidence feels significant, insightful, or numinous to the person experiencing it.</li>
+                            <li><strong>Archetypal Basis:</strong> Jung believed synchronistic events often occur when an archetype is activated in the unconscious. The external event mirrors the inner psychic state because both are participating in the same underlying archetypal pattern.</li>
+                            <li><strong>Beyond Chance:</strong> While acknowledging the role of chance, Jung felt that some coincidences are so statistically improbable and subjectively meaningful that they point towards an underlying order or connection between psyche and matter.</li>
+                            <li><strong>Relation to Individuation:</strong> Synchronistic events can sometimes serve as guideposts or confirmations along the path of individuation, suggesting the individual is aligned with deeper psychic processes or the Self.</li>
+                        </ul>
+                    </p>
+                    <p>Synchronicity remains one of Jung's more speculative and controversial concepts, bridging psychology with physics and philosophy. It challenges a purely mechanistic worldview by suggesting that meaning and pattern can be fundamental connecting principles in reality, linking the inner world of the psyche with the outer world of events in ways that transcend simple causality.</p>
+                    <blockquote>"Synchronicity is no more baffling or mysterious than the discontinuities of physics. It is only the ingrained belief in the sovereign power of causality that creates intellectual difficulties..." - Synchronicity: An Acausal Connecting Principle / CW 8</blockquote>
+                    <small class="source-note">Primary Sources: CW 8 (Synchronicity), Letters Vol. 2. Secondary: Introductions to Jungian Psychology.</small>
+                `
+            }
+        };
+
+        const contentArea = document.getElementById('content-area');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const modalOverlay = document.getElementById('quote-modal-overlay');
+        const modal = document.getElementById('quote-modal');
+        const modalQuoteText = document.getElementById('modal-quote-text');
+        const modalQuoteSource = document.getElementById('modal-quote-source');
+        const modalCloseButton = document.getElementById('modal-close-button');
+
+        function openModal(quoteText, quoteSource) {
+            modalQuoteText.textContent = quoteText;
+            modalQuoteSource.textContent = `Source: ${quoteSource}`;
+            modalOverlay.classList.add('visible');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('visible');
+        }
+
+        function getRandomQuotes(numQuotes) {
+            const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, numQuotes);
+        }
+
+        function loadContent(contentId) {
+            let sectionTitle = '';
+            let sectionBodyHtml = '';
+            contentArea.innerHTML = ''; // Clear previous content
+
+            if (contentId === 'home') {
+                const numCards = 5;
+                const selectedQuotes = getRandomQuotes(numCards);
+                sectionTitle = content['home'].title;
+
+                const cardContainer = document.createElement('div');
+                cardContainer.id = 'quote-card-container';
+
+                selectedQuotes.forEach(quote => {
+                    const card = document.createElement('div');
+                    card.classList.add('quote-card');
+                    card.dataset.fullQuote = quote.text;
+                    card.dataset.source = quote.source;
+                    // Card remains blank
+                    card.addEventListener('click', () => {
+                        openModal(card.dataset.fullQuote, card.dataset.source);
+                    });
+                    cardContainer.appendChild(card);
+                });
+
+                // Add Refresh button after cards
+                const refreshButton = document.createElement('button');
+                refreshButton.id = 'refresh-quotes-button';
+                refreshButton.textContent = 'Refresh Quotes';
+                refreshButton.addEventListener('click', () => loadContent('home'));
+
+                // Build the section body HTML string including container and button
+                sectionBodyHtml = cardContainer.outerHTML + refreshButton.outerHTML;
+                contentArea.style.display = 'block'; // Use block for container + button layout
+            }
+            else if (content[contentId]) {
+                const section = content[contentId];
+                sectionTitle = section.title;
+                sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+                 contentArea.style.display = 'block';
+            }
+            else {
+                sectionTitle = "Error";
+                sectionBodyHtml = '<div class="content-body"><p>Content not found.</p></div>';
+                 contentArea.style.display = 'block';
+            }
+
+            contentArea.style.opacity = 0;
+            setTimeout(() => {
+                 const titleElement = document.createElement('h2');
+                 titleElement.className = 'text-3xl font-semibold mb-6';
+                 titleElement.textContent = sectionTitle;
+                 contentArea.appendChild(titleElement);
+
+                 const bodyWrapper = document.createElement('div');
+                 // Important: Set innerHTML on a temporary element
+                 bodyWrapper.innerHTML = sectionBodyHtml;
+
+                 // Append children from the temporary element
+                 while (bodyWrapper.firstChild) {
+                     contentArea.appendChild(bodyWrapper.firstChild);
+                 }
+
+                 // Re-attach listeners after innerHTML update for home section
+                 if (contentId === 'home') {
+                     const cards = contentArea.querySelectorAll('.quote-card');
+                     cards.forEach(card => {
+                         const fullQuote = card.dataset.fullQuote;
+                         const source = card.dataset.source;
+                         card.addEventListener('click', () => {
+                             openModal(fullQuote, source);
+                         });
+                     });
+                     // Re-attach listener for refresh button
+                     const refreshBtn = contentArea.querySelector('#refresh-quotes-button');
+                     if(refreshBtn) {
+                         refreshBtn.addEventListener('click', () => loadContent('home'));
+                     }
+                 }
+
+                contentArea.style.opacity = 1;
+            }, 200);
+
+            navButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.content === contentId);
+            });
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const contentId = e.currentTarget.dataset.content;
+                loadContent(contentId);
+            });
+        });
+
+        modalCloseButton.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            loadContent('home');
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Arthur Schopenhauer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for a classical dark theme (Schopenhauer Theme) */
+        :root {
+            --primary-accent: #2E4053; /* Deep Slate Blue */
+            --background-dark: #1C1C1C; /* Very dark gray */
+            --background-medium: #282828; /* Dark gray */
+            --background-light: #383838; /* Medium gray */
+            --text-light: #d8d8d8; /* Light gray text */
+            --text-medium: #b0b0b0; /* Medium gray text */
+            --text-dark: #808080; /* Darker gray text */
+            --border-color: #484848; /* Gray border */
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #111111;
+            border-bottom: 1px solid var(--primary-accent);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        h1 {
+             color: var(--text-light);
+             font-family: 'EB Garamond', serif;
+             padding: 0.75rem 0;
+             text-align: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            padding: 2rem 1rem;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        /* Navigation container */
+        nav {
+            width: 220px;
+            flex-shrink: 0;
+            padding-top: 1rem;
+        }
+
+        /* Navigation button styles - Scattered Pages Effect */
+        .nav-button {
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #4a4a4a;
+            border-radius: 3px;
+            font-family: 'EB Garamond', serif;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            width: 95%;
+            margin-bottom: -10px;
+            margin-left: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .nav-button:nth-child(odd) { transform: rotate(-1.5deg); margin-left: 0px; }
+        .nav-button:nth-child(even) { transform: rotate(1deg); z-index: 2; }
+        .nav-button:nth-child(3n) { transform: rotate(0.5deg); z-index: 3; }
+        .nav-button:nth-child(4n) { transform: rotate(-1deg); margin-left: 8px; }
+        .nav-button:nth-child(5n) { transform: rotate(1.8deg); z-index: 4; }
+
+        .nav-button:hover {
+            background-color: #444444;
+            color: #ffffff;
+            transform: rotate(0deg) scale(1.03);
+            z-index: 10;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .nav-button.active {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            font-weight: bold;
+            border: 1px solid var(--primary-accent);
+            box-shadow: 3px 3px 8px rgba(46, 64, 83, 0.5); /* Adjusted shadow color */
+            transform: rotate(0deg) scale(1.01);
+            z-index: 5;
+        }
+         .nav-button.active:hover { transform: rotate(0deg) scale(1.03); }
+
+        /* Content area style */
+        #content-area {
+            background-color: var(--background-medium);
+            border: 1px solid #444444;
+            border-radius: 8px;
+            flex-grow: 1;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-family: 'EB Garamond', serif;
+            flex-shrink: 0;
+        }
+
+        .content-body {
+            font-size: 1.1em;
+            line-height: 1.9;
+            flex-grow: 1;
+        }
+        .content-body p {
+            margin-bottom: 1.2em;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-medium);
+        }
+        .content-body ul {
+            list-style-type: square;
+            margin-left: 2rem;
+            margin-bottom: 1em;
+            font-family: 'Courier New', Courier, monospace;
+             color: var(--text-medium);
+        }
+        .content-body li { margin-bottom: 0.7em; }
+        .content-body blockquote {
+            border-left: 3px solid var(--primary-accent); /* Blue border */
+            padding-left: 1.2rem;
+            margin: 1.5rem 0.5rem;
+            font-style: italic;
+            color: #b8b8b8;
+            font-family: 'EB Garamond', serif;
+        }
+         .content-body strong {
+             color: var(--text-light);
+             font-weight: 600;
+        }
+
+        /* Quote Card Container (Home Section) */
+        #quote-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 1rem;
+            min-height: 50vh;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        /* Individual Quote Card Styling */
+        .quote-card {
+            background-color: var(--background-light);
+            color: var(--text-medium);
+            border: 1px solid #4a4a4a;
+            border-radius: 4px;
+            padding: 1.5rem 1rem;
+            width: 220px;
+            height: 160px;
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s ease 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.9em;
+            line-height: 1.5;
+            z-index: 1;
+        }
+        .quote-card:nth-child(1) { transform: rotate(-4deg) translate(-10px, 5px); z-index: 1; }
+        .quote-card:nth-child(2) { transform: rotate(3deg) translate(5px, -8px); z-index: 2; }
+        .quote-card:nth-child(3) { transform: rotate(-2deg) translate(15px, 10px); z-index: 3; }
+        .quote-card:nth-child(4) { transform: rotate(5deg) translate(-5px, -5px); z-index: 1; }
+        .quote-card:nth-child(5) { transform: rotate(-3.5deg) translate(10px, 0px); z-index: 2; }
+
+         .quote-card::before {
+             content: '“';
+             position: absolute;
+             font-size: 6em;
+             color: var(--primary-accent); /* Blue quote mark */
+             opacity: 0.15;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             font-family: 'EB Garamond', serif;
+             z-index: 0;
+         }
+        .quote-card:hover {
+            transform: rotate(0deg) scale(1.08);
+            box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            border-color: var(--primary-accent);
+        }
+
+        /* Refresh Button Styling */
+         #refresh-quotes-button {
+            display: block;
+            margin: 1.5rem auto 0 auto;
+            background-color: #4a4a4a;
+            color: var(--text-light);
+            padding: 0.7rem 1.4rem;
+            border: 1px solid var(--primary-accent); /* Blue border */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        #refresh-quotes-button:hover {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(46, 64, 83, 0.5); /* Adjusted shadow color */
+        }
+
+
+        /* Modal Styles */
+        #quote-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); z-index: 99;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        #quote-modal-overlay.visible { opacity: 1; visibility: visible; }
+        #quote-modal {
+            background-color: var(--background-medium); padding: 2.5rem; border-radius: 8px;
+            border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%; width: 600px; position: relative;
+            transform: scale(0.9); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+         #quote-modal-overlay.visible #quote-modal { transform: scale(1); opacity: 1; }
+        #modal-quote-text {
+            font-family: 'EB Garamond', serif; font-size: 1.5em; font-style: italic;
+            color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;
+            border-left: 3px solid var(--primary-accent); padding-left: 1rem; /* Blue border */
+        }
+        #modal-quote-source {
+            font-family: 'EB Garamond', serif; font-size: 1em; color: var(--text-dark);
+            text-align: right; margin-top: 1rem;
+        }
+        #modal-close-button {
+            position: absolute; top: 10px; right: 15px; background: none; border: none;
+            font-size: 2rem; color: var(--text-dark); cursor: pointer; line-height: 1; padding: 0.2rem;
+        }
+        #modal-close-button:hover { color: var(--primary-accent); }
+
+
+        .source-note {
+            font-size: 0.85em; color: #999999; margin-top: 2rem; display: block;
+            font-style: italic; text-align: right; font-family: 'EB Garamond', serif;
+        }
+
+        footer {
+            background-color: #111111; border-top: 1px solid var(--primary-accent); /* Blue border */
+            color: var(--text-dark); font-family: 'EB Garamond', serif;
+            width: 100%; margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+             .main-wrapper { flex-direction: column; padding: 1rem; gap: 1.5rem; }
+             nav {
+                 width: 100%; display: flex; flex-wrap: wrap; justify-content: center;
+                 gap: 0.5rem; padding-top: 0;
+             }
+             .nav-button {
+                 width: auto; flex-basis: calc(50% - 0.5rem); margin: 0 0 0.5rem 0;
+                 transform: rotate(0deg); text-align: center; z-index: 1;
+             }
+             .nav-button:nth-child(n) { transform: rotate(0deg); margin-left: 0; z-index: 1; }
+             .nav-button.sub-item { flex-basis: calc(50% - 0.5rem); width: auto; padding-left: 1rem; margin-left: 0; }
+             .nav-button:hover { transform: scale(1.02); }
+             .nav-button.active { transform: scale(1.01); z-index: 2; }
+
+             #quote-card-container { padding: 1rem 0; gap: 1rem; min-height: 40vh;}
+             .quote-card {
+                 width: 70%; height: auto; min-height: 120px; margin-top: 0;
+                 transform: rotate(0deg) translate(0,0);
+             }
+              .quote-card:hover { transform: scale(1.03); }
+
+             #content-area { width: 100%; padding: 1rem 1.5rem; }
+             #quote-modal { width: 90%; padding: 1.5rem; }
+             #modal-quote-text { font-size: 1.3em; }
+             #refresh-quotes-button { margin-top: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h1 class="text-3xl font-bold text-center py-4">Understanding Arthur Schopenhauer</h1>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+
+        <nav>
+            <button data-content="home" class="nav-button active">Home (Quote)</button>
+            <button data-content="intro" class="nav-button">Introduction</button>
+            <button data-content="will-representation" class="nav-button">The World as Will & Representation</button>
+            <button data-content="pessimism" class="nav-button">Pessimism & Suffering</button>
+            <button data-content="aesthetics" class="nav-button">Aesthetics: Solace in Art</button>
+            <button data-content="ethics" class="nav-button">Ethics & Compassion</button>
+            <button data-content="asceticism" class="nav-button">Asceticism: Denial of the Will</button>
+        </nav>
+
+        <section id="content-area">
+        </section>
+
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quote-modal-overlay">
+        <div id="quote-modal">
+            <button id="modal-close-button" aria-label="Close modal">&times;</button>
+            <p id="modal-quote-text"></p>
+            <small id="modal-quote-source"></small>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container mx-auto px-4 max-w-7xl py-4">
+            <p class="text-center">&copy; 2025 Schopenhauer Explorer. Content for educational purposes.</p>
+            <p class="text-center text-xs">Sources include Schopenhauer's works and reputable philosophical encyclopedias.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Schopenhauer Quotes
+        const quotes = [
+            { text: "Life is a constant process of dying.", source: "The World as Will and Representation, Vol. 2" },
+            { text: "Man can do what he wills but he cannot will what he wills.", source: "On the Freedom of the Will" },
+            { text: "Every man takes the limits of his own field of vision for the limits of the world.", source: "Studies in Pessimism" },
+            { text: "Life swings like a pendulum backward and forward between pain and boredom.", source: "The World as Will and Representation, Vol. 1" },
+            { text: "Compassion is the basis of morality.", source: "On the Basis of Morality" },
+            { text: "The cheapest sort of pride is national pride.", source: "Parerga and Paralipomena, Vol. 2" },
+            { text: "Talent hits a target no one else can hit; Genius hits a target no one else can see.", source: "The World as Will and Representation, Vol. 2" },
+            { text: "To live alone is the fate of all great souls.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "The two enemies of human happiness are pain and boredom.", source: "Essays and Aphorisms" },
+            { text: "Every parting gives a foretaste of death; every coming together again a foretaste of the resurrection.", source: "Parerga and Paralipomena, Vol. 2" },
+            { text: "Mostly it is loss which teaches us about the worth of things.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "The world is my representation.", source: "The World as Will and Representation, Vol. 1" },
+            { text: "Music is the melody whose text is the world.", source: "The World as Will and Representation, Vol. 1" },
+            { text: "It is difficult to find happiness within oneself, but it is impossible to find it anywhere else.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "Change alone is eternal, perpetual, immortal.", source: "The World as Will and Representation, Vol. 1" },
+            { text: "What people commonly call fate is mostly their own stupidity.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "Wealth is like sea-water; the more we drink, the thirstier we become; and the same is true of fame.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "The discovery of truth is prevented more effectively, not by the false appearance things present and which mislead into error, not directly by weakness of the reasoning powers, but by preconceived opinion, by prejudice.", source: "Parerga and Paralipomena, Vol. 2" },
+            { text: "A man can be himself only so long as he is alone; and if he does not love solitude, he will not love freedom; for it is only when he is alone that he is really free.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "Hope is the confusion of the desire for a thing with its probability.", source: "The World as Will and Representation, Vol. 2" },
+            { text: "The shortness of life, so often lamented, may be the best thing about it.", source: "Essays and Aphorisms" },
+            { text: "All truth passes through three stages. First, it is ridiculed. Second, it is violently opposed. Third, it is accepted as being self-evident.", source: "Attributed / Paraphrase" }, // Widely attributed, likely paraphrase.
+            { text: "We forfeit three-fourths of ourselves in order to be like other people.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "The ability to perceive beauty is the highest stage of intelligence.", source: "Attributed / Paraphrase" },
+            { text: "Politeness is to human nature what warmth is to wax.", source: "Parerga and Paralipomena, Vol. 1" },
+            { text: "Suffering by nature or chance never seems so painful as suffering inflicted on us by the arbitrary will of another.", source: "On the Basis of Morality" },
+            { text: "The greatest achievements of the human mind are generally received with distrust.", source: "Parerga and Paralipomena, Vol. 2" },
+            { text: "Sleep is the interest we have to pay on the capital which is called in at death; and the higher the rate of interest and the more regularly it is paid, the further the date of redemption is postponed.", source: "Parerga and Paralipomena, Vol. 2" },
+            { text: "The more unintelligent a man is, the less mysterious existence seems to him.", source: "Parerga and Paralipomena, Vol. 2" },
+            { text: "The fundamental characteristic of human existence is striving.", source: "The World as Will and Representation, Vol. 1" }
+        ];
+
+        // Content data for Schopenhauer sections
+        const content = {
+            "home": {
+                title: "Scattered Thoughts",
+            },
+            "intro": {
+                title: "Introduction: Schopenhauer, Philosopher of Pessimism",
+                body: `
+                    <p>Arthur Schopenhauer (1788–1860) was a German philosopher known for his profound, often deeply pessimistic, metaphysical system outlined primarily in his magnum opus, 'The World as Will and Representation.' Though largely overlooked during much of his lifetime, his philosophy gained significant posthumous recognition and influenced later thinkers across philosophy, psychology, literature, and music, including figures like Nietzsche, Freud, Wittgenstein, Tolstoy, Wagner, and Mahler.</p>
+                    <p>Schopenhauer developed a unique philosophical system that synthesized elements of Kantian epistemology, Platonic ideas, and Eastern thought (particularly Hinduism and Buddhism, which he was among the first Western philosophers to seriously engage with). He posited that underlying the world of appearances (the world as 'Representation') is a blind, irrational, ceaselessly striving force he called the 'Will' – a metaphysical reality that is the ultimate source of all phenomena and, crucially, the root of all suffering.</p>
+                    <p>Key tenets of his philosophy include:
+                        <ul>
+                            <li><strong>The World as Will:</strong> The fundamental reality is a singular, undifferentiated, aimless striving force – the Will-to-live.</li>
+                            <li><strong>The World as Representation:</strong> The empirical world we perceive through space, time, and causality is merely the phenomenal manifestation (representation) of this underlying Will, structured by our intellect according to Kantian principles (like the principle of sufficient reason).</li>
+                            <li><strong>Pessimism:</strong> Because the Will is a constant, insatiable striving, life is inherently characterized by suffering. Desire leads to pain when unfulfilled, and fulfillment leads only to boredom, which is itself a form of suffering, until new desires arise.</li>
+                            <li><strong>Aesthetic Contemplation:</strong> Temporary escape from the suffering caused by the Will can be found in aesthetic experience, particularly music, where the intellect contemplates Platonic Ideas (universal forms) and momentarily becomes a 'will-less subject of knowledge.'</li>
+                            <li><strong>Ethics of Compassion:</strong> Recognizing that the same underlying Will animates all individuals allows one to see through the illusion of individuation (the 'principium individuationis') and feel compassion for the suffering of others, as it is fundamentally one's own suffering.</li>
+                            <li><strong>Asceticism & Denial of the Will:</strong> The ultimate path to salvation or liberation from suffering involves the ascetic denial of the Will-to-live, achieved through chastity, poverty, fasting, and self-mortification, leading to a state of resignation and tranquility akin to Buddhist nirvana.</li>
+                        </ul>
+                    </p>
+                    <p>Schopenhauer's philosophy offers a stark, often bleak, yet compelling vision of existence, emphasizing the power of irrational drives, the pervasiveness of suffering, and the potential for solace through art, compassion, and renunciation.</p>
+                    <blockquote>"The world is my representation': this is a truth which holds good for everything that lives and knows, though man alone can bring it into reflective and abstract consciousness." - The World as Will and Representation, Vol. 1, §1</blockquote>
+                    <small class="source-note">Primary Sources: The World as Will and Representation (WWR), Parerga and Paralipomena. Secondary: SEP, IEP entries on Schopenhauer.</small>
+                `
+            },
+            "will-representation": {
+                title: "The World as Will and Representation",
+                body: `
+                    <p>Schopenhauer's central metaphysical doctrine, expounded in 'The World as Will and Representation,' presents reality under two fundamental aspects: the world as <strong>Representation</strong> (Vorstellung) and the world as <strong>Will</strong> (Wille).</p>
+                    <p><strong>The World as Representation:</strong>
+                        <ul>
+                            <li>This is the world as we experience it through our senses and intellect – the empirical, phenomenal world of objects existing in space and time, governed by the principle of sufficient reason (causality).</li>
+                            <li>Schopenhauer largely adopts Kant's transcendental idealism, agreeing that space, time, and causality are forms imposed by our cognitive faculties and do not belong to the 'thing-in-itself' (the reality independent of our perception).</li>
+                            <li>Therefore, the entire objective world – stars, trees, bodies, etc. – is fundamentally dependent on a knowing subject. "No object without a subject." It exists only as a representation for a consciousness.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The World as Will:</strong>
+                        <ul>
+                            <li>While Kant deemed the 'thing-in-itself' unknowable, Schopenhauer argued we have one point of direct access to it: our own inner experience of willing. Through introspection, we know ourselves not just as objects (our bodies as representations) but also as subjects driven by desires, urges, strivings – manifestations of the Will.</li>
+                            <li>He then controversially identifies this inner striving force as the thing-in-itself, the metaphysical reality underlying <em>all</em> phenomena, not just human actions. He calls this the Will-to-live (Wille zum Leben).</li>
+                            <li>This Will is singular (undifferentiated prior to its manifestation in the world of representation), blind (lacking any ultimate purpose or goal), irrational, and characterized by ceaseless, insatiable striving.</li>
+                            <li>All forces in nature (gravity, magnetism, biological drives) and all actions of living beings are objectifications or manifestations of this one underlying Will. The world as representation is the "objectification" of the Will.</li>
+                        </ul>
+                    </p>
+                    <p>This dual-aspect metaphysics forms the foundation for Schopenhauer's pessimism. The empirical world (Representation) is merely the stage upon which the blind, striving Will plays out its endless, painful drama. Our individual lives, driven by the Will-to-live manifesting as desires and instincts, are caught in this cycle of striving, temporary satisfaction (leading to boredom), and renewed striving, making suffering the essential core of existence.</p>
+                    <blockquote>"This world, I say, is the Will-to-live, and nothing else." - The World as Will and Representation, Vol. 2, Ch. 48</blockquote>
+                    <small class="source-note">Primary Source: The World as Will and Representation, Vols. 1 & 2. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "pessimism": {
+                title: "Pessimism & The Nature of Suffering",
+                body: `
+                    <p>Schopenhauer is renowned as one of philosophy's foremost proponents of <strong>pessimism</strong>. This wasn't merely a temperamental disposition but a logical consequence derived from his metaphysics of the Will.</p>
+                    <p>His core argument rests on the nature of the Will-to-live as a blind, insatiable, and ceaseless striving. Since the Will is the inner essence of all things, including ourselves, existence itself is characterized by this constant striving, which manifests as desire, want, and need.</p>
+                    <p><strong>The Cycle of Suffering:</strong>
+                        <ul>
+                            <li><strong>Desire as Lack:</strong> All willing arises from lack, deficiency, and thus from suffering. To desire something is to feel the pain of its absence.</li>
+                            <li><strong>Fleeting Satisfaction:</strong> When a desire is fulfilled, the satisfaction is only temporary and often less intense than the preceding pain of wanting. Furthermore, satisfaction quickly gives way to a new state of suffering: boredom.</li>
+                            <li><strong>Boredom as Suffering:</strong> Schopenhauer considered boredom ('Langeweile') a distinct form of suffering – the emptiness felt when the Will lacks an immediate object to strive for. It reveals the inherent restlessness and lack of intrinsic value in existence itself when not masked by the pursuit of desires.</li>
+                            <li><strong>Inevitable Oscillation:</strong> Therefore, life inevitably "swings like a pendulum backward and forward between pain and boredom." We escape the pain of wanting only to fall into the pain of boredom, which then drives us to seek new desires, restarting the cycle.</li>
+                            <li><strong>Illusion of Happiness:</strong> What we call happiness is merely the temporary cessation of a particular pain or desire, not a positive state in itself. True, lasting happiness is impossible in a world governed by the striving Will.</li>
+                            <li><strong>Existence as Error:</strong> Ultimately, Schopenhauer viewed existence itself as a kind of cosmic error or misfortune. It would be better not to exist than to be subject to the relentless, painful cycle driven by the Will.</li>
+                        </ul>
+                    </p>
+                    <p>This pessimistic outlook informs Schopenhauer's views on ethics, aesthetics, and salvation. Recognizing the universality of suffering, rooted in the shared essence of the Will, becomes the basis for compassion. Aesthetic contemplation offers a temporary escape from the Will's tyranny. The only lasting liberation comes through the ascetic denial of the Will-to-live.</p>
+                    <blockquote>"All satisfaction, or what is commonly called happiness, is really and essentially always negative only, and never positive... We are not properly conscious of the blessings and advantages we actually possess, nor do we prize them, but think of them merely as a matter of course... But as soon as we lose them, we feel their value." - The World as Will and Representation, Vol. 1, §58</blockquote>
+                    <small class="source-note">Primary Sources: WWR Vol. 1 & 2, Parerga and Paralipomena ('Essays and Aphorisms'). Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "aesthetics": {
+                title: "Aesthetics: Temporary Solace in Art",
+                body: `
+                    <p>While Schopenhauer's philosophy is predominantly pessimistic, he identifies <strong>aesthetic experience</strong> as a significant, albeit temporary, form of solace from the relentless suffering caused by the Will-to-live.</p>
+                    <p>In ordinary perception and action, our intellect is subservient to the Will, acting as its tool to navigate the world of representations and satisfy desires. However, in aesthetic contemplation, a transformation occurs:</p>
+                    <p><strong>The Will-less Subject of Knowledge:</strong>
+                        <ul>
+                            <li>When we contemplate an object aesthetically (e.g., a work of art, a natural landscape), we cease to view it in relation to our personal desires, interests, or practical concerns (i.e., how it serves the Will).</li>
+                            <li>Instead, the intellect becomes detached from the Will, becoming a "pure, will-less subject of knowledge." We lose our sense of individuality bound to the striving Will and become absorbed in the object of contemplation itself.</li>
+                            <li>Simultaneously, the object of contemplation ceases to be perceived as a particular thing governed by space, time, and causality (the principle of sufficient reason). Instead, we grasp its underlying Platonic <strong>Idea</strong> (Idee) – the universal form or essence it represents (e.g., the Idea of 'treeness' when contemplating a specific tree, the Idea of 'humanity' in a portrait).</li>
+                        </ul>
+                    </p>
+                    <p><strong>Hierarchy of Arts:</strong>
+                        <ul>
+                            <li>Schopenhauer ranked the arts based on the level of Idea they reveal, from architecture (lowest Ideas, like gravity and rigidity) through sculpture, painting, poetry, and tragedy (revealing the complex Idea of humanity and its suffering).</li>
+                            <li><strong>Music</strong> holds a unique and supreme position. Unlike other arts which represent Ideas (objectifications of the Will), music is seen as a direct copy or expression of the Will itself. It bypasses the Ideas and speaks directly to our inner experience of striving, suffering, joy, and peace, providing the most profound aesthetic experience and insight into the nature of reality.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Temporary Liberation:</strong> This state of will-less contemplation provides temporary liberation from the cycle of desire and suffering. For the duration of the aesthetic experience, the individual is freed from the tyranny of the Will. However, this liberation is fleeting; eventually, the Will reasserts itself, and the individual returns to the world of striving and pain. True, permanent liberation requires the more arduous path of ascetic denial.</p>
+                    <blockquote>"When we are sunk in the contemplation of nature, or are lost in the appreciation of art... we are for the moment set free from the miserable pressure of the will. We celebrate the Sabbath of the penal servitude of willing; the wheel of Ixion stands still." - The World as Will and Representation, Vol. 1, §38</blockquote>
+                    <small class="source-note">Primary Source: The World as Will and Representation, Vol. 1, Book 3. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "ethics": {
+                title: "Ethics: Compassion as the Basis of Morality",
+                body: `
+                    <p>Schopenhauer's ethics, primarily detailed in 'On the Basis of Morality,' stem directly from his metaphysics. If the underlying reality of all individuals is the singular, striving Will, then the perceived separation between individuals is an illusion created by the forms of space and time (the 'principium individuationis') inherent in the world as representation.</p>
+                    <p><strong>Egoism vs. Compassion:</strong>
+                        <ul>
+                            <li>The natural state, driven by the Will-to-live manifesting in an individual, is <strong>egoism</strong>. The individual experiences their own will and suffering most directly and prioritizes their own survival and satisfaction above all else.</li>
+                            <li>However, some individuals can achieve a deeper insight, piercing through the veil of individuation ('principium individuationis'). They recognize that the suffering they see in others is, metaphysically speaking, identical to their own, as it stems from the same underlying Will.</li>
+                            <li>This recognition gives rise to <strong>compassion</strong> (Mitleid – literally "suffering-with"). Compassion is the direct, intuitive participation in the suffering of another being.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Compassion as the Moral Spring:</strong>
+                        <ul>
+                            <li>Schopenhauer argues that compassion is the sole genuine source of moral action. Actions motivated by duty (as in Kant) or self-interest are not truly moral in his view.</li>
+                            <li>Only actions arising from compassion, where one identifies with the suffering of another and seeks to alleviate it as if it were one's own, have true moral worth.</li>
+                            <li>This leads to two primary virtues: <strong>justice</strong> (negative virtue: refraining from harming others, recognizing their will as identical to one's own) and <strong>loving-kindness</strong> or philanthropy (positive virtue: actively helping others alleviate their suffering).</li>
+                        </ul>
+                    </p>
+                    <p><strong>Malice:</strong> The opposite of compassion is malice, which takes pleasure in the suffering of others. Schopenhauer considered this the most wicked and diabolical human trait, arising from an intense frustration of one's own Will that seeks compensation in witnessing the pain of others.</p>
+                    <p>Schopenhauer's ethics, therefore, is grounded not in reason or divine command, but in the metaphysical insight into the shared nature of suffering rooted in the universal Will. It emphasizes empathy and the alleviation of pain as the core of moral life, providing a bridge between his pessimistic metaphysics and a call for ethical action.</p>
+                    <blockquote>"Compassion alone is the real basis of all voluntary justice and all genuine loving-kindness. Only insofar as an action has sprung from compassion does it have moral value..." - On the Basis of Morality, §16</blockquote>
+                    <small class="source-note">Primary Sources: On the Basis of Morality, WWR Vol. 1 Book 4. Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "asceticism": {
+                title: "Asceticism: Denial of the Will-to-Live",
+                body: `
+                    <p>While aesthetic contemplation offers temporary relief and compassion offers an ethical response to the suffering inherent in existence, Schopenhauer believed the only path to lasting liberation or 'salvation' from the tyranny of the Will-to-live is through <strong>asceticism</strong> – the conscious and deliberate denial or quieting of the Will.</p>
+                    <p>This represents the highest stage of ethical and metaphysical insight, where an individual, fully recognizing the Will as the source of endless suffering and the illusion of individuation, actively turns against their own innate drive to live, strive, and desire.</p>
+                    <p><strong>The Path of Denial:</strong>
+                        <ul>
+                            <li><strong>Knowledge Quiets the Will:</strong> This denial arises not from external command but from a profound knowledge of the Will's true nature and the suffering it entails. This knowledge acts as a 'quietive' on the Will.</li>
+                            <li><strong>Voluntary Renunciation:</strong> The ascetic path involves voluntary poverty (renouncing the pursuit of wealth), chastity (renouncing sexual desire, the strongest affirmation of the Will-to-live through procreation), fasting, and self-mortification. These practices aim to weaken the body's demands and the Will's hold over the individual.</li>
+                            <li><strong>Overcoming Egoism:</strong> It requires overcoming the fundamental egoism driven by the Will-to-live and embracing universal compassion.</li>
+                            <li><strong>Attaining Resignation:</strong> The goal is a state of calm resignation, indifference to personal fate, and tranquility, where the individual is no longer swayed by the hopes and fears generated by the striving Will.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Nirvana as the Goal:</strong>
+                        <ul>
+                            <li>Schopenhauer explicitly compares this final state to the concept of <strong>Nirvana</strong> in Hinduism and Buddhism – the extinction of desire and the release from the cycle of suffering and rebirth (though Schopenhauer's interpretation is primarily philosophical rather than strictly religious).</li>
+                            <li>For those who have fully denied the Will, the world as representation, with all its forms and suffering, effectively dissolves. What remains is described negatively as 'nothingness' – not absolute annihilation, but nothing relative to the world of phenomena and the striving Will. It is a state beyond representation and conceptual understanding.</li>
+                        </ul>
+                    </p>
+                    <p>Schopenhauer acknowledged that this path of complete ascetic denial is rare and difficult, achieved only by saints and mystics across different traditions. However, he presented it as the logical conclusion of his philosophical system – the only true escape from the fundamental suffering inherent in the world as the objectification of the blind, striving Will.</p>
+                    <blockquote>"This is the redeeming insight: that the source of suffering is the will-to-live itself, and that true salvation lies in its denial." (Paraphrase reflecting WWR Vol 1, §68-71)</blockquote>
+                    <small class="source-note">Primary Source: The World as Will and Representation, Vol. 1, Book 4, esp. §68-71. Secondary: SEP, IEP entries.</small>
+                `
+            }
+        };
+
+        const contentArea = document.getElementById('content-area');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const modalOverlay = document.getElementById('quote-modal-overlay');
+        const modal = document.getElementById('quote-modal');
+        const modalQuoteText = document.getElementById('modal-quote-text');
+        const modalQuoteSource = document.getElementById('modal-quote-source');
+        const modalCloseButton = document.getElementById('modal-close-button');
+
+        function openModal(quoteText, quoteSource) {
+            modalQuoteText.textContent = quoteText;
+            modalQuoteSource.textContent = `Source: ${quoteSource}`;
+            modalOverlay.classList.add('visible');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('visible');
+        }
+
+        function getRandomQuotes(numQuotes) {
+            const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, numQuotes);
+        }
+
+        function loadContent(contentId) {
+            let sectionTitle = '';
+            let sectionBodyHtml = '';
+            contentArea.innerHTML = '';
+
+            if (contentId === 'home') {
+                const numCards = 5;
+                const selectedQuotes = getRandomQuotes(numCards);
+                sectionTitle = content['home'].title;
+
+                const cardContainer = document.createElement('div');
+                cardContainer.id = 'quote-card-container';
+
+                selectedQuotes.forEach(quote => {
+                    const card = document.createElement('div');
+                    card.classList.add('quote-card');
+                    card.dataset.fullQuote = quote.text;
+                    card.dataset.source = quote.source;
+                    // Card remains blank
+                    card.addEventListener('click', () => {
+                        openModal(card.dataset.fullQuote, card.dataset.source);
+                    });
+                    cardContainer.appendChild(card);
+                });
+
+                const refreshButton = document.createElement('button');
+                refreshButton.id = 'refresh-quotes-button';
+                refreshButton.textContent = 'Refresh Quotes';
+                refreshButton.addEventListener('click', () => loadContent('home'));
+
+                sectionBodyHtml = cardContainer.outerHTML + refreshButton.outerHTML;
+                contentArea.style.display = 'block';
+            }
+            else if (content[contentId]) {
+                const section = content[contentId];
+                sectionTitle = section.title;
+                sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+                 contentArea.style.display = 'block';
+            }
+            else {
+                sectionTitle = "Error";
+                sectionBodyHtml = '<div class="content-body"><p>Content not found.</p></div>';
+                 contentArea.style.display = 'block';
+            }
+
+            contentArea.style.opacity = 0;
+            setTimeout(() => {
+                 const titleElement = document.createElement('h2');
+                 titleElement.className = 'text-3xl font-semibold mb-6';
+                 titleElement.textContent = sectionTitle;
+                 contentArea.appendChild(titleElement);
+
+                 const bodyWrapper = document.createElement('div');
+                 bodyWrapper.innerHTML = sectionBodyHtml;
+                 while (bodyWrapper.firstChild) {
+                     contentArea.appendChild(bodyWrapper.firstChild);
+                 }
+
+                if (contentId === 'home') {
+                     const cards = contentArea.querySelectorAll('.quote-card');
+                     cards.forEach(card => {
+                         const fullQuote = card.dataset.fullQuote;
+                         const source = card.dataset.source;
+                         card.addEventListener('click', () => {
+                             openModal(fullQuote, source);
+                         });
+                     });
+                     const refreshBtn = contentArea.querySelector('#refresh-quotes-button');
+                     if(refreshBtn) {
+                         refreshBtn.addEventListener('click', () => loadContent('home'));
+                     }
+                 }
+
+                contentArea.style.opacity = 1;
+            }, 200);
+
+            navButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.content === contentId);
+            });
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const contentId = e.currentTarget.dataset.content;
+                loadContent(contentId);
+            });
+        });
+
+        modalCloseButton.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            loadContent('home');
+        });
+
+    </script>
+
+</body>
+</html>

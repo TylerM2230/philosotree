@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Martin Heidegger</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom styles for a classical dark theme (Heidegger Theme) */
+      :root {
+        --primary-accent: #2f4f4f; /* Dark Slate Gray / Green */
+        --background-dark: #1f1f1f;
+        --background-medium: #2b2b2b;
+        --background-light: #333333;
+        --text-light: #dcdcdc;
+        --text-medium: #c0c0c0;
+        --text-dark: #888888;
+        --border-color: #555555;
+      }
+
+      body {
+        font-family: "EB Garamond", serif;
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background-color: #111111;
+        border-bottom: 1px solid var(--primary-accent);
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      h1 {
+        color: var(--text-light);
+        font-family: "EB Garamond", serif;
+        padding: 0.75rem 0;
+        text-align: center;
+      }
+
+      .main-wrapper {
+        display: flex;
+        flex-grow: 1;
+        justify-content: center;
+        padding: 2rem 1rem;
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+
+      /* Navigation container */
+      nav {
+        width: 220px;
+        flex-shrink: 0;
+        padding-top: 1rem;
+      }
+
+      /* Navigation button styles - Scattered Pages Effect */
+      .nav-button {
+        background-color: var(--background-light);
+        color: var(--text-light);
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #4a4a4a;
+        border-radius: 3px;
+        font-family: "EB Garamond", serif;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        width: 95%;
+        margin-bottom: -10px;
+        margin-left: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+      }
+      .nav-button:nth-child(odd) {
+        transform: rotate(-1.5deg);
+        margin-left: 0px;
+      }
+      .nav-button:nth-child(even) {
+        transform: rotate(1deg);
+        z-index: 2;
+      }
+      .nav-button:nth-child(3n) {
+        transform: rotate(0.5deg);
+        z-index: 3;
+      }
+      .nav-button:nth-child(4n) {
+        transform: rotate(-1deg);
+        margin-left: 8px;
+      }
+      .nav-button:nth-child(5n) {
+        transform: rotate(1.8deg);
+        z-index: 4;
+      }
+      .nav-button:nth-child(6n) {
+        transform: rotate(1.2deg);
+        z-index: 2;
+        margin-left: 3px;
+      }
+      .nav-button:nth-child(7n) {
+        transform: rotate(-0.8deg);
+        z-index: 3;
+        margin-left: 6px;
+      }
+
+      .nav-button:hover {
+        background-color: #444444;
+        color: #ffffff;
+        transform: rotate(0deg) scale(1.03);
+        z-index: 10;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+      }
+      .nav-button.active {
+        background-color: var(--primary-accent);
+        color: #ffffff;
+        font-weight: bold;
+        border: 1px solid var(--primary-accent);
+        box-shadow: 3px 3px 8px rgba(47, 79, 79, 0.5); /* Adjusted shadow color */
+        transform: rotate(0deg) scale(1.01);
+        z-index: 5;
+      }
+      .nav-button.active:hover {
+        transform: rotate(0deg) scale(1.03);
+      }
+
+      /* Content area style */
+      #content-area {
+        background-color: var(--background-medium);
+        border: 1px solid #444444;
+        border-radius: 8px;
+        flex-grow: 1;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: opacity 0.2s ease-in-out;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h2 {
+        color: var(--text-light);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        font-family: "EB Garamond", serif;
+        flex-shrink: 0;
+      }
+      /* Subsection heading style */
+      h3 {
+        font-family: "EB Garamond", serif;
+        font-weight: 600;
+        color: var(--text-light);
+        margin-top: 1.5rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.2em; /* Slightly smaller than h2 */
+        border-bottom: 1px dashed var(--border-color);
+        padding-bottom: 0.3rem;
+      }
+
+      .content-body {
+        font-size: 1.1em;
+        line-height: 1.9;
+        flex-grow: 1;
+      }
+      .content-body p {
+        margin-bottom: 1.2em;
+        font-family: "Courier New", Courier, monospace;
+        color: var(--text-medium);
+      }
+      .content-body ul {
+        list-style-type: square;
+        margin-left: 2rem;
+        margin-bottom: 1em;
+        font-family: "Courier New", Courier, monospace;
+        color: var(--text-medium);
+      }
+      .content-body li {
+        margin-bottom: 0.7em;
+      }
+      .content-body blockquote {
+        border-left: 3px solid var(--primary-accent); /* Dark Slate Gray border */
+        padding-left: 1.2rem;
+        margin: 1.5rem 0.5rem;
+        font-style: italic;
+        color: #b8b8b8;
+        font-family: "EB Garamond", serif;
+      }
+      .content-body strong {
+        color: var(--text-light);
+        font-weight: 600;
+      }
+
+      /* Quote Card Container (Home Section) */
+      #quote-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 2rem 1rem;
+        min-height: 50vh;
+        position: relative;
+        flex-grow: 1;
+      }
+
+      /* Individual Quote Card Styling */
+      .quote-card {
+        background-color: var(--background-light);
+        color: var(--text-medium);
+        border: 1px solid #4a4a4a;
+        border-radius: 4px;
+        padding: 1.5rem 1rem;
+        width: 220px;
+        height: 160px;
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          z-index 0s ease 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        font-size: 0.9em;
+        line-height: 1.5;
+        z-index: 1;
+      }
+      .quote-card:nth-child(1) {
+        transform: rotate(-4deg) translate(-10px, 5px);
+        z-index: 1;
+      }
+      .quote-card:nth-child(2) {
+        transform: rotate(3deg) translate(5px, -8px);
+        z-index: 2;
+      }
+      .quote-card:nth-child(3) {
+        transform: rotate(-2deg) translate(15px, 10px);
+        z-index: 3;
+      }
+      .quote-card:nth-child(4) {
+        transform: rotate(5deg) translate(-5px, -5px);
+        z-index: 1;
+      }
+      .quote-card:nth-child(5) {
+        transform: rotate(-3.5deg) translate(10px, 0px);
+        z-index: 2;
+      }
+
+      .quote-card::before {
+        content: "“";
+        position: absolute;
+        font-size: 6em;
+        color: var(--primary-accent); /* Dark Slate Gray quote mark */
+        opacity: 0.15;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "EB Garamond", serif;
+        z-index: 0;
+      }
+      .quote-card:hover {
+        transform: rotate(0deg) scale(1.08);
+        box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+        z-index: 10;
+        border-color: var(--primary-accent);
+      }
+
+      /* Refresh Button Styling */
+      #refresh-quotes-button {
+        display: block;
+        margin: 1.5rem auto 0 auto;
+        background-color: #4a4a4a;
+        color: var(--text-light);
+        padding: 0.7rem 1.4rem;
+        border: 1px solid var(--primary-accent); /* Dark Slate Gray border */
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease, transform 0.2s ease;
+        font-family: "EB Garamond", serif;
+        font-size: 1.1em;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        flex-shrink: 0;
+      }
+      #refresh-quotes-button:hover {
+        background-color: var(--primary-accent);
+        color: #ffffff;
+        border-color: var(--primary-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(47, 79, 79, 0.5); /* Adjusted shadow color */
+      }
+
+      /* Modal Styles */
+      #quote-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #quote-modal-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      #quote-modal {
+        background-color: var(--background-medium);
+        padding: 2.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        max-width: 90%;
+        width: 600px;
+        position: relative;
+        transform: scale(0.9);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+      #quote-modal-overlay.visible #quote-modal {
+        transform: scale(1);
+        opacity: 1;
+      }
+      #modal-quote-text {
+        font-family: "EB Garamond", serif;
+        font-size: 1.5em;
+        font-style: italic;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        border-left: 3px solid var(--primary-accent);
+        padding-left: 1rem; /* Dark Slate Gray border */
+      }
+      #modal-quote-source {
+        font-family: "EB Garamond", serif;
+        font-size: 1em;
+        color: var(--text-dark);
+        text-align: right;
+        margin-top: 1rem;
+      }
+      #modal-close-button {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--text-dark);
+        cursor: pointer;
+        line-height: 1;
+        padding: 0.2rem;
+      }
+      #modal-close-button:hover {
+        color: var(--primary-accent);
+      }
+
+      .source-note {
+        font-size: 0.85em;
+        color: #999999;
+        margin-top: 2rem;
+        display: block;
+        font-style: italic;
+        text-align: right;
+        font-family: "EB Garamond", serif;
+      }
+
+      footer {
+        background-color: #111111;
+        border-top: 1px solid var(--primary-accent); /* Dark Slate Gray border */
+        color: var(--text-dark);
+        font-family: "EB Garamond", serif;
+        width: 100%;
+        margin-top: auto;
+      }
+
+      @media (max-width: 768px) {
+        .main-wrapper {
+          flex-direction: column;
+          padding: 1rem;
+          gap: 1.5rem;
+        }
+        nav {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+          padding-top: 0;
+        }
+        .nav-button {
+          width: auto;
+          flex-basis: calc(50% - 0.5rem);
+          margin: 0 0 0.5rem 0;
+          transform: rotate(0deg);
+          text-align: center;
+          z-index: 1;
+        }
+        .nav-button:nth-child(n) {
+          transform: rotate(0deg);
+          margin-left: 0;
+          z-index: 1;
+        }
+        .nav-button.sub-item {
+          flex-basis: calc(50% - 0.5rem);
+          width: auto;
+          padding-left: 1rem;
+          margin-left: 0;
+        }
+        .nav-button:hover {
+          transform: scale(1.02);
+        }
+        .nav-button.active {
+          transform: scale(1.01);
+          z-index: 2;
+        }
+
+        #quote-card-container {
+          padding: 1rem 0;
+          gap: 1rem;
+          min-height: 40vh;
+        }
+        .quote-card {
+          width: 70%;
+          height: auto;
+          min-height: 120px;
+          margin-top: 0;
+          transform: rotate(0deg) translate(0, 0);
+        }
+        .quote-card:hover {
+          transform: scale(1.03);
+        }
+
+        #content-area {
+          width: 100%;
+          padding: 1rem 1.5rem;
+        }
+        #quote-modal {
+          width: 90%;
+          padding: 1.5rem;
+        }
+        #modal-quote-text {
+          font-size: 1.3em;
+        }
+        #refresh-quotes-button {
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container mx-auto px-4 max-w-7xl">
+        <h1 class="text-3xl font-bold text-center py-4">
+          Understanding Martin Heidegger
+        </h1>
+      </div>
+    </header>
+
+    <div class="main-wrapper">
+      <nav>
+        <button data-content="home" class="nav-button active">
+          Home (Quote)
+        </button>
+        <button data-content="intro" class="nav-button">Introduction</button>
+        <button data-content="being-time" class="nav-button">
+          Being and Time
+        </button>
+        <button data-content="dasein" class="nav-button">Dasein</button>
+        <button data-content="being-in-world" class="nav-button">
+          Being-in-the-World
+        </button>
+        <button data-content="authenticity" class="nav-button">
+          Authenticity & Inauthenticity
+        </button>
+        <button data-content="anxiety-death" class="nav-button">
+          Anxiety & Being-towards-Death
+        </button>
+        <button data-content="temporality" class="nav-button">
+          Temporality
+        </button>
+        <button data-content="technology" class="nav-button">
+          Technology (The Question Concerning)
+        </button>
+        <button data-content="later-thought" class="nav-button">
+          Later Thought (Language, Poetry)
+        </button>
+        <button data-content="controversy" class="nav-button">
+          Nazi Controversy
+        </button>
+      </nav>
+
+      <section id="content-area"></section>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quote-modal-overlay">
+      <div id="quote-modal">
+        <button id="modal-close-button" aria-label="Close modal">
+          &times;
+        </button>
+        <p id="modal-quote-text"></p>
+        <small id="modal-quote-source"></small>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container mx-auto px-4 max-w-7xl py-4">
+        <p class="text-center">
+          &copy; 2025 Heidegger Explorer. Content for educational purposes.
+        </p>
+        <p class="text-center text-xs">
+          Sources primarily include Heidegger's works (Being and Time, etc.) and
+          reputable philosophical resources.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Heidegger Quotes
+      const quotes = [
+        {
+          text: "The most thought-provoking thing in our thought-provoking time is that we are still not thinking.",
+          source: "What is Called Thinking?",
+        },
+        {
+          text: "Being and time determine each other reciprocally, but in such a manner that neither can the former (Being) be addressed as something temporal nor can the latter (time) be addressed as a being.",
+          source: "Being and Time",
+        },
+        {
+          text: "Why are there beings at all instead of nothing?",
+          source: "Introduction to Metaphysics",
+        },
+        {
+          text: "Language is the house of Being. In its home man dwells.",
+          source: "Letter on Humanism",
+        },
+        {
+          text: "Every man is born as many men and dies as a single one.",
+          source: "Attributed / Possibly paraphrase",
+        },
+        {
+          text: "Thinking only begins at the point where we have come to know that Reason, glorified for centuries, is the most obstinate adversary of thinking.",
+          source: "The Word of Nietzsche: 'God Is Dead'",
+        },
+        {
+          text: "Man acts as though he were the shaper and master of language, while in fact language remains the master of man.",
+          source: "Poetry, Language, Thought ('Building Dwelling Thinking')",
+        },
+        {
+          text: "The possible ranks higher than the actual.",
+          source: "Being and Time (concept)",
+        },
+        {
+          text: "To dwell is to garden.",
+          source:
+            "Attributed / Paraphrase related to 'Building Dwelling Thinking'",
+        },
+        {
+          text: "The essence of technology is by no means anything technological.",
+          source: "The Question Concerning Technology",
+        },
+        {
+          text: "Questioning is the piety of thought.",
+          source: "The Question Concerning Technology",
+        },
+        {
+          text: "Dasein is an entity which does not just occur among other entities. Rather it is ontically distinguished by the fact that, in its very Being, that Being is an issue for it.",
+          source: "Being and Time",
+        },
+        {
+          text: "But what is philosophy? ... it is the setting-in-order of the possible.",
+          source: "Attributed",
+        },
+        {
+          text: "Temporality temporalizes itself as a future which makes present in the process of having been.",
+          source: "Being and Time",
+        },
+        {
+          text: "We never come to thoughts. They come to us.",
+          source: "Poetry, Language, Thought ('The Nature of Language')",
+        },
+        {
+          text: "Agriculture is now a motorized food industry, the same thing in its essence as the production of corpses in the gas chambers and the extermination camps...",
+          source:
+            "The Question Concerning Technology / Bremen Lectures (Controversial comparison)",
+        },
+        {
+          text: "To be a poet in a destitute time means: to attend, singing, to the trace of the fugitive gods.",
+          source: "What Are Poets For?",
+        },
+        {
+          text: "Being is the nearest. Yet the near remains farthest from man.",
+          source: "Letter on Humanism",
+        },
+        {
+          text: "Anxiety reveals nothingness.",
+          source: "What is Metaphysics?",
+        },
+        {
+          text: "Only a god can save us.",
+          source: "Der Spiegel Interview (1966, published 1976)",
+        },
+      ];
+
+      // Content data for Heidegger sections
+      const content = {
+        home: {
+          title: "Scattered Thoughts",
+        },
+        intro: {
+          title: "Introduction: Heidegger & The Question of Being",
+          body: `
+                    <p>Martin Heidegger (1889–1976) was a highly influential, though deeply controversial, German philosopher of the 20th century. Associated primarily with phenomenology and existentialism (a label he resisted), his work fundamentally reoriented philosophical inquiry around the "question of the meaning of Being" (die Seinsfrage).</p>
+                    <p>His magnum opus, 'Being and Time' (Sein und Zeit, 1927), although unfinished, revolutionized continental philosophy. In it, Heidegger sought to uncover the meaning of Being by first analyzing the structure of human existence, which he termed <strong>Dasein</strong> ('Being-there'). He argued that Western philosophy since Plato had forgotten the question of Being itself, instead focusing on particular beings (entities) and treating Being as the most general, empty concept.</p>
+                    <p>Key concepts from his early work include:
+                        <ul>
+                            <li><strong>Dasein:</strong> The unique mode of Being characteristic of humans, whose existence is defined by its understanding of Being and its possibilities.</li>
+                            <li><strong>Being-in-the-World:</strong> Dasein's fundamental mode of existence is not as a detached subject observing an objective world, but as an engaged, practical involvement within a meaningful context.</li>
+                            <li><strong>Authenticity/Inauthenticity:</strong> Modes of Dasein's existence, relating to whether it confronts its own possibilities (especially its finitude) or falls into the anonymous conformity of 'the They' (das Man).</li>
+                            <li><strong>Temporality:</strong> The foundational structure of Dasein's Being, oriented towards the future (possibility), grounded in the past (facticity), and engaged in the present (falling).</li>
+                            <li><strong>Anxiety (Angst):</strong> A fundamental mood that discloses Dasein's thrownness, its Being-towards-death, and the possibility of authentic existence.</li>
+                        </ul>
+                    </p>
+                    <p>Heidegger's later work, sometimes referred to as 'the turn' (die Kehre), shifts focus from Dasein to Being itself, exploring its historical 'unfolding' or 'destining' (Geschick) through language, poetry (especially Hölderlin), and technology.</p>
+                    <p>His profound philosophical influence extends across existentialism, phenomenology, hermeneutics, deconstruction, theology, literary theory, and political theory. However, his legacy is permanently complicated by his political actions and statements.</p>
+
+                    <h3>The Political Controversy</h3>
+                    <p>Heidegger's enthusiastic involvement with the Nazi Party in 1933-34, including his acceptance of the Rectorate at the University of Freiburg and his related speeches, remains a deeply problematic aspect of his biography. While he later distanced himself from the regime's cruder aspects and resigned the Rectorship, he never fully renounced his initial engagement or publicly apologized for it. The publication of his private 'Black Notebooks' (Schwarze Hefte) beginning in 2014 revealed further disturbing passages containing anti-Semitic remarks and attempts to philosophically frame Nazism, intensifying the ongoing debate about the relationship between his philosophy and his political failings. Scholars remain divided on whether his Nazism was a personal failing separate from his thought, or if elements of his philosophy are intrinsically linked to his political actions. Addressing this controversy is essential for any responsible engagement with Heidegger's work.</p>
+
+                    <blockquote>"The question of Being will encompass us wholly, only if it stands before us in its genuine perplexity." (Paraphrasing core idea of Being and Time)</blockquote>
+                    <small class="source-note">Primary Sources: Being and Time, Introduction to Metaphysics, Letter on Humanism, The Question Concerning Technology. Secondary: SEP, IEP entries on Heidegger.</small>
+                `,
+        },
+        "being-time": {
+          title: "Being and Time (Sein und Zeit)",
+          body: `
+                    <p>'Being and Time' (1927) is Heidegger's incomplete magnum opus and one of the most influential philosophical works of the 20th century. Its central aim is to reawaken the <strong>"question of the meaning of Being"</strong> (die Seinsfrage), which Heidegger argues has been forgotten or obscured by the Western philosophical tradition since Plato.</p>
+                    <p>Heidegger contends that philosophy has focused on 'beings' (entities, Seiende) rather than 'Being' itself (Sein), the underlying ground that makes entities intelligible. To access the meaning of Being, Heidegger proposes a preparatory 'fundamental ontology' which involves an analysis of the entity for whom Being is an issue: human existence, which he terms <strong>Dasein</strong> ('Being-there').</p>
+                    <p><strong>Key Analyses in Being and Time:</strong>
+                        <ul>
+                            <li><strong>Analysis of Dasein:</strong> Investigating the fundamental structures of human existence not as a subject/object relation but as <strong>Being-in-the-World</strong>.</li>
+                            <li><strong>Worldhood of the World:</strong> Analyzing the world not as a collection of objects but as a meaningful context of equipment ('ready-to-hand', Zuhandenheit) revealed through practical engagement, contrasted with theoretical observation ('present-at-hand', Vorhandenheit).</li>
+                            <li><strong>Being-with-Others:</strong> Exploring Dasein's essential co-existence with others and its tendency towards 'falling' into the inauthentic mode of 'the They' (das Man).</li>
+                            <li><strong>Care (Sorge):</strong> Identified as the fundamental structure of Dasein's Being, encompassing its facticity (thrownness into a situation), existentiality (projection of possibilities), and falling (immersion in the present).</li>
+                            <li><strong>Authenticity and Inauthenticity:</strong> Distinguishing between Dasein confronting its own possibilities, particularly its finitude (Being-towards-death), versus fleeing into the anonymity and distractions of 'the They'.</li>
+                            <li><strong>Anxiety (Angst):</strong> A key mood that discloses Dasein's Being-in-the-world, its freedom, and its finitude, potentially calling it back to authenticity.</li>
+                            <li><strong>Temporality (Zeitlichkeit):</strong> Revealed as the ultimate horizon for understanding Being. Dasein's Being is fundamentally temporal, structured by its orientation towards the future (potentiality), grounded in its past (having-been), and acting in the present. Authentic temporality involves resolutely anticipating death.</li>
+                        </ul>
+                    </p>
+                    <p>The book was intended to have a second part moving from the analysis of Dasein's temporality to the meaning of Being in general, but this part was never completed as originally conceived. Despite its unfinished state and notoriously difficult language, 'Being and Time' fundamentally reshaped phenomenology, existentialism, hermeneutics, and much of continental philosophy by focusing on the existential structures of human situatedness and temporality as the path towards understanding Being.</p>
+                    <blockquote>"The Being of Dasein finds its meaning in temporality." - Being and Time, §65</blockquote>
+                    <small class="source-note">Primary Source: Being and Time. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        dasein: {
+          title: "Dasein: Being-There",
+          body: `
+                    <p><strong>Dasein</strong> (literally "Being-there" or "Being-here") is the term Heidegger uses in 'Being and Time' to refer to the unique mode of being characteristic of human beings. He avoids traditional terms like 'human subject,' 'person,' 'consciousness,' or 'ego' to break from philosophical assumptions he sees as problematic (especially the subject-object dichotomy stemming from Descartes).</p>
+                    <p><strong>Key Characteristics of Dasein:</strong>
+                        <ul>
+                            <li><strong>Ontological, Not Ontic:</strong> Dasein is not just another entity (ontic) among others; it is ontologically distinct because its very Being is an "issue" for it. Dasein has an understanding of Being (Seinsverständnis), however vague or unthematic. It cares about its existence and its possibilities.</li>
+                            <li><strong>Existence Precedes Essence:</strong> Echoing a later existentialist theme, Dasein's essence lies in its existence – in its possibilities and how it chooses to realize them. It is not defined by a fixed nature but by its potentiality-for-Being (Seinkönnen).</li>
+                            <li><strong>Being-in-the-World:</strong> Dasein's fundamental constitution is Being-in-the-world (In-der-Welt-sein). It is not a self-contained consciousness separate from an external world, but is always already situated, engaged, and involved within a meaningful context.</li>
+                            <li><strong>Understanding and Interpretation:</strong> Dasein constantly understands and interprets itself and its world. This understanding is initially practical and pre-reflective ('know-how') before it becomes theoretical ('know-that').</li>
+                            <li><strong>Possibility and Projection:</strong> Dasein is fundamentally oriented towards its possibilities. It "projects" itself onto future ways of being.</li>
+                            <li><strong>Thrownness (Geworfenheit):</strong> Dasein always finds itself "thrown" into a specific situation, history, culture, and set of possibilities not of its own choosing (its 'facticity').</li>
+                            <li><strong>Falling (Verfallen):</strong> Dasein has a tendency to 'fall' into the everyday world, becoming absorbed in the concerns and interpretations of 'the They' (das Man), losing sight of its own unique possibilities and finitude.</li>
+                            <li><strong>Mortality:</strong> Dasein is fundamentally Being-towards-death (Sein-zum-Tode). Its finitude is its ownmost, non-relational possibility, confrontation with which is crucial for authentic existence.</li>
+                        </ul>
+                    </p>
+                    <p>By analyzing Dasein, Heidegger aimed to uncover the structures that make any understanding of Being possible. The analysis of Dasein is thus the necessary preparatory step (fundamental ontology) for addressing the broader question of the meaning of Being itself.</p>
+                    <blockquote>"Dasein is an entity which in its very Being comports itself understandingly towards that Being." - Being and Time, §12 (paraphrased)</blockquote>
+                    <small class="source-note">Primary Source: Being and Time (esp. Division One). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "being-in-world": {
+          title: "Being-in-the-World (In-der-Welt-sein)",
+          body: `
+                    <p><strong>Being-in-the-World</strong> (In-der-Welt-sein) is Heidegger's term for the fundamental constitution of Dasein (human existence). It signifies that Dasein is not a self-contained subject separate from an objective, external world, but is always already situated, involved, and engaged within a meaningful world.</p>
+                    <p>Heidegger breaks down this unitary phenomenon into its structural components, emphasizing their interconnectedness:</p>
+                    <p><strong>1. 'Being-in' (In-Sein):</strong>
+                        <ul>
+                            <li>This does not mean spatial containment (like water in a glass). It describes Dasein's mode of familiarity, engagement, and dwelling within its world.</li>
+                            <li>It involves states-of-mind or moods (Befindlichkeit), which disclose Dasein's 'thrownness' and how it 'finds itself' attuned to its world (e.g., fear, anxiety, boredom).</li>
+                            <li>It also involves understanding (Verstehen), which is Dasein's projection of possibilities and its interpretation (Auslegung) of itself and its world.</li>
+                            <li>Discourse or talk (Rede) is the articulation of this understanding and mood.</li>
+                        </ul>
+                    </p>
+                    <p><strong>2. 'World' (Welt):</strong>
+                        <ul>
+                            <li>The 'world' is not the sum total of all physical objects (nature). It is primarily understood as a meaningful context, a network of relationships and significance determined by Dasein's practical concerns and projects.</li>
+                            <li>The primary mode of encountering entities within the world is as equipment or tools that are <strong>'ready-to-hand' (zuhanden)</strong>. We engage with them practically, often without explicit attention (e.g., using a hammer). Their Being is defined by their involvement in a context of purpose ('in-order-to').</li>
+                            <li>Only when equipment breaks down or is unsuitable does it become conspicuous, and we may shift to viewing it theoretically as an object with properties, <strong>'present-at-hand' (vorhanden)</strong>. Heidegger argues traditional philosophy mistakenly prioritized the present-at-hand, distorting our understanding of both world and Dasein.</li>
+                        </ul>
+                    </p>
+                    <p><strong>3. 'Who' of Being-in-the-World:</strong>
+                        <ul>
+                            <li>The 'who' of everyday Dasein is initially and for the most part not an authentic 'Self' but <strong>'the They' (das Man)</strong>. 'The They' represents the anonymous, public norm, the way 'one' typically thinks, acts, and interprets the world.</li>
+                            <li>Dasein tends to 'fall' (Verfallen) into the world, becoming absorbed in the interpretations and possibilities dictated by 'the They', thus evading authentic self-choice.</li>
+                        </ul>
+                    </p>
+                    <p>Being-in-the-World emphasizes Dasein's engaged, situated, and practical existence as the starting point for philosophical analysis, rejecting the Cartesian model of a detached mind confronting an external world.</p>
+                    <blockquote>"The compound expression 'Being-in-the-world' stands for a unitary phenomenon. This primary datum must be seen as a whole." - Being and Time, §12</blockquote>
+                    <small class="source-note">Primary Source: Being and Time (esp. Division One, Chapters II-V). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        authenticity: {
+          title:
+            "Authenticity & Inauthenticity (Eigentlichkeit / Uneigentlichkeit)",
+          body: `
+                    <p>Heidegger distinguishes between two fundamental modes of Dasein's existence: <strong>Authenticity (Eigentlichkeit)</strong> and <strong>Inauthenticity (Uneigentlichkeit)</strong>. These are not moral judgments in the traditional sense, but descriptions of how Dasein relates to its own Being and possibilities.</p>
+                    <p><strong>Inauthenticity (Uneigentlichkeit):</strong>
+                        <ul>
+                            <li>This is Dasein's average everyday mode of Being. It is characterized by 'Falling' (Verfallen) into the world and absorption in the concerns and interpretations of <strong>'the They' (das Man)</strong>.</li>
+                            <li>In this mode, Dasein understands itself based on public norms and possibilities defined by 'the They'. Its choices are dictated by what 'one' does, says, or thinks.</li>
+                            <li>It involves fleeing from Dasein's ownmost possibilities, particularly its finitude (Being-towards-death) and its 'thrownness'. Dasein seeks distraction, security, and anonymity in the crowd.</li>
+                            <li>Features include idle talk (Gerede), curiosity (Neugier), and ambiguity (Zweideutigkeit), which cover over genuine understanding and resolute choice.</li>
+                            <li>Inauthenticity is Dasein's default state, but it is not necessarily 'bad' in a moral sense; it's simply a mode of evading ownership of one's own existence.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Authenticity (Eigentlichkeit):</strong>
+                        <ul>
+                            <li>This mode involves Dasein taking ownership ('eigen' means 'own') of its existence, particularly its finitude and possibilities.</li>
+                            <li>It is often prompted by the mood of <strong>Anxiety (Angst)</strong>, which isolates Dasein from the comforting interpretations of 'the They' and reveals the groundlessness of its Being-in-the-world.</li>
+                            <li>Authenticity involves resolutely confronting one's own <strong>Being-towards-death</strong> as the ownmost, non-relational possibility. This anticipation of death individualizes Dasein and reveals the significance of its choices.</li>
+                            <li>It requires choosing one's possibilities based on one's own understanding and commitment, rather than passively accepting the possibilities offered by 'the They'. This is called <strong>Resoluteness (Entschlossenheit)</strong>.</li>
+                            <li>Authenticity does not mean withdrawing from the world or everyday concerns, but engaging with them in a way that is grounded in an awareness of one's own finitude and potentiality-for-Being.</li>
+                            <li>It involves hearing the <strong>'call of conscience'</strong>, which summons Dasein back from its lostness in 'the They' towards its own potentiality-for-Being-its-Self.</li>
+                        </ul>
+                    </p>
+                    <p>The transition from inauthenticity to authenticity is not a permanent achievement but an ongoing possibility for Dasein, requiring constant vigilance against falling back into the mode of 'the They'. It represents the challenge for Dasein to become what it truly is: a being defined by its possibilities and its finite existence.</p>
+                    <blockquote>"The 'they' prescribes one's state-of-mind, and determines what and how one 'sees'." - Being and Time, §27</blockquote>
+                    <blockquote>"Anticipation reveals to Dasein its lostness in the they-self, and brings it face to face with the possibility of being itself... in passionate, anxious freedom towards death..." - Being and Time, §62</blockquote>
+                    <small class="source-note">Primary Source: Being and Time (esp. Division One, Chapter V & Division Two, Chapters I-III). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "anxiety-death": {
+          title: "Anxiety (Angst) & Being-towards-Death",
+          body: `
+                    <p>Two concepts crucial for understanding Dasein's potential for authenticity in 'Being and Time' are <strong>Anxiety (Angst)</strong> and <strong>Being-towards-death (Sein-zum-Tode)</strong>.</p>
+                    <p><strong>Anxiety (Angst):</strong>
+                        <ul>
+                            <li>Heidegger distinguishes Anxiety sharply from Fear (Furcht). Fear has a definite object within the world (e.g., fear of a predator). Anxiety, however, has no specific object; its 'object' is Being-in-the-world itself, or 'nothing' in particular.</li>
+                            <li>Anxiety is a fundamental state-of-mind (Befindlichkeit) that discloses Dasein's fundamental situation: its 'thrownness' into existence without ultimate ground, its freedom and responsibility for choosing its possibilities, and its finitude.</li>
+                            <li>It has an 'unsettling' (unheimlich - literally 'un-homely') character, disrupting Dasein's comfortable absorption in the everyday world of 'the They'. It reveals the world's significance draining away, leaving Dasein isolated and facing its bare potentiality-for-Being.</li>
+                            <li>While often experienced negatively, Anxiety holds a positive possibility: it can call Dasein back from its lostness in the inauthentic 'They' and towards authentic self-choice.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Being-towards-death (Sein-zum-Tode):</strong>
+                        <ul>
+                            <li>Heidegger argues that Dasein's finitude – its mortality – is not merely an event that happens at the end of life, but a fundamental structure of its Being from the moment it exists. Dasein is always already 'dying' in the sense that death is its ultimate possibility.</li>
+                            <li>Death is Dasein's <strong>"ownmost, non-relational, and insurmountable possibility."</strong> It is 'ownmost' because no one can die another's death; 'non-relational' because it isolates Dasein from others; 'insurmountable' because it cannot be outstripped or avoided.</li>
+                            <li><strong>Inauthentic Being-towards-death:</strong> Everyday Dasein, lost in 'the They,' flees from death. It treats death as an impersonal event that happens to 'others' but not yet to oneself, covering over its own finitude through distraction and public chatter ("One dies").</li>
+                            <li><strong>Authentic Being-towards-death (Anticipation):</strong> Authenticity involves resolutely 'anticipating' (Vorlaufen) death. This doesn't mean dwelling morbidly on death, but rather understanding it as one's ownmost possibility. This anticipation shatters the illusions of 'the They,' individualizes Dasein, reveals the finitude of its time, and frees it to choose its possibilities authentically in light of that finitude.</li>
+                        </ul>
+                    </p>
+                    <p>Anxiety discloses the possibility of authentic Being-towards-death, and resolutely anticipating death allows Dasein to grasp its existence as a finite whole and take ownership of its possibilities.</p>
+                    <blockquote>"Anxiety is anxious <em>about</em> Being-in-the-world itself." - Being and Time, §40</blockquote>
+                    <blockquote>"Being-towards-death is the anticipation of a potentiality-for-Being of that entity whose kind of Being is anticipation itself." - Being and Time, §52</blockquote>
+                    <small class="source-note">Primary Source: Being and Time (esp. §40, Division Two, Chapter I). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        temporality: {
+          title: "Temporality (Zeitlichkeit)",
+          body: `
+                    <p>In the later sections of 'Being and Time' (Division Two), Heidegger argues that <strong>Temporality (Zeitlichkeit)</strong> is the fundamental meaning of Dasein's Being (specifically, the structure of Care/Sorge). This is distinct from the ordinary conception of time as a linear sequence of 'now' moments (clock time).</p>
+                    <p>Authentic temporality is an ecstatic unity of three dimensions or 'ecstases': Future, Past (Having-Been), and Present.</p>
+                    <p><strong>The Ecstases of Temporality:</strong>
+                        <ul>
+                            <li><strong>Future (Zukunft):</strong> Heidegger gives primacy to the future. Dasein is fundamentally characterized by its projection onto possibilities, its 'Being-ahead-of-itself'. Authentic Dasein anticipates its ownmost possibility (death), which allows it to grasp its finite potentiality-for-Being as a whole.</li>
+                            <li><strong>Having-Been (Gewesenheit / Past):</strong> Dasein is always already 'thrown' into a world and situation not of its choosing – its facticity. Authentic temporality involves resolutely taking over this 'having-been,' accepting one's thrownness and inherited possibilities, rather than fleeing from them. It's not about being determined by the past, but about integrating it into one's present projection towards the future.</li>
+                            <li><strong>Present (Gegenwart):</strong> The Present arises from the interplay of future projection and resolute acceptance of the past.
+                                <ul>
+                                    <li><em>Authentic Present:</em> This is the 'moment of vision' (Augenblick), where Dasein acts resolutely based on its chosen possibilities in light of its finitude and thrownness.</li>
+                                    <li><em>Inauthentic Present:</em> This involves 'making present' (Gegenwärtigen) – becoming lost in the immediate concerns, distractions, and objects of the everyday world, forgetting future possibilities and past thrownness.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </p>
+                    <p><strong>Temporality as the Meaning of Care:</strong> The structure of Care (Sorge) – Dasein's fundamental Being as ahead-of-itself (Existentiality/Future), already-in-a-world (Facticity/Having-Been), and alongside-entities (Falling/Present) – is grounded in this ecstatic unity of temporality. Dasein 'is' its time in this dynamic, unified sense.</p>
+                    <p>Heidegger intended to use this analysis of Dasein's temporality as the basis for understanding the meaning of Being in general and its relation to time (the task of the unpublished Part Two of 'Being and Time'), but this connection remained largely promissory in the published work.</p>
+                    <blockquote>"Temporality reveals itself as the meaning of authentic care." - Being and Time, §65</blockquote>
+                    <small class="source-note">Primary Source: Being and Time (esp. Division Two, Chapters III-V). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        technology: {
+          title: "The Question Concerning Technology",
+          body: `
+                    <p>In his later thought, particularly in the influential essay "The Question Concerning Technology" (Die Frage nach der Technik), Heidegger offers a critical analysis of the essence of modern technology. He argues that its essence is not merely instrumental (a means to an end) or anthropological (a human activity), but a fundamental way of <strong>revealing</strong> or disclosing Being that characterizes the modern age.</p>
+                    <p><strong>Key Concepts:</strong>
+                        <ul>
+                            <li><strong>Technology as Revealing (Entbergen):</strong> Heidegger connects technology to the Greek concept of 'techne,' which encompasses not just craft but also art and the bringing-forth (poiesis) of beings into presence. All technology, ancient and modern, is a mode of revealing truth (aletheia).</li>
+                            <li><strong>Modern Technology's Essence: Enframing (Gestell):</strong> The essence of modern technology, however, is distinct. Heidegger calls it <strong>Enframing (Gestell)</strong>. This describes a specific way of revealing that challenges forth nature and reality, demanding that they yield resources that can be ordered, stored, and optimized for human use.</li>
+                            <li><strong>Challenging-Forth (Herausfordern):</strong> Unlike earlier modes of revealing that might 'bring forth' more gently (like a farmer cultivating land), modern technology 'challenges' nature to supply energy or resources that can be extracted and transformed. Example: A hydroelectric dam challenges the river to yield power, unlike an old wooden bridge that simply fits into the landscape.</li>
+                            <li><strong>Standing-Reserve (Bestand):</strong> Enframing reveals the world as mere <strong>Standing-Reserve (Bestand)</strong> – resources on call, available for ordering and exploitation. Nature, objects, and even human beings are viewed primarily in terms of their utility and availability for technical manipulation. The Rhine river becomes primarily a source of hydroelectric power or a shipping lane.</li>
+                            <li><strong>The Danger:</strong> The greatest danger of Enframing is not necessarily environmental destruction (though that is a consequence), but that it obscures all other ways of revealing. It threatens to make us see *everything* merely as standing-reserve, including ourselves. It conceals Being itself, reducing reality to what is calculable and controllable. We risk forgetting that Enframing is just *one* way of revealing, mistaking it for the only way.</li>
+                            <li><strong>The Saving Power:</strong> Heidegger finds a hint of "saving power" within the essence of technology itself. Recognizing the danger of Enframing as *a* mode of revealing (and not the only one) opens the possibility of a "freer relationship" to technology. He also looks towards art and poetry (related to the original sense of techne/poiesis) as alternative modes of revealing that might counteract the dominance of Enframing.</li>
+                        </ul>
+                    </p>
+                    <p>Heidegger's analysis is not a simple rejection of technology but a profound questioning of its underlying essence and its impact on our understanding of Being, reality, and ourselves.</p>
+                    <blockquote>"The essence of technology is by no means anything technological." - The Question Concerning Technology</blockquote>
+                    <blockquote>"Enframing means the gathering together of that setting-upon which sets upon man, i.e., challenges him forth, to reveal the real, in the mode of ordering, as standing-reserve." - The Question Concerning Technology</blockquote>
+                    <small class="source-note">Primary Source: "The Question Concerning Technology" in Basic Writings or The Question Concerning Technology and Other Essays. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "later-thought": {
+          title: "Later Thought: Language, Poetry, and 'The Turn'",
+          body: `
+                    <p>After 'Being and Time,' Heidegger's philosophy underwent a shift in emphasis often referred to as <strong>"the turn" (die Kehre)</strong>. While still concerned with the question of Being, the focus moves away from Dasein as the primary access point towards Being itself and its historical "sending" or "destining" (Geschick). Language and poetry gain prominence as privileged sites for the disclosure of Being.</p>
+                    <p><strong>Key Themes in Later Thought:</strong>
+                        <ul>
+                            <li><strong>Being's Initiative (Ereignis):</strong> Instead of Dasein uncovering Being, the later Heidegger emphasizes Being's own active role in revealing and concealing itself throughout history. The 'Ereignis' (Event of Appropriation or Enowning) becomes a key term, signifying the complex event in which Being and humanity belong together and are mutually appropriated.</li>
+                            <li><strong>Language as the House of Being:</strong> Language is no longer seen merely as a tool for Dasein's articulation but as the fundamental medium through which Being itself comes to presence and unconcealment (aletheia). "Language speaks," rather than humans simply speaking language. We 'dwell' in the disclosures granted by language.</li>
+                            <li><strong>Poetry and Thinking:</strong> Heidegger turns increasingly to poetry, particularly the works of Hölderlin, Rilke, and Trakl, as a mode of language that is closer to the original revealing power of Being than the conceptual language of metaphysics or the calculative language of technology. Authentic thinking becomes akin to poetic dwelling, listening attentively to the "saying" of Being in language.</li>
+                            <li><strong>Critique of Metaphysics:</strong> The later work intensifies the critique of the Western metaphysical tradition (from Plato onwards) as characterized by 'onto-theology' – thinking of Being in terms of the highest being (God) or as mere presence (constant availability). This, he argues, leads to the forgetting of Being itself (Seinsvergessenheit) and culminates in the technological worldview (Enframing).</li>
+                            <li><strong>Dwelling (Wohnen):</strong> Explored in essays like "Building Dwelling Thinking," this concept emphasizes an authentic mode of being on earth, characterized by caring for things, relating to the 'fourfold' (earth, sky, divinities, mortals), and allowing things to be in their essence, rather than dominating them technologically.</li>
+                            <li><strong>Gelassenheit (Releasement):</strong> A stance of openness and letting-be towards beings and towards the mystery of Being, contrasting with the willful striving and calculation dominant in the modern age.</li>
+                        </ul>
+                    </p>
+                    <p>The later Heidegger's thought is often considered more meditative, historical, and perhaps mystical than the rigorous analysis of 'Being and Time.' It focuses on the history of Being's withdrawal and the possibility of a new kind of thinking that listens for Being's subtle disclosures in language, art, and our fundamental relationship with the world.</p>
+                    <blockquote>"Language is the house of Being. In its home man dwells. Those who think and those who create with words are the guardians of this home." - Letter on Humanism</blockquote>
+                    <small class="source-note">Primary Sources: Letter on Humanism, Introduction to Metaphysics, Poetry, Language, Thought essays (e.g., Building Dwelling Thinking, What Are Poets For?, The Nature of Language), What is Called Thinking?. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        controversy: {
+          title: "The Controversy: Heidegger and Nazism",
+          body: `
+                    <p>It is impossible to engage with Martin Heidegger's philosophy without confronting his deep and undeniable involvement with National Socialism (Nazism). This remains one of the most significant and troubling controversies in 20th-century intellectual history.</p>
+                    <p><strong>Key Facts:</strong>
+                        <ul>
+                            <li>Heidegger joined the Nazi Party (NSDAP) in May 1933, shortly after being elected Rector of the University of Freiburg.</li>
+                            <li>His Rectoral Address, "The Self-Assertion of the German University," delivered in 1933, contained language aligning the university's mission with the Nazi state, speaking of "labor service" and "military service" alongside "knowledge service."</li>
+                            <li>During his Rectorship (which lasted less than a year), he implemented certain Nazi policies within the university, though the extent and enthusiasm of his actions are debated.</li>
+                            <li>He made public statements praising Hitler and the Nazi movement during this period.</li>
+                            <li>Heidegger resigned the Rectorship in April 1934 but remained a member of the Nazi Party until 1945.</li>
+                            <li>After the war, he was barred from teaching for several years by the French de-Nazification authorities.</li>
+                            <li>The posthumous publication of his private 'Black Notebooks' (Schwarze Hefte) starting in 2014 revealed numerous anti-Semitic remarks and attempts to integrate National Socialism into his philosophical framework, using concepts like 'machination' (Machenschaft) and world-Jewry (Weltjudentum) in disturbing ways.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Interpretations and Debates:</strong>
+                        <ul>
+                            <li><strong>Separation Thesis:</strong> Some argue that Heidegger's political engagement was a personal failing, a catastrophic error in judgment separate from the core of his philosophical work (particularly 'Being and Time'). They maintain his philosophy can and should be read independently of his politics.</li>
+                            <li><strong>Intrinsic Connection Thesis:</strong> Others argue that there are deep connections between elements of Heidegger's philosophy (e.g., concepts of authenticity, resoluteness, destiny, critique of modernity) and his attraction to Nazism. They suggest his philosophy is inherently compromised or contains dangerous political potentials. This view gained significant traction after the publication of the Black Notebooks.</li>
+                            <li><strong>A Middle Ground?:</strong> Many scholars attempt a nuanced reading, acknowledging the deep moral and political failure while still finding value in Heidegger's philosophical insights, particularly his critique of technology and his rethinking of Being, language, and existence. They argue for a critical engagement that confronts the problematic aspects without dismissing the entire corpus.</li>
+                            <li><strong>Heidegger's Silence:</strong> Heidegger himself remained largely silent or evasive about his Nazi past after the war, offering little public explanation or apology beyond remarks in a 1966 Der Spiegel interview (published posthumously) that were widely seen as inadequate.</li>
+                        </ul>
+                    </p>
+                    <p>The relationship between Heidegger's philosophy and his Nazism is complex and fiercely debated. There is no easy consensus. However, his political actions and the evidence from the Black Notebooks demonstrate a profound ethical and political failure that cannot be ignored when studying his thought. Responsible engagement requires acknowledging this darkness alongside his undeniable philosophical influence.</p>
+                    <blockquote>"Only a god can save us." - Heidegger's famous remark in the Der Spiegel interview (1966), often interpreted as reflecting a sense of helplessness regarding the modern technological world, but made in the context of discussing his past and future possibilities.</blockquote>
+                    <small class="source-note">Sources: Historical records, Rectoral Address (1933), Der Spiegel Interview (1966/1976), Black Notebooks, numerous scholarly analyses (e.g., works by Victor Farías, Emmanuel Faye, Richard Wolin, Peter Trawny, Donatella Di Cesare).</small>
+                `,
+        },
+      };
+
+      const contentArea = document.getElementById("content-area");
+      const navButtons = document.querySelectorAll(".nav-button");
+      const modalOverlay = document.getElementById("quote-modal-overlay");
+      const modal = document.getElementById("quote-modal");
+      const modalQuoteText = document.getElementById("modal-quote-text");
+      const modalQuoteSource = document.getElementById("modal-quote-source");
+      const modalCloseButton = document.getElementById("modal-close-button");
+
+      function openModal(quoteText, quoteSource) {
+        modalQuoteText.textContent = quoteText;
+        modalQuoteSource.textContent = `Source: ${quoteSource}`;
+        modalOverlay.classList.add("visible");
+      }
+
+      function closeModal() {
+        modalOverlay.classList.remove("visible");
+      }
+
+      function getRandomQuotes(numQuotes) {
+        const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, numQuotes);
+      }
+
+      function loadContent(contentId) {
+        let sectionTitle = "";
+        let sectionBodyHtml = "";
+        contentArea.innerHTML = ""; // Clear previous content
+
+        if (contentId === "home") {
+          const numCards = 5; // Number of quote cards
+          const selectedQuotes = getRandomQuotes(numCards);
+          sectionTitle = content["home"].title;
+
+          const cardContainer = document.createElement("div");
+          cardContainer.id = "quote-card-container";
+
+          selectedQuotes.forEach((quote) => {
+            const card = document.createElement("div");
+            card.classList.add("quote-card");
+            card.dataset.fullQuote = quote.text;
+            card.dataset.source = quote.source;
+            // Card remains blank
+            card.addEventListener("click", () => {
+              openModal(card.dataset.fullQuote, card.dataset.source);
+            });
+            cardContainer.appendChild(card);
+          });
+
+          const refreshButton = document.createElement("button");
+          refreshButton.id = "refresh-quotes-button";
+          refreshButton.textContent = "Refresh Quotes";
+          refreshButton.addEventListener("click", () => loadContent("home"));
+
+          sectionBodyHtml = cardContainer.outerHTML + refreshButton.outerHTML;
+          contentArea.style.display = "block"; // Use block for container + button layout
+        } else if (content[contentId]) {
+          const section = content[contentId];
+          sectionTitle = section.title;
+          sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+          contentArea.style.display = "block";
+        } else {
+          sectionTitle = "Error";
+          sectionBodyHtml =
+            '<div class="content-body"><p>Content not found.</p></div>';
+          contentArea.style.display = "block";
+        }
+
+        contentArea.style.opacity = 0;
+        setTimeout(() => {
+          const titleElement = document.createElement("h2");
+          titleElement.className = "text-3xl font-semibold mb-6";
+          titleElement.textContent = sectionTitle;
+          contentArea.appendChild(titleElement);
+
+          const bodyWrapper = document.createElement("div");
+          bodyWrapper.innerHTML = sectionBodyHtml; // Parse HTML
+          while (bodyWrapper.firstChild) {
+            // Append parsed elements
+            contentArea.appendChild(bodyWrapper.firstChild);
+          }
+
+          // Re-attach listeners after innerHTML update for home section
+          if (contentId === "home") {
+            const cards = contentArea.querySelectorAll(".quote-card");
+            cards.forEach((card) => {
+              const fullQuote = card.dataset.fullQuote;
+              const source = card.dataset.source;
+              card.addEventListener("click", () => {
+                openModal(fullQuote, source);
+              });
+            });
+            const refreshBtn = contentArea.querySelector(
+              "#refresh-quotes-button"
+            );
+            if (refreshBtn) {
+              refreshBtn.addEventListener("click", () => loadContent("home"));
+            }
+          }
+
+          contentArea.style.opacity = 1;
+        }, 200);
+
+        navButtons.forEach((button) => {
+          button.classList.toggle(
+            "active",
+            button.dataset.content === contentId
+          );
+        });
+      }
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const contentId = e.currentTarget.dataset.content;
+          loadContent(contentId);
+        });
+      });
+
+      modalCloseButton.addEventListener("click", closeModal);
+      modalOverlay.addEventListener("click", (event) => {
+        if (event.target === modalOverlay) {
+          closeModal();
+        }
+      });
+
+      window.addEventListener("load", () => {
+        loadContent("home");
+      });
+    </script>
+  </body>
+</html>

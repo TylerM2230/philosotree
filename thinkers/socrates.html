@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Socrates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom styles for a classical dark theme (Socrates Theme) */
+      :root {
+        --primary-accent: #607d8b; /* Muted Grey-Blue */
+        --background-dark: #1f1f1f;
+        --background-medium: #2b2b2b;
+        --background-light: #333333;
+        --text-light: #dcdcdc;
+        --text-medium: #c0c0c0;
+        --text-dark: #888888;
+        --border-color: #555555;
+      }
+
+      body {
+        font-family: "EB Garamond", serif;
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background-color: #111111;
+        border-bottom: 1px solid var(--primary-accent);
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      h1 {
+        color: var(--text-light);
+        font-family: "EB Garamond", serif;
+        padding: 0.75rem 0;
+        text-align: center;
+      }
+
+      .main-wrapper {
+        display: flex;
+        flex-grow: 1;
+        justify-content: center;
+        padding: 2rem 1rem;
+        width: 100%;
+        max-width: 1280px;
+        margin: 0 auto;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+
+      /* Navigation container */
+      nav {
+        width: 220px;
+        flex-shrink: 0;
+        padding-top: 1rem;
+      }
+
+      /* Navigation button styles - Scattered Pages Effect */
+      .nav-button {
+        background-color: var(--background-light);
+        color: var(--text-light);
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid #4a4a4a;
+        border-radius: 3px;
+        font-family: "EB Garamond", serif;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        width: 95%;
+        margin-bottom: -10px;
+        margin-left: 5px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+      }
+      .nav-button:nth-child(odd) {
+        transform: rotate(-1.5deg);
+        margin-left: 0px;
+      }
+      .nav-button:nth-child(even) {
+        transform: rotate(1deg);
+        z-index: 2;
+      }
+      .nav-button:nth-child(3n) {
+        transform: rotate(0.5deg);
+        z-index: 3;
+      }
+      .nav-button:nth-child(4n) {
+        transform: rotate(-1deg);
+        margin-left: 8px;
+      }
+      .nav-button:nth-child(5n) {
+        transform: rotate(1.8deg);
+        z-index: 4;
+      }
+
+      .nav-button:hover {
+        background-color: #444444;
+        color: #ffffff;
+        transform: rotate(0deg) scale(1.03);
+        z-index: 10;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+      }
+      .nav-button.active {
+        background-color: var(--primary-accent);
+        color: #ffffff;
+        font-weight: bold;
+        border: 1px solid var(--primary-accent);
+        box-shadow: 3px 3px 8px rgba(96, 125, 139, 0.5); /* Adjusted shadow color */
+        transform: rotate(0deg) scale(1.01);
+        z-index: 5;
+      }
+      .nav-button.active:hover {
+        transform: rotate(0deg) scale(1.03);
+      }
+
+      /* Content area style */
+      #content-area {
+        background-color: var(--background-medium);
+        border: 1px solid #444444;
+        border-radius: 8px;
+        flex-grow: 1;
+        padding: 1.5rem 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: opacity 0.2s ease-in-out;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h2 {
+        color: var(--text-light);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        font-family: "EB Garamond", serif;
+        flex-shrink: 0;
+      }
+
+      .content-body {
+        font-size: 1.1em;
+        line-height: 1.9;
+        flex-grow: 1;
+      }
+      .content-body p {
+        margin-bottom: 1.2em;
+        font-family: "Courier New", Courier, monospace;
+        color: var(--text-medium);
+      }
+      .content-body ul {
+        list-style-type: square;
+        margin-left: 2rem;
+        margin-bottom: 1em;
+        font-family: "Courier New", Courier, monospace;
+        color: var(--text-medium);
+      }
+      .content-body li {
+        margin-bottom: 0.7em;
+      }
+      .content-body blockquote {
+        border-left: 3px solid var(--primary-accent); /* Blue border */
+        padding-left: 1.2rem;
+        margin: 1.5rem 0.5rem;
+        font-style: italic;
+        color: #b8b8b8;
+        font-family: "EB Garamond", serif;
+      }
+      .content-body strong {
+        color: var(--text-light);
+        font-weight: 600;
+      }
+
+      /* Quote Card Container (Home Section) */
+      #quote-card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 2rem 1rem;
+        min-height: 50vh;
+        position: relative;
+        flex-grow: 1;
+      }
+
+      /* Individual Quote Card Styling */
+      .quote-card {
+        background-color: var(--background-light);
+        color: var(--text-medium);
+        border: 1px solid #4a4a4a;
+        border-radius: 4px;
+        padding: 1.5rem 1rem;
+        width: 220px;
+        height: 160px;
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          z-index 0s ease 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        font-size: 0.9em;
+        line-height: 1.5;
+        z-index: 1;
+      }
+      .quote-card:nth-child(1) {
+        transform: rotate(-4deg) translate(-10px, 5px);
+        z-index: 1;
+      }
+      .quote-card:nth-child(2) {
+        transform: rotate(3deg) translate(5px, -8px);
+        z-index: 2;
+      }
+      .quote-card:nth-child(3) {
+        transform: rotate(-2deg) translate(15px, 10px);
+        z-index: 3;
+      }
+      .quote-card:nth-child(4) {
+        transform: rotate(5deg) translate(-5px, -5px);
+        z-index: 1;
+      }
+      .quote-card:nth-child(5) {
+        transform: rotate(-3.5deg) translate(10px, 0px);
+        z-index: 2;
+      }
+
+      .quote-card::before {
+        content: "“";
+        position: absolute;
+        font-size: 6em;
+        color: var(--primary-accent); /* Blue quote mark */
+        opacity: 0.15;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "EB Garamond", serif;
+        z-index: 0;
+      }
+      .quote-card:hover {
+        transform: rotate(0deg) scale(1.08);
+        box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+        z-index: 10;
+        border-color: var(--primary-accent);
+      }
+
+      /* Refresh Button Styling */
+      #refresh-quotes-button {
+        display: block;
+        margin: 1.5rem auto 0 auto;
+        background-color: #4a4a4a;
+        color: var(--text-light);
+        padding: 0.7rem 1.4rem;
+        border: 1px solid var(--primary-accent); /* Blue border */
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease,
+          border-color 0.3s ease, transform 0.2s ease;
+        font-family: "EB Garamond", serif;
+        font-size: 1.1em;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        flex-shrink: 0;
+      }
+      #refresh-quotes-button:hover {
+        background-color: var(--primary-accent);
+        color: #ffffff;
+        border-color: var(--primary-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(96, 125, 139, 0.5); /* Adjusted shadow color */
+      }
+
+      /* Modal Styles */
+      #quote-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #quote-modal-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      #quote-modal {
+        background-color: var(--background-medium);
+        padding: 2.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        max-width: 90%;
+        width: 600px;
+        position: relative;
+        transform: scale(0.9);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+      #quote-modal-overlay.visible #quote-modal {
+        transform: scale(1);
+        opacity: 1;
+      }
+      #modal-quote-text {
+        font-family: "EB Garamond", serif;
+        font-size: 1.5em;
+        font-style: italic;
+        color: var(--text-light);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        border-left: 3px solid var(--primary-accent);
+        padding-left: 1rem; /* Blue border */
+      }
+      #modal-quote-source {
+        font-family: "EB Garamond", serif;
+        font-size: 1em;
+        color: var(--text-dark);
+        text-align: right;
+        margin-top: 1rem;
+      }
+      #modal-close-button {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--text-dark);
+        cursor: pointer;
+        line-height: 1;
+        padding: 0.2rem;
+      }
+      #modal-close-button:hover {
+        color: var(--primary-accent);
+      }
+
+      .source-note {
+        font-size: 0.85em;
+        color: #999999;
+        margin-top: 2rem;
+        display: block;
+        font-style: italic;
+        text-align: right;
+        font-family: "EB Garamond", serif;
+      }
+
+      footer {
+        background-color: #111111;
+        border-top: 1px solid var(--primary-accent); /* Blue border */
+        color: var(--text-dark);
+        font-family: "EB Garamond", serif;
+        width: 100%;
+        margin-top: auto;
+      }
+
+      @media (max-width: 768px) {
+        .main-wrapper {
+          flex-direction: column;
+          padding: 1rem;
+          gap: 1.5rem;
+        }
+        nav {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+          padding-top: 0;
+        }
+        .nav-button {
+          width: auto;
+          flex-basis: calc(50% - 0.5rem);
+          margin: 0 0 0.5rem 0;
+          transform: rotate(0deg);
+          text-align: center;
+          z-index: 1;
+        }
+        .nav-button:nth-child(n) {
+          transform: rotate(0deg);
+          margin-left: 0;
+          z-index: 1;
+        }
+        .nav-button.sub-item {
+          flex-basis: calc(50% - 0.5rem);
+          width: auto;
+          padding-left: 1rem;
+          margin-left: 0;
+        }
+        .nav-button:hover {
+          transform: scale(1.02);
+        }
+        .nav-button.active {
+          transform: scale(1.01);
+          z-index: 2;
+        }
+
+        #quote-card-container {
+          padding: 1rem 0;
+          gap: 1rem;
+          min-height: 40vh;
+        }
+        .quote-card {
+          width: 70%;
+          height: auto;
+          min-height: 120px;
+          margin-top: 0;
+          transform: rotate(0deg) translate(0, 0);
+        }
+        .quote-card:hover {
+          transform: scale(1.03);
+        }
+
+        #content-area {
+          width: 100%;
+          padding: 1rem 1.5rem;
+        }
+        #quote-modal {
+          width: 90%;
+          padding: 1.5rem;
+        }
+        #modal-quote-text {
+          font-size: 1.3em;
+        }
+        #refresh-quotes-button {
+          margin-top: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container mx-auto px-4 max-w-7xl">
+        <h1 class="text-3xl font-bold text-center py-4">Understanding Socrates</h1>
+      </div>
+    </header>
+
+    <div class="main-wrapper">
+      <nav>
+        <button data-content="home" class="nav-button active">
+          Home (Quote)
+        </button>
+        <button data-content="intro" class="nav-button">Introduction</button>
+        <button data-content="socratic-problem" class="nav-button">
+          The Socratic Problem
+        </button>
+        <button data-content="socratic-method" class="nav-button">
+          Socratic Method (Elenchus)
+        </button>
+        <button data-content="ignorance-wisdom" class="nav-button">
+          Irony & Ignorance
+        </button>
+        <button data-content="virtue-knowledge" class="nav-button">
+          Virtue is Knowledge
+        </button>
+        <button data-content="care-soul" class="nav-button">
+          Care for the Soul
+        </button>
+        <button data-content="unexamined-life" class="nav-button">
+          The Unexamined Life
+        </button>
+      </nav>
+
+      <section id="content-area"></section>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quote-modal-overlay">
+      <div id="quote-modal">
+        <button id="modal-close-button" aria-label="Close modal">
+          &times;
+        </button>
+        <p id="modal-quote-text"></p>
+        <small id="modal-quote-source"></small>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container mx-auto px-4 max-w-7xl py-4">
+        <p class="text-center">
+          &copy; 2025 Socrates Explorer. Content for educational purposes.
+        </p>
+        <p class="text-center text-xs">
+          Sources primarily include Plato's Dialogues, Xenophon's writings, and
+          reputable philosophical resources.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Socrates Quotes (Attributed via Plato, Xenophon, etc.)
+      const quotes = [
+        {
+          text: "The only true wisdom is in knowing you know nothing.",
+          source: "Plato, Apology",
+        },
+        {
+          text: "The unexamined life is not worth living.",
+          source: "Plato, Apology",
+        },
+        {
+          text: "There is only one good, knowledge, and one evil, ignorance.",
+          source:
+            "Diogenes Laërtius, Lives of Eminent Philosophers (reporting Socrates)",
+        },
+        {
+          text: "I cannot teach anybody anything. I can only make them think.",
+          source: "Attributed / Paraphrase",
+        },
+        {
+          text: "Wonder is the beginning of wisdom.",
+          source: "Plato, Theaetetus",
+        },
+        {
+          text: "Be kind, for everyone you meet is fighting a hard battle.",
+          source: "Attributed / Likely spurious, but popular",
+        },
+        {
+          text: "Strong minds discuss ideas, average minds discuss events, weak minds discuss people.",
+          source: "Attributed / Often misattributed, origin uncertain",
+        },
+        {
+          text: "To find yourself, think for yourself.",
+          source: "Attributed / Paraphrase",
+        },
+        {
+          text: "Education is the kindling of a flame, not the filling of a vessel.",
+          source: "Attributed to Socrates via Plutarch (variant)",
+        },
+        {
+          text: "He who is not contented with what he has, would not be contented with what he would like to have.",
+          source: "Attributed / Paraphrase",
+        },
+        {
+          text: "Know thyself.",
+          source: "Inscription at Delphi / Central Socratic theme (via Plato)",
+        },
+        {
+          text: "The shortest and surest way to live with honour in the world, is to be in reality what we would appear to be.",
+          source: "Xenophon, Memorabilia",
+        },
+        {
+          text: "Employ your time in improving yourself by other men's writings so that you shall come easily by what others have laboured hard for.",
+          source: "Attributed",
+        },
+        {
+          text: "Contentment is natural wealth, luxury is artificial poverty.",
+          source: "Attributed",
+        },
+        {
+          text: "Death may be the greatest of all human blessings.",
+          source: "Plato, Apology",
+        },
+        { text: "Beware the barrenness of a busy life.", source: "Attributed" },
+        {
+          text: "The way to gain a good reputation is to endeavor to be what you desire to appear.",
+          source: "Xenophon, Memorabilia (variant)",
+        },
+        {
+          text: "True wisdom comes to each of us when we realize how little we understand about life, ourselves, and the world around us.",
+          source: "Plato, Apology (paraphrase)",
+        },
+        {
+          text: "Prefer knowledge to wealth, for the one is transitory, the other perpetual.",
+          source: "Attributed",
+        },
+        {
+          text: "It is better to change an opinion than to persist in a wrong one.",
+          source: "Attributed",
+        },
+        {
+          text: "Understanding a question is half an answer.",
+          source: "Attributed",
+        },
+        {
+          text: "From the deepest desires often come the deadliest hatreds.",
+          source: "Attributed",
+        }, // Possibly spurious
+        {
+          text: "Be slow to fall into friendship; but when thou art in, continue firm and constant.",
+          source: "Attributed",
+        },
+        {
+          text: "The envious person grows lean with the fatness of their neighbour.",
+          source: "Attributed",
+        },
+        {
+          text: "No man has the right to be an amateur in the matter of physical training. It is a shame for a man to grow old without seeing the beauty and strength of which his body is capable.",
+          source: "Xenophon, Memorabilia (paraphrase)",
+        },
+        {
+          text: "Let him who would move the world first move himself.",
+          source: "Attributed",
+        },
+        {
+          text: "By all means, marry. If you get a good wife, you'll become happy; if you get a bad one, you'll become a philosopher.",
+          source: "Diogenes Laërtius, Lives (reporting Socrates)",
+        },
+        {
+          text: "The greatest way to live with honor in this world is to be what we pretend to be.",
+          source: "Xenophon, Memorabilia (variant)",
+        },
+        {
+          text: "Remember, no human condition is ever permanent. Then you will not be overjoyed in good fortune nor too scornful in misfortune.",
+          source: "Attributed",
+        },
+        { text: "An honest man is always a child.", source: "Attributed" }, // Possibly from Martial, attributed to Socrates
+      ];
+
+      // Content data for Socrates sections
+      const content = {
+        home: {
+          title: "Scattered Thoughts",
+        },
+        intro: {
+          title: "Introduction: Socrates, the Athenian Gadfly",
+          body: `
+                    <p>Socrates (c. 470–399 BCE) remains one of the most seminal figures in Western philosophy, despite leaving no writings of his own. He lived and taught in Athens, shifting the focus of Greek philosophy from cosmology towards ethics and human knowledge. Known for his distinctive method of questioning (the Socratic method or 'elenchus') and his unwavering commitment to intellectual honesty and moral integrity, even unto death, Socrates profoundly influenced his student Plato, who in turn shaped the course of Western thought.</p>
+                    <p>Depicted in Plato's dialogues as a man of simple means, unconventional appearance, and extraordinary intellect and self-control, Socrates spent his days in the Athenian agora (marketplace), engaging fellow citizens in conversations about the nature of virtue, justice, piety, and other ethical concepts. He saw his philosophical activity as a divine mission, a service to the god Apollo, acting as a 'gadfly' to awaken the Athenians from their intellectual and moral slumber.</p>
+                    <p>Key aspects associated with Socrates include:
+                        <ul>
+                            <li><strong>The Socratic Method:</strong> A form of cooperative argumentative dialogue based on asking and answering questions to stimulate critical thinking and expose contradictions in beliefs.</li>
+                            <li><strong>Socratic Irony & Professed Ignorance:</strong> His characteristic stance of professing ignorance ('I know that I know nothing') while skillfully revealing the ignorance of his interlocutors.</li>
+                            <li><strong>Virtue is Knowledge:</strong> The belief that wrongdoing stems from ignorance, and that if one truly knows what is good, one will inevitably do it.</li>
+                            <li><strong>Care for the Soul:</strong> An emphasis on the importance of tending to one's moral and intellectual well-being (the 'psyche' or soul) above concerns for wealth or reputation.</li>
+                            <li><strong>The Unexamined Life:</strong> His famous declaration that a life devoid of critical self-reflection and philosophical inquiry is not worth living.</li>
+                        </ul>
+                    </p>
+                    <p>His relentless questioning of authority and conventional wisdom ultimately led to his trial and execution on charges of impiety and corrupting the youth. His dignified conduct during his trial and death, as chronicled by Plato in the 'Apology,' 'Crito,' and 'Phaedo,' cemented his status as a philosophical martyr and an enduring symbol of intellectual courage.</p>
+                    <blockquote>"As for me, all I know is that I know nothing." - Plato, Apology (paraphrase of Socrates' stance)</blockquote>
+                    <small class="source-note">Primary Sources: Plato's Dialogues (esp. early dialogues like Apology, Crito, Euthyphro), Xenophon's Memorabilia & Apology. Secondary: SEP, IEP entries on Socrates.</small>
+                `,
+        },
+        "socratic-problem": {
+          title: "The Socratic Problem",
+          body: `
+                    <p>A fundamental challenge in studying Socrates is the <strong>"Socratic Problem"</strong>: since Socrates himself wrote nothing, our understanding of his life and philosophy comes almost entirely from secondary sources, written after his death. The most significant of these are the dialogues of his student Plato, the writings of the historian Xenophon, brief mentions by the playwright Aristophanes (in 'The Clouds,' a comedic caricature), and fragments from other contemporaries.</p>
+                    <p>The problem arises because these sources often present different, sometimes conflicting, portraits of Socrates:
+                        <ul>
+                            <li><strong>Plato's Dialogues:</strong> These are our richest source, but Plato was a philosopher in his own right. Scholars debate how much of the thought expressed by the character "Socrates" in the dialogues represents the historical Socrates versus Plato's own developing philosophy. Generally, the 'early' dialogues (e.g., 'Apology,' 'Crito,' 'Euthyphro,' 'Laches') are considered more likely to reflect the historical Socrates' methods and ethical focus, while the 'middle' and 'late' dialogues (e.g., 'Republic,' 'Phaedo,' 'Phaedrus') increasingly feature Socrates articulating complex Platonic metaphysical theories (like the Theory of Forms) which the historical Socrates may not have held.</li>
+                            <li><strong>Xenophon's Writings:</strong> Xenophon ('Memorabilia,' 'Apology,' 'Symposium') presents a more practical, less intellectually subtle, and perhaps more historically conventional Socrates, emphasizing his piety, self-control, and benefit to the city. Some find his portrayal less philosophically compelling than Plato's.</li>
+                            <li><strong>Aristophanes' 'The Clouds':</strong> This comedy, produced during Socrates' lifetime, portrays him as a buffoonish sophist and natural philosopher, conflating him with other intellectual figures of the time. While a caricature, it reflects how Socrates might have been perceived (or deliberately misrepresented) by some Athenians.</li>
+                        </ul>
+                    </p>
+                    <p>Therefore, reconstructing the precise philosophy of the historical Socrates requires careful interpretation and comparison of these sources, acknowledging that a definitive separation between the historical figure and the literary/philosophical character presented by his followers (especially Plato) may be impossible. Most scholarly accounts focus on the methods and ethical concerns prominent in Plato's early dialogues as the most plausible representation of Socrates' own contribution.</p>
+                    <blockquote>"Which is the real Socrates? The question, though natural, is perhaps misguided... The Socrates who matters is the Socrates of the dialogues [of Plato]." - Gregory Vlastos (paraphrased sentiment)</blockquote>
+                    <small class="source-note">Sources: SEP, IEP entries on Socrates and the Socratic Problem; various scholarly analyses.</small>
+                `,
+        },
+        "socratic-method": {
+          title: "Socratic Method (Elenchus)",
+          body: `
+                    <p>The <strong>Socratic Method</strong>, also known as the <strong>elenchus</strong> (Greek for 'cross-examination' or 'refutation'), is the distinctive technique of philosophical inquiry employed by Socrates, particularly as depicted in Plato's early dialogues. It is a form of argumentative dialogue aimed not at directly imparting knowledge, but at stimulating critical thinking and leading the interlocutor to recognize their own inconsistencies or lack of true understanding regarding ethical concepts.</p>
+                    <p>The method typically proceeds as follows:
+                        <ol class="list-decimal ml-6 my-4 font-mono text-gray-300">
+                            <li><strong>Questioning a Definition:</strong> Socrates usually begins by asking his conversation partner for a definition of an ethical term (e.g., "What is piety?" in the 'Euthyphro,' "What is courage?" in the 'Laches').</li>
+                            <li><strong>Seeking Clarification:</strong> The interlocutor offers a definition. Socrates, often professing ignorance himself (Socratic irony), asks clarifying questions to understand the implications of the proposed definition.</li>
+                            <li><strong>Exposing Contradiction:</strong> Through skillful questioning, Socrates elicits further beliefs from the interlocutor that are shown to contradict the original definition or lead to logically absurd consequences.</li>
+                            <li><strong>Aporia (Impasse):</strong> The interlocutor is forced to admit that their initial definition was inadequate and that they do not truly know the nature of the concept they thought they understood. The dialogue often ends in a state of perplexity or 'aporia' (impasse), without necessarily arriving at a final, positive definition.</li>
+                        </ol>
+                    </p>
+                    <p><strong>Purpose and Effects:</strong>
+                        <ul>
+                            <li><strong>Moral Reformation:</strong> Socrates believed that revealing someone's ignorance was the first necessary step towards acquiring genuine knowledge and virtue. By clearing away false confidence, the elenchus aimed to make the interlocutor aware of their need for self-examination and care for their soul.</li>
+                            <li><strong>Intellectual Midwifery:</strong> Socrates sometimes described his role as that of a 'midwife' ('maieutics'), helping others give birth to their own ideas and understanding, rather than implanting his own.</li>
+                            <li><strong>Testing Beliefs:</strong> It serves as a rigorous test for the consistency and coherence of one's beliefs about fundamental ethical matters.</li>
+                            <li><strong>Not Necessarily Negative:</strong> While often resulting in refutation, the goal was ultimately positive: to encourage a continued, shared search for truth and moral understanding.</li>
+                        </ul>
+                    </p>
+                    <p>The Socratic method remains a powerful tool in education and critical thinking, emphasizing the importance of questioning assumptions, logical consistency, and the ongoing pursuit of knowledge through dialogue.</p>
+                    <blockquote>"I know very well that I possess no knowledge worth speaking of..." - Plato, Apology 21d (Socrates expressing his professed ignorance)</blockquote>
+                    <small class="source-note">Primary Sources: Plato's early dialogues (Euthyphro, Laches, Charmides, Apology). Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "ignorance-wisdom": {
+          title: "Socratic Irony & Professed Ignorance",
+          body: `
+                    <p>Two closely related features define Socrates' characteristic approach in Plato's dialogues: <strong>Socratic Irony</strong> and his profession of <strong>ignorance</strong>.</p>
+                    <p><strong>Socratic Irony:</strong> This refers to Socrates' frequent habit of feigning ignorance or uncertainty, often praising his interlocutor's supposed wisdom while subtly setting them up for refutation through the elenchus. It's a complex rhetorical stance:
+                        <ul>
+                            <li>It allows him to draw out his partner's views without initially appearing confrontational.</li>
+                            <li>It creates a space for genuine inquiry, as he presents himself as a co-inquirer rather than an expert delivering a lecture.</li>
+                            <li>It can be seen as a way of mocking the false pretensions to knowledge common among Sophists and prominent citizens.</li>
+                            <li>It underscores his genuine belief that true wisdom begins with recognizing the limits of one's own knowledge.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Professed Ignorance ("I know that I know nothing"):</strong> This famous Socratic dictum, derived primarily from Plato's 'Apology,' encapsulates his unique claim to wisdom. According to the 'Apology,' the Oracle at Delphi declared no one wiser than Socrates. Puzzled, Socrates questioned politicians, poets, and craftsmen, finding that they all believed they knew things they did not actually know. Socrates concluded his wisdom lay not in possessing knowledge, but in recognizing his own lack of it:
+                        <ul>
+                            <li><strong>Awareness of Limits:</strong> Unlike others who falsely believed themselves wise, Socrates was aware of his own ignorance regarding the most important ethical matters (the nature of virtue, justice, etc.).</li>
+                            <li><strong>Openness to Inquiry:</strong> This awareness fueled his relentless questioning and philosophical inquiry. Recognizing ignorance is the necessary first step towards seeking knowledge.</li>
+                            <li><strong>Human vs. Divine Wisdom:</strong> He contrasted his limited human wisdom (awareness of ignorance) with the true wisdom belonging only to the gods.</li>
+                            <li><strong>Not Absolute Skepticism:</strong> His professed ignorance didn't mean he believed nothing or that knowledge was impossible, but rather that he lacked definitive, expert knowledge of ethical definitions, and that such knowledge was incredibly difficult to attain.</li>
+                        </ul>
+                    </p>
+                    <p>Together, Socratic irony and professed ignorance form a powerful pedagogical and philosophical stance, emphasizing intellectual humility, the importance of self-examination, and the ongoing, often difficult, search for genuine understanding, particularly in the moral realm.</p>
+                    <blockquote>"Well, although I do not suppose that either of us knows anything really beautiful and good, I am better off than he is – for he knows nothing, and thinks that he knows. I neither know nor think that I know." - Plato, Apology 21d</blockquote>
+                    <small class="source-note">Primary Sources: Plato's Apology, Euthyphro, Meno. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "virtue-knowledge": {
+          title: "Virtue is Knowledge",
+          body: `
+                    <p>One of the central tenets associated with the historical Socrates, often referred to as <strong>Socratic intellectualism</strong>, is the claim that <strong>virtue (aretē) is knowledge</strong>. This implies several interconnected ideas:</p>
+                    <p><strong>Core Claims:</strong>
+                        <ul>
+                            <li><strong>Knowledge is Necessary for Virtue:</strong> To be virtuous (e.g., just, courageous, temperate), one must *know* what justice, courage, or temperance truly is. Acting correctly requires understanding the relevant ethical concepts.</li>
+                            <li><strong>Knowledge is Sufficient for Virtue:</strong> If one genuinely knows what is good, one will necessarily *do* what is good. According to this view, wrongdoing arises solely from ignorance or intellectual error, not from weakness of will (akrasia) or a deliberate choice to do evil while knowing it is evil.</li>
+                            <li><strong>All Virtues are Unified:</strong> Since all specific virtues (courage, piety, justice, temperance, wisdom) are ultimately forms of knowledge (knowledge of good and evil applied to different situations), they form a unified whole. One cannot possess one virtue without possessing them all, as they all depend on the same underlying wisdom.</li>
+                            <li><strong>Wrongdoing is Involuntary:</strong> People do wrong only because they mistakenly believe their actions are good or beneficial for themselves. No one intentionally harms themselves, and since virtue is beneficial and vice harmful to the soul, no one intentionally chooses vice if they truly understand its nature.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Implications and Challenges:</strong>
+                        <ul>
+                            <li><strong>Emphasis on Reason:</strong> This doctrine places immense importance on reason and intellectual inquiry as the path to moral goodness. Ethical improvement comes through philosophical examination and achieving correct understanding.</li>
+                            <li><strong>Counterintuitive Nature:</strong> The claim that knowledge is *sufficient* for virtue seems counterintuitive to common experience, where people often seem to know what is right but fail to do it due to temptation, emotion, or weakness (akrasia). Plato himself explores this tension in later dialogues (like the 'Republic,' with its tripartite soul).</li>
+                            <li><strong>Focus on Definitions:</strong> It helps explain Socrates' relentless pursuit of definitions for ethical terms. If virtue is knowledge, then defining virtue is the essential task for living well.</li>
+                        </ul>
+                    </p>
+                    <p>While potentially paradoxical, the Socratic equation of virtue and knowledge underscores his profound conviction that self-examination, rational understanding, and the pursuit of wisdom are essential for achieving moral excellence and living a good human life.</p>
+                    <blockquote>"I am convinced that I never intentionally wronged anyone..." - Plato, Apology 37a (Reflecting the idea that wrongdoing is unintentional/ignorant)</blockquote>
+                    <small class="source-note">Primary Sources: Plato's Protagoras, Meno, Gorgias, Apology. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "care-soul": {
+          title: "Care for the Soul (Epimeleia tēs Psychēs)",
+          body: `
+                    <p>A central theme in Socrates' mission, as presented by Plato, is the paramount importance of <strong>caring for one's soul</strong> (epimeleia tēs psychēs). Socrates urged his fellow Athenians to prioritize the state of their inner selves – their moral and intellectual well-being – above external goods like wealth, reputation, or political power.</p>
+                    <p><strong>The Nature of the Soul (Psychē):</strong>
+                        <ul>
+                            <li>For Socrates, the 'psyche' was not just a life-force but the seat of consciousness, personality, and, most importantly, moral character. It is the 'true self' or the essence of a person.</li>
+                            <li>The health or sickness of the soul depends on its state of virtue or vice, knowledge or ignorance.</li>
+                        </ul>
+                    </p>
+                    <p><strong>The Importance of Care:</strong>
+                        <ul>
+                            <li><strong>Highest Good:</strong> Socrates argued that the greatest good for a human being is the optimal condition of their soul, which he identified with virtue and wisdom. External goods are secondary and potentially even harmful if the soul is not in good order.</li>
+                            <li><strong>Philosophical Activity as Care:</strong> He viewed his own philosophical activity – engaging in the Socratic method, examining beliefs, seeking definitions of virtues – as the primary way to care for his own soul and to encourage others to do the same. Exposing ignorance and stimulating critical thought were acts of tending to the soul's health.</li>
+                            <li><strong>Neglect of the Soul:</strong> He criticized his contemporaries for diligently pursuing wealth, honor, and power while neglecting "wisdom and truth and the best possible state of [their] souls." (Plato, Apology 29e).</li>
+                            <li><strong>Virtue Benefits the Soul:</strong> Living virtuously, which requires knowledge, directly benefits the soul, making it ordered and healthy. Vice, stemming from ignorance, harms the soul.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Connection to Other Doctrines:</strong>
+                        <ul>
+                            <li>This emphasis connects directly to the idea that **virtue is knowledge**. Caring for the soul means striving for the knowledge that constitutes virtue.</li>
+                            <li>It also underpins the claim that **the unexamined life is not worth living**. Self-examination is the essential practice required for the proper care of the soul.</li>
+                        </ul>
+                    </p>
+                    <p>Socrates' call to prioritize the care of the soul represents a significant shift in ethical focus, emphasizing inner integrity and intellectual virtue as the foundation of a truly good and worthwhile human life, distinct from external success or societal approval.</p>
+                    <blockquote>"Are you not ashamed of your eagerness to possess as much wealth, reputation, and honors as possible, while you do not care for nor give thought to wisdom or truth, or the best possible state of your soul?" - Plato, Apology 29d-e</blockquote>
+                    <small class="source-note">Primary Sources: Plato's Apology, Crito, Gorgias, Phaedo. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+        "unexamined-life": {
+          title: "The Unexamined Life",
+          body: `
+                    <p>Perhaps Socrates' most famous declaration, made during his defense speech at his trial, is that <strong>"the unexamined life is not worth living for a human being"</strong> (ho de anexetastos bios ou biōtos anthrōpōi - Plato, Apology 38a).</p>
+                    <p>This statement encapsulates the core of his philosophical mission and ethical outlook. It asserts that a life lived without critical self-reflection, without questioning one's own beliefs and values, and without striving for moral understanding, lacks the essential quality that makes a human life truly valuable and meaningful.</p>
+                    <p><strong>Meaning and Implications:</strong>
+                        <ul>
+                            <li><strong>Distinctly Human Capacity:</strong> Rational self-examination is what distinguishes human beings from other animals. To live without examining one's life is to fail to exercise this unique and highest human capacity.</li>
+                            <li><strong>Connection to Virtue and Happiness:</strong> For Socrates, living well (happiness, eudaimonia) is inseparable from living virtuously. Since virtue requires knowledge (gained through examination) and benefits the soul, the examination of one's life is essential for achieving both virtue and true happiness.</li>
+                            <li><strong>Beyond Mere Survival:</strong> The statement implies that mere biological existence or the pursuit of unreflective pleasures and external goods (wealth, honor) is insufficient for a genuinely human life. Value lies in the conscious, rational, and moral quality of one's existence.</li>
+                            <li><strong>The Purpose of Philosophy:</strong> It highlights the practical, existential purpose of philosophy as Socrates practiced it. Philosophical inquiry (the Socratic method) *is* the process of examining life and is therefore indispensable for living well.</li>
+                            <li><strong>Moral Responsibility:</strong> It places a moral responsibility on each individual to engage in self-reflection and strive for understanding, rather than passively accepting conventional beliefs or living according to unexamined habits.</li>
+                        </ul>
+                    </p>
+                    <p>Socrates uttered this powerful statement while defending his lifelong practice of philosophy, even when facing the death penalty. He chose death over abandoning his philosophical mission, demonstrating his absolute conviction that the pursuit of wisdom and self-knowledge through examination is more valuable than life itself if that life must be lived without inquiry.</p>
+                    <blockquote>"...if I say that the greatest good for a man is to discuss virtue every day and those other things about which you hear me conversing and testing myself and others, for the unexamined life is not worth living for men, you will believe me even less." - Plato, Apology 38a</blockquote>
+                    <small class="source-note">Primary Source: Plato, Apology. Secondary: SEP, IEP entries.</small>
+                `,
+        },
+      };
+
+      const contentArea = document.getElementById("content-area");
+      const navButtons = document.querySelectorAll(".nav-button");
+      const modalOverlay = document.getElementById("quote-modal-overlay");
+      const modal = document.getElementById("quote-modal");
+      const modalQuoteText = document.getElementById("modal-quote-text");
+      const modalQuoteSource = document.getElementById("modal-quote-source");
+      const modalCloseButton = document.getElementById("modal-close-button");
+
+      function openModal(quoteText, quoteSource) {
+        modalQuoteText.textContent = quoteText;
+        modalQuoteSource.textContent = `Source: ${quoteSource}`;
+        modalOverlay.classList.add("visible");
+      }
+
+      function closeModal() {
+        modalOverlay.classList.remove("visible");
+      }
+
+      function getRandomQuotes(numQuotes) {
+        const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, numQuotes);
+      }
+
+      function loadContent(contentId) {
+        let sectionTitle = "";
+        let sectionBodyHtml = "";
+        contentArea.innerHTML = ""; // Clear previous content
+
+        if (contentId === "home") {
+          const numCards = 5; // Number of quote cards
+          const selectedQuotes = getRandomQuotes(numCards);
+          sectionTitle = content["home"].title;
+
+          const cardContainer = document.createElement("div");
+          cardContainer.id = "quote-card-container";
+
+          selectedQuotes.forEach((quote) => {
+            const card = document.createElement("div");
+            card.classList.add("quote-card");
+            card.dataset.fullQuote = quote.text;
+            card.dataset.source = quote.source;
+            // Card remains blank
+            card.addEventListener("click", () => {
+              openModal(card.dataset.fullQuote, card.dataset.source);
+            });
+            cardContainer.appendChild(card);
+          });
+
+          const refreshButton = document.createElement("button");
+          refreshButton.id = "refresh-quotes-button";
+          refreshButton.textContent = "Refresh Quotes";
+          refreshButton.addEventListener("click", () => loadContent("home"));
+
+          sectionBodyHtml = cardContainer.outerHTML + refreshButton.outerHTML;
+          contentArea.style.display = "block"; // Use block for container + button layout
+        } else if (content[contentId]) {
+          const section = content[contentId];
+          sectionTitle = section.title;
+          sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+          contentArea.style.display = "block";
+        } else {
+          sectionTitle = "Error";
+          sectionBodyHtml =
+            '<div class="content-body"><p>Content not found.</p></div>';
+          contentArea.style.display = "block";
+        }
+
+        contentArea.style.opacity = 0;
+        setTimeout(() => {
+          const titleElement = document.createElement("h2");
+          titleElement.className = "text-3xl font-semibold mb-6";
+          titleElement.textContent = sectionTitle;
+          contentArea.appendChild(titleElement);
+
+          const bodyWrapper = document.createElement("div");
+          bodyWrapper.innerHTML = sectionBodyHtml; // Parse HTML
+          while (bodyWrapper.firstChild) {
+            // Append parsed elements
+            contentArea.appendChild(bodyWrapper.firstChild);
+          }
+
+          // Re-attach listeners after innerHTML update for home section
+          if (contentId === "home") {
+            const cards = contentArea.querySelectorAll(".quote-card");
+            cards.forEach((card) => {
+              const fullQuote = card.dataset.fullQuote;
+              const source = card.dataset.source;
+              card.addEventListener("click", () => {
+                openModal(fullQuote, source);
+              });
+            });
+            const refreshBtn = contentArea.querySelector(
+              "#refresh-quotes-button"
+            );
+            if (refreshBtn) {
+              refreshBtn.addEventListener("click", () => loadContent("home"));
+            }
+          }
+
+          contentArea.style.opacity = 1;
+        }, 200);
+
+        navButtons.forEach((button) => {
+          button.classList.toggle(
+            "active",
+            button.dataset.content === contentId
+          );
+        });
+      }
+
+      navButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const contentId = e.currentTarget.dataset.content;
+          loadContent(contentId);
+        });
+      });
+
+      modalCloseButton.addEventListener("click", closeModal);
+      modalOverlay.addEventListener("click", (event) => {
+        if (event.target === modalOverlay) {
+          closeModal();
+        }
+      });
+
+      window.addEventListener("load", () => {
+        loadContent("home");
+      });
+    </script>
+  </body>
+</html>

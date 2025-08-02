@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Kant's Philosophy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom styles - Dark Mode */
+      body {
+        font-family: "Lato", sans-serif;
+        background-color: #1f2937; /* Dark gray-blue background */
+        color: #d1d5db; /* Light gray text */
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "EB Garamond", serif;
+        font-weight: 600;
+        color: #f9fafb; /* Off-white headings */
+      }
+      .content-section {
+        background-color: #374151; /* Medium gray-blue background for content */
+        border: 1px solid #4b5563; /* Slightly lighter border */
+        border-radius: 0.5rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3),
+          0 1px 2px 0 rgba(0, 0, 0, 0.2); /* Adjusted shadow for dark */
+      }
+      /* Navigation Links - Dark Mode */
+      .nav-link {
+        @apply px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md transition duration-150 ease-in-out;
+      }
+      .nav-link.active {
+        @apply bg-gray-500 text-white hover:bg-gray-600;
+      }
+      /* Blockquote - Dark Mode */
+      blockquote {
+        border-left: 4px solid #9ca3af; /* Lighter gray border */
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        font-style: italic;
+        color: #d1d5db;
+        font-family: "EB Garamond", serif;
+        background-color: rgba(75, 85, 99, 0.5);
+        border-radius: 0.25rem;
+        padding: 1rem;
+      }
+      /* Interactive Module - General Styling */
+      .interactive-module {
+        border: 1px solid #6b7280;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: #4b5563;
+        color: #f3f4f6;
+      }
+
+      /* --- UPDATED BUTTON STYLING START --- */
+
+      /* Base Interactive Button Style */
+      .interactive-button {
+        @apply inline-block px-5 py-2 text-white rounded-md shadow-sm
+                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white
+                   transition-all duration-150 ease-in-out mx-1 my-1 sm:mx-2
+                   transform hover:scale-105 active:scale-95; /* Added scaling effects */
+        font-family: "Lato", sans-serif;
+        border: 1px solid transparent; /* Base border */
+      }
+
+      /* Critique Buttons (Actions) */
+      .critique-button {
+        @apply bg-indigo-600 hover:bg-indigo-500 border-indigo-700;
+      }
+      .critique-button-reset {
+        /* Slightly different style for reset */
+        @apply bg-indigo-700 hover:bg-indigo-600 border-indigo-800;
+      }
+
+      /* Ethics Buttons (Opposing Choices) */
+      .ethics-button-steal {
+        @apply bg-red-700 hover:bg-red-600 border-red-800 shadow-md hover:shadow-lg; /* Added more shadow */
+      }
+      .ethics-button-nosteal {
+        @apply bg-blue-700 hover:bg-blue-600 border-blue-800 shadow-md hover:shadow-lg; /* Added more shadow */
+      }
+
+      /* Aesthetics Buttons (Judgments) */
+      .aesthetics-button-beautiful {
+        @apply bg-purple-700 hover:bg-purple-600 border-purple-800;
+        /* Could add subtle pattern/icon later if needed */
+      }
+      .aesthetics-button-agreeable {
+        @apply bg-green-700 hover:bg-green-600 border-green-800;
+        /* Could add subtle pattern/icon later if needed */
+      }
+
+      /* --- UPDATED BUTTON STYLING END --- */
+
+      /* Feedback Area Styling */
+      .feedback-area {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 0.375rem;
+        background-color: #374151;
+        border: 1px dashed #6b7280;
+        text-align: left;
+        color: #e5e7eb;
+        min-height: 50px;
+        line-height: 1.6;
+        transition: border-color 0.3s ease-in-out;
+      }
+      .feedback-area strong {
+        color: #f9fafb;
+      }
+      /* Critique Interactive Specific Styles */
+      #critique-canvas {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        background-color: #374151;
+        border: 1px solid #6b7280;
+        border-radius: 0.375rem;
+        margin-top: 1rem;
+        overflow: hidden;
+      }
+      .critique-dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: #f3f4f6;
+        border-radius: 50%;
+        transition: all 0.5s ease-in-out;
+      }
+      .critique-line {
+        position: absolute;
+        border-top: 1px dashed #a5b4fc;
+        transform-origin: 0 0;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+      /* Aesthetics Interactive Specific Styles */
+      .aesthetics-item {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #6b7280;
+      }
+      .aesthetics-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      .aesthetics-image-placeholder {
+        @apply w-full h-48 bg-gray-500 rounded-md flex items-center justify-center text-gray-300 mb-3;
+      }
+
+      /* Header and Footer - Dark Mode */
+      header {
+        background-color: #111827;
+        color: #f9fafb;
+      }
+      footer {
+        background-color: #374151;
+        color: #d1d5db;
+      }
+      /* Link styling */
+      a {
+        color: #93c5fd;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Ensure hidden class works */
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <header class="bg-gray-900 text-white shadow-md sticky top-0 z-50">
+      <nav
+        class="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center"
+      >
+        <h1 class="text-2xl font-bold font-serif mb-2 sm:mb-0">
+          Immanuel Kant
+        </h1>
+        <div
+          id="nav-links"
+          class="flex flex-wrap justify-center space-x-1 sm:space-x-2"
+        >
+          <a
+            href="#home"
+            class="nav-link active"
+            onclick="showSection('home', this)"
+            >Home</a
+          >
+          <a
+            href="#critique"
+            class="nav-link"
+            onclick="showSection('critique', this)"
+            >Critique</a
+          >
+          <a
+            href="#ethics"
+            class="nav-link"
+            onclick="showSection('ethics', this)"
+            >Ethics</a
+          >
+          <a
+            href="#aesthetics"
+            class="nav-link"
+            onclick="showSection('aesthetics', this)"
+            >Aesthetics</a
+          >
+          <a
+            href="#sources"
+            class="nav-link"
+            onclick="showSection('sources', this)"
+            >Sources</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 py-8">
+      <section id="home" class="content-section page-section">
+        <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-600">
+          Welcome to the World of Kant
+        </h2>
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <p class="text-lg leading-relaxed">
+            Immanuel Kant (1724–1804) remains one of the most influential
+            figures in modern philosophy. Born in Königsberg, Prussia (now
+            Kaliningrad, Russia), his work revolutionized epistemology (the
+            theory of knowledge), metaphysics, ethics, and aesthetics. Kant
+            sought to synthesize the competing schools of rationalism and
+            empiricism, arguing that while all our knowledge begins with
+            experience, it does not all arise *from* experience. Our own minds,
+            he contended, structure our perception of reality through innate
+            categories.
+          </p>
+        </div>
+        <p class="mt-4 text-lg leading-relaxed">
+          This interactive site aims to explore the core tenets of Kant's
+          complex but rewarding philosophy. Navigate through the sections to
+          delve into his major works and ideas, including the groundbreaking
+          "Critique of Pure Reason," his ethical framework centered on the
+          "Categorical Imperative," and his thoughts on judgment and beauty.
+        </p>
+        <div class="interactive-module mt-6 text-center">
+          <h3 class="text-xl font-semibold mb-2">Interactive Exploration</h3>
+          <p>
+            Explore the interactive modules in the
+            <a
+              href="#critique"
+              onclick="showSection('critique', document.querySelector('a[href=&quot;#critique&quot;]'))"
+              class="font-semibold hover:underline"
+              >Critique</a
+            >,
+            <a
+              href="#ethics"
+              onclick="showSection('ethics', document.querySelector('a[href=&quot;#ethics&quot;]'))"
+              class="font-semibold hover:underline"
+              >Ethics</a
+            >, and
+            <a
+              href="#aesthetics"
+              onclick="showSection('aesthetics', document.querySelector('a[href=&quot;#aesthetics&quot;]'))"
+              class="font-semibold hover:underline"
+              >Aesthetics</a
+            > sections.
+          </p>
+        </div>
+      </section>
+
+      <section id="critique" class="content-section page-section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-600">
+          The Critique of Pure Reason
+        </h2>
+        <p class="text-lg leading-relaxed mb-4">
+          Kant's "Critique of Pure Reason" (Kritik der reinen Vernunft,
+          1781/1787) is a cornerstone of modern philosophy. In it, Kant tackles
+          the fundamental question: "What can we know?" He investigates the
+          limits and scope of human reason itself, independent of experience
+          ('pure' reason).
+        </p>
+        <h3 class="text-2xl font-semibold mt-6 mb-3">
+          Transcendental Idealism
+        </h3>
+        <p class="text-lg leading-relaxed mb-4">
+          Central to the Critique is Kant's doctrine of
+          <strong class="font-semibold text-gray-100"
+            >Transcendental Idealism</strong
+          >. He distinguishes between Phenomena (appearances, the world as we
+          experience it) and Noumena (things-in-themselves, the world
+          independent of our minds). He argued that
+          <strong class="font-semibold text-gray-100">space and time</strong>
+          are not properties of external objects but are 'forms of intuition' –
+          fundamental structures contributed by our minds through which all
+          sensory data is perceived.
+        </p>
+        <h3 class="text-2xl font-semibold mt-6 mb-3">
+          The Categories of Understanding
+        </h3>
+        <p class="text-lg leading-relaxed mb-4">
+          Beyond the forms of intuition (space and time), Kant argued that the
+          mind employs
+          <strong class="font-semibold text-gray-100"
+            >pure concepts of the understanding</strong
+          >, or <strong class="font-semibold text-gray-100">Categories</strong>,
+          to synthesize the raw data of intuition into coherent, thinkable
+          objects and judgments. These Categories are not derived from
+          experience (<em class="italic">a posteriori</em>) but are innate
+          structures of the understanding itself (<em class="italic"
+            >a priori</em
+          >). They are the necessary conditions for the possibility of
+          experience and objective knowledge.
+        </p>
+        <p class="text-lg leading-relaxed mb-4">
+          Kant derived his table of twelve Categories from the logical forms of
+          judgment (how we structure propositions). He believed this provided a
+          systematic and complete list, unlike Aristotle's more empirical
+          collection. The Categories function like rules that the mind uses to
+          organize and unify the 'manifold of intuition' (the diverse sensory
+          data filtered through space and time) into the structured world we
+          experience. For example, the category of 'Causality' allows us to
+          perceive events not just as sequential but as connected by cause and
+          effect.
+        </p>
+        <p class="text-lg leading-relaxed mb-2 font-semibold text-gray-100">
+          The Twelve Categories:
+        </p>
+        <div
+          class="overflow-x-auto relative border border-gray-700 rounded-lg mt-4"
+        >
+          <table class="w-full text-sm text-left text-gray-300">
+            <thead
+              class="text-xs text-gray-400 uppercase bg-gray-700 bg-opacity-50"
+            >
+              <tr>
+                <th scope="col" class="px-6 py-3 font-semibold font-serif">
+                  Group
+                </th>
+                <th scope="col" class="px-6 py-3">Category 1</th>
+                <th scope="col" class="px-6 py-3">Category 2</th>
+                <th scope="col" class="px-6 py-3">Category 3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="bg-gray-800 border-b border-gray-700 hover:bg-gray-600/50 transition-colors"
+              >
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap font-serif"
+                >
+                  1. Quantity
+                </th>
+                <td class="px-6 py-4">Unity</td>
+                <td class="px-6 py-4">Plurality</td>
+                <td class="px-6 py-4">Totality</td>
+              </tr>
+              <tr
+                class="bg-gray-800 border-b border-gray-700 hover:bg-gray-600/50 transition-colors"
+              >
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap font-serif"
+                >
+                  2. Quality
+                </th>
+                <td class="px-6 py-4">Reality</td>
+                <td class="px-6 py-4">Negation</td>
+                <td class="px-6 py-4">Limitation</td>
+              </tr>
+              <tr
+                class="bg-gray-800 border-b border-gray-700 hover:bg-gray-600/50 transition-colors"
+              >
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap font-serif"
+                >
+                  3. Relation
+                </th>
+                <td class="px-6 py-4">Inherence & Subsistence (Substance)</td>
+                <td class="px-6 py-4">Causality & Dependence (Cause)</td>
+                <td class="px-6 py-4">Community (Reciprocity)</td>
+              </tr>
+              <tr class="bg-gray-800 hover:bg-gray-600/50 transition-colors">
+                <th
+                  scope="row"
+                  class="px-6 py-4 font-medium text-gray-100 whitespace-nowrap font-serif"
+                >
+                  4. Modality
+                </th>
+                <td class="px-6 py-4">Possibility / Impossibility</td>
+                <td class="px-6 py-4">Existence / Non-existence</td>
+                <td class="px-6 py-4">Necessity / Contingency</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-4 text-sm text-gray-400 italic">
+          (Source: Immanuel Kant, Critique of Pure Reason, A80/B106. See also
+          the Sources section for further reading.)
+        </p>
+        <h3 class="text-2xl font-semibold mt-6 mb-3">Transcendent vs. Transcendental</h3>
+            <p class="text-lg leading-relaxed mb-4">
+                Understanding Kant requires grasping his specific use of two similar terms:
+                <ul class="list-disc list-inside ml-4 my-2 space-y-1 text-lg">
+                    <li><strong class="font-semibold text-gray-100">Transcendent:</strong> Refers to that which lies <strong class="font-semibold">beyond the limits of all possible experience</strong>. Examples include God, the soul, or the noumenal realm (things-in-themselves). Kant argues that we can think about transcendent objects, but we cannot have theoretical <em class="italic">knowledge</em> of them because knowledge requires both concepts (from the understanding) and intuitions (from sensibility), and we lack the necessary intuitions for transcendent objects. Trying to gain knowledge of the transcendent leads reason into contradictions (antinomies).</li>
+                    <li><strong class="font-semibold text-gray-100">Transcendental:</strong> Refers not to what lies beyond experience, but to the <strong class="font-semibold">conditions for the possibility of experience itself</strong>. It concerns our mode of cognition of objects, insofar as this cognition is possible <em class="italic">a priori</em> (independent of experience). Kant's investigation into the forms of intuition (space, time) and the categories of understanding is a <em class="italic">transcendental</em> inquiry.</li>
+                </ul>
+            </p>
+            <h4 class="text-xl">Why "Transcendental Idealism"?</h4>
+            <p class="text-lg leading-relaxed mb-4">
+                Kant calls his philosophy <strong class="font-semibold text-gray-100">Transcendental Idealism</strong> because:
+                <ul class="list-disc list-inside ml-4 my-2 space-y-1 text-lg">
+                    <li>It is <strong class="font-semibold">Transcendental</strong> because its primary focus is the investigation of the <em class="italic">a priori</em> conditions (space, time, categories) that make experience and knowledge possible.</li>
+                    <li>It is <strong class="font-semibold">Idealism</strong> because it holds that these <em class="italic">a priori</em> structures belong to the knowing subject (the mind) and shape our experience. Therefore, the objects we experience (phenomena) are not things-in-themselves but appearances, constructed in part by the mind's structure. Space, time, and the characteristics described by the categories are features of how we perceive and understand, not necessarily features of an underlying, unknowable reality (noumena).</li>
+                </ul>
+                 <p class="text-lg leading-relaxed">
+                    Crucially, this idealism applies only to appearances (empirical reality), not to things-in-themselves. Kant maintains the <em class="italic">empirical reality</em> of objects (they are objectively real within the framework of experience) but asserts their <em class="italic">transcendental ideality</em> (they are mind-dependent structures when considered from the perspective of the conditions of possibility of experience).
+                 </p>
+             <p class="mt-4 text-sm text-gray-400 italic">
+                (Source: Based on Kant's usage in Critique of Pure Reason, e.g., B25, A296/B352-3, and standard interpretations.)
+             </p>
+        <blockquote>
+          "Thoughts without content are empty, intuitions without concepts are
+          blind." - Immanuel Kant, Critique of Pure Reason
+        </blockquote>
+        <div class="interactive-module">
+          <h3 class="text-xl font-semibold mb-3">
+            Interactive: Structuring Experience
+          </h3>
+          <p class="mb-4 text-center">
+            Imagine the dots below represent raw, unstructured sensory input.
+            Apply Kant's concepts (intuitions of Space/Time, categories like
+            Causality) to see how the mind might organize them.
+          </p>
+          <div id="critique-canvas"></div>
+          <div class="text-center mt-4">
+            <button
+              class="interactive-button critique-button-reset"
+              onclick="applyStructuring('reset')"
+              style="background-color: #f44336; color: white;"
+            >
+              Reset (Raw Data)
+            </button>
+            <button
+              class="interactive-button critique-button"
+              onclick="applyStructuring('space_time')"
+              style="background-color: #4CAF50; color: white;"
+            >
+              Apply Space & Time
+            </button>
+            <button
+              class="interactive-button critique-button"
+              onclick="applyStructuring('causality')"
+              style="background-color: #2196F3; color: white;"
+            >
+              Apply Causality (Category)
+            </button>
+          </div>
+          <div id="critique-feedback" class="feedback-area">
+            Start by observing the 'raw data'. Then apply the mind's structuring
+            principles (intuitions and categories).
+          </div>
+        </div>
+      </section>
+
+      <section id="ethics" class="content-section page-section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-600">
+          Ethics: The Categorical Imperative
+        </h2>
+        <p class="text-lg leading-relaxed mb-4">
+          In works like "Groundwork of the Metaphysics of Morals" (1785), Kant
+          developed a deontological ethical theory based on duty derived from
+          reason. The core principle is the
+          <strong class="font-semibold text-gray-100"
+            >Categorical Imperative</strong
+          >.
+        </p>
+        <h3 class="text-2xl font-semibold mt-6 mb-3">
+          Formulations of the Imperative
+        </h3>
+        <ul class="list-decimal list-inside ml-4 my-2 space-y-2 text-lg">
+          <li>
+            <strong>Universal Law:</strong> "Act only according to that maxim
+            whereby you can at the same time will that it should become a
+            universal law."
+          </li>
+          <li>
+            <strong>Humanity:</strong> "Act in such a way that you treat
+            humanity... always at the same time as an end and never merely as a
+            means..."
+          </li>
+        </ul>
+        <blockquote>
+          "Two things fill the mind with ever new and increasing admiration and
+          awe... the starry heavens above me and the moral law within me." -
+          Immanuel Kant, Critique of Practical Reason
+        </blockquote>
+        <div class="interactive-module">
+          <h3 class="text-xl font-semibold mb-3">
+            Interactive: Apply the Imperative
+          </h3>
+          <p class="mb-4 text-center">
+            Consider the moral dilemma:
+            <strong class="text-gray-100"
+              >Is it morally permissible according to Kant to steal bread to
+              feed your starving family?</strong
+            >
+          </p>
+          <div class="text-center mb-4">
+            <button
+              class="interactive-button ethics-button-steal"
+              onclick="analyzeDilemma('steal')"
+              style="background-color: #e74c3c; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer;"
+            >
+              Choice: Steal the Bread
+            </button>
+            <button
+              class="interactive-button ethics-button-nosteal"
+              onclick="analyzeDilemma('not_steal')"
+              style="background-color: #2ecc71; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer;"
+            >
+              Choice: Do Not Steal
+            </button>
+          </div>
+          <div id="ethics-feedback" class="feedback-area">
+            Select a choice above to see the Kantian analysis...
+          </div>
+        </div>
+      </section>
+
+      <section id="aesthetics" class="content-section page-section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-600">
+          Aesthetics: Judgments of Taste
+        </h2>
+        <p class="text-lg leading-relaxed mb-4">
+          In the "Critique of Judgment" (1790), Kant analyzed aesthetic
+          judgments. He argued that judgments of beauty are based on a
+          <strong class="font-semibold text-gray-100">disinterested</strong>
+          feeling of pleasure arising from the 'free play' of imagination and
+          understanding when perceiving an object's form. While subjective,
+          these judgments claim
+          <strong class="font-semibold text-gray-100">universal validity</strong
+          >.
+        </p>
+        <p class="text-lg leading-relaxed mb-4">
+          He distinguished true 'beauty' from the merely 'agreeable' (which is
+          based on personal interest or desire) and the 'good' (which relates to
+          concepts and purpose).
+        </p>
+        <blockquote>
+          "Beauty is the form of finality in an object, so far as perceived in
+          it apart from the representation of an end." - Immanuel Kant, Critique
+          of Judgment
+        </blockquote>
+        <div class="interactive-module">
+          <h3 class="text-xl font-semibold mb-3">
+            Interactive: Beautiful or Agreeable?
+          </h3>
+          <p class="mb-4 text-center">
+            Consider the following items. Based on Kant's distinction, would
+            your primary judgment likely be one of 'Beauty' (disinterested) or
+            'Agreeable' (interest-based)?
+          </p>
+
+          <div class="aesthetics-item text-center">
+            <div class="aesthetics-image-placeholder">
+              <span>Placeholder: Dramatic Sunset</span>
+            </div>
+            <button
+              class="interactive-button aesthetics-button-beautiful"
+              onclick="analyzeAesthetics('sunset', 'beautiful')"
+              style="background-color: #9b59b6; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"
+            >
+              Judge as Beautiful
+            </button>
+            <button
+              class="interactive-button aesthetics-button-agreeable"
+              onclick="analyzeAesthetics('sunset', 'agreeable')"
+              style="background-color: #3498db; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"
+            >
+              Judge as Agreeable
+            </button>
+          </div>
+          
+          <div class="aesthetics-item text-center">
+            <div class="aesthetics-image-placeholder">
+              <span>Placeholder: Delicious Looking Cake</span>
+            </div>
+            <button
+              class="interactive-button aesthetics-button-beautiful"
+              onclick="analyzeAesthetics('cake', 'beautiful')"
+              style="background-color: #9b59b6; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"
+            >
+              Judge as Beautiful
+            </button>
+            <button
+              class="interactive-button aesthetics-button-agreeable"
+              onclick="analyzeAesthetics('cake', 'agreeable')"
+              style="background-color: #3498db; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"
+            >
+              Judge as Agreeable
+            </button>
+          </div>
+
+          <div id="aesthetics-feedback" class="feedback-area">
+            Select a judgment for an item above to see the Kantian analysis...
+          </div>
+        </div>
+      </section>
+
+      <section id="sources" class="content-section page-section hidden">
+        <h2 class="text-3xl font-bold mb-4 border-b pb-2 border-gray-600">
+          Sources & Further Reading
+        </h2>
+        <p class="text-lg leading-relaxed mb-4">
+          The information presented here is based on standard interpretations of
+          Kant's work. For deeper study, consult the following resources:
+        </p>
+        <ul class="list-disc list-inside ml-4 space-y-2 text-lg">
+          <li>
+            <strong>Stanford Encyclopedia of Philosophy (SEP):</strong> Articles
+            on Kant, Moral Philosophy, Aesthetics, Metaphysics, Transcendental
+            Arguments, Categories.
+          </li>
+          <li>
+            <strong>Internet Encyclopedia of Philosophy (IEP):</strong> Articles
+            on Transcendental Idealism, Metaphysics.
+          </li>
+          <li>
+            <strong>Primary Texts:</strong>
+            <ul class="list-circle list-inside ml-6 space-y-1">
+              <li>
+                Critique of Pure Reason (esp. A66-83/B92-116 for Categories)
+              </li>
+              <li>Groundwork of the Metaphysics of Morals</li>
+              <li>Critique of Practical Reason</li>
+              <li>Critique of Judgment</li>
+            </ul>
+            (The Cambridge Edition of the Works of Immanuel Kant is
+            recommended).
+          </li>
+          <li>
+            <strong>Wikipedia:</strong> Articles on Critique of Pure Reason,
+            Category (Kant).
+          </li>
+        </ul>
+        <p class="mt-6 text-sm text-gray-500 italic">
+          Information synthesized from general knowledge and standard
+          interpretations found in the resources above (accessed May 2025).
+          Specific quotes attributed. Placeholders used for images.
+        </p>
+      </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 text-center py-4 mt-12">
+      <p>
+        &copy; <span id="year"></span> Understanding Kant. A conceptual project.
+      </p>
+    </footer>
+
+    <script>
+      // --- Navigation ---
+      function showSection(sectionId, clickedLink) {
+        const sections = document.querySelectorAll(".page-section");
+        sections.forEach((section) => section.classList.add("hidden"));
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) targetSection.classList.remove("hidden");
+
+        const navLinks = document.querySelectorAll("#nav-links .nav-link");
+        navLinks.forEach((link) => {
+          link.classList.remove("active", "bg-gray-500", "text-white");
+          link.classList.add("text-gray-300", "hover:bg-gray-700");
+        });
+        if (clickedLink) {
+          clickedLink.classList.add("active", "bg-gray-500", "text-white");
+          clickedLink.classList.remove("text-gray-300", "hover:bg-gray-700");
+        }
+
+        const headerHeight =
+          document.querySelector("header")?.offsetHeight || 60;
+        if (targetSection) {
+          const elementPosition =
+            targetSection.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - headerHeight - 20;
+          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+        }
+        // Initialize critique interactive when section shown
+        if (
+          sectionId === "critique" &&
+          typeof initializeCritiqueInteractive === "function"
+        ) {
+          initializeCritiqueInteractive();
+        }
+      }
+
+      // --- Ethics Interactive ---
+      function analyzeDilemma(choice) {
+        const feedbackEl = document.getElementById("ethics-feedback");
+        let analysis = "";
+        let borderColor = "#6b7280"; // Default border
+
+        if (choice === "steal") {
+          analysis = `
+                    <strong class="text-red-400">Kantian Analysis (Stealing): Impermissible</strong><br>
+                    Maxim: "It is permissible to steal when necessary to save a life."<br>
+                    <strong>Universal Law Test:</strong> Fails. Universal stealing undermines property rights, making 'stealing' incoherent.<br>
+                    <strong>Humanity Test:</strong> Fails. Treats the owner merely as a means to your end.<br>
+                    Conclusion: Violates perfect duty; consequences don't justify the act.`;
+          borderColor = "#f87171"; // Red
+        } else if (choice === "not_steal") {
+          analysis = `
+                    <strong class="text-green-400">Kantian Analysis (Not Stealing): Permissible (Obligatory)</strong><br>
+                    Maxim: "Do not steal, even when necessary to save a life."<br>
+                    <strong>Universal Law Test:</strong> Passes. Universally not stealing is logically consistent.<br>
+                    <strong>Humanity Test:</strong> Passes. Respects the owner as an end.<br>
+                    Conclusion: Aligns with perfect duty. Other imperfect duties (like seeking aid) might apply, but don't override the duty not to steal.`;
+          borderColor = "#4ade80"; // Green
+        }
+        if (feedbackEl) {
+          // Check if element exists
+          feedbackEl.innerHTML = analysis;
+          feedbackEl.style.borderColor = borderColor;
+        }
+      }
+
+      // --- Critique Interactive ---
+      const critiqueCanvas = document.getElementById("critique-canvas");
+      const critiqueFeedback = document.getElementById("critique-feedback");
+      const numDots = 15; // Number of dots
+      let dots = []; // Array to hold dot elements
+      let lines = []; // Array to hold line elements
+
+      // Function to create a single dot
+      function createDot(id) {
+        if (!critiqueCanvas) return null; // Guard against null canvas
+        const dot = document.createElement("div");
+        dot.classList.add("critique-dot");
+        dot.id = `dot-${id}`;
+        critiqueCanvas.appendChild(dot);
+        return dot;
+      }
+
+      // Function to create a line between two dots
+      function createLine(id, dot1, dot2) {
+        if (!critiqueCanvas || !dot1 || !dot2) return null; // Guard against null elements
+        // Ensure dots have position styles before calculating
+        if (
+          !dot1.style.left ||
+          !dot1.style.top ||
+          !dot2.style.left ||
+          !dot2.style.top
+        )
+          return null;
+
+        const line = document.createElement("div");
+        line.classList.add("critique-line");
+        line.id = `line-${id}`;
+
+        const x1 = parseFloat(dot1.style.left);
+        const y1 = parseFloat(dot1.style.top);
+        const x2 = parseFloat(dot2.style.left);
+        const y2 = parseFloat(dot2.style.top);
+
+        // Check for NaN values which can occur if styles aren't set
+        if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) return null;
+
+        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+
+        line.style.width = `${length}px`;
+        line.style.left = `${x1 + 4}px`; // Offset by half dot width
+        line.style.top = `${y1 + 4}px`; // Offset by half dot height
+        line.style.transform = `rotate(${angle}deg)`;
+
+        critiqueCanvas.appendChild(line);
+        return line;
+      }
+
+      // Initialize or reset dots to random positions
+      function initializeCritiqueInteractive() {
+        if (!critiqueCanvas || !critiqueFeedback) return; // Ensure elements exist
+
+        critiqueCanvas.innerHTML = ""; // Clear previous dots/lines
+        dots = [];
+        lines = [];
+        const canvasWidth = critiqueCanvas.offsetWidth;
+        const canvasHeight = critiqueCanvas.offsetHeight;
+
+        // Ensure canvas has dimensions before proceeding
+        if (canvasWidth <= 0 || canvasHeight <= 0) {
+          // Try again shortly after a potential layout shift
+          setTimeout(initializeCritiqueInteractive, 50);
+          return;
+        }
+
+        for (let i = 0; i < numDots; i++) {
+          const dot = createDot(i);
+          if (dot) {
+            // Random position within canvas bounds
+            dot.style.left = `${Math.random() * (canvasWidth - 8)}px`;
+            dot.style.top = `${Math.random() * (canvasHeight - 8)}px`;
+            dots.push(dot);
+          }
+        }
+        critiqueFeedback.textContent =
+          "Observe the 'raw data' - unstructured points representing sensory input.";
+        critiqueFeedback.style.borderColor = "#6b7280"; // Default border
+      }
+
+      // Apply structuring principles
+      function applyStructuring(type) {
+        if (!critiqueCanvas || !critiqueFeedback || dots.length === 0) return; // Guard clauses
+
+        const canvasWidth = critiqueCanvas.offsetWidth;
+        const canvasHeight = critiqueCanvas.offsetHeight;
+        // Ensure canvas has dimensions
+        if (canvasWidth <= 0 || canvasHeight <= 0) return;
+
+        // Hide lines first
+        lines.forEach((line) => {
+          if (line) line.style.opacity = "0";
+        }); // Check line exists
+
+        if (type === "reset") {
+          initializeCritiqueInteractive(); // Re-randomize
+        } else if (type === "space_time") {
+          // Arrange dots in a grid-like structure (representing spatial/temporal order)
+          const cols = Math.ceil(Math.sqrt(numDots));
+          const rows = Math.ceil(numDots / cols);
+          const xSpacing = canvasWidth / (cols + 1);
+          const ySpacing = canvasHeight / (rows + 1);
+
+          dots.forEach((dot, i) => {
+            if (!dot) return; // Check dot exists
+            const col = (i % cols) + 1;
+            const row = Math.floor(i / cols) + 1;
+            dot.style.left = `${col * xSpacing - 4}px`; // Center dot
+            dot.style.top = `${row * ySpacing - 4}px`; // Center dot
+          });
+          critiqueFeedback.textContent =
+            "Applied 'Space & Time': The mind's innate forms of intuition impose spatial and temporal order onto the raw data.";
+          critiqueFeedback.style.borderColor = "#818cf8"; // Indigo border
+        } else if (type === "causality") {
+          // Draw lines between some adjacent dots (simple representation of causal links)
+          // Ensure dots are positioned first (e.g., after space_time or keep current)
+          if (dots.length > 1) {
+            // Create lines only once or recreate if needed
+            critiqueCanvas
+              .querySelectorAll(".critique-line")
+              .forEach((l) => l.remove()); // Clear old lines before creating new ones
+            lines = []; // Reset lines array
+            for (let i = 0; i < dots.length - 1; i += 2) {
+              // Connect pairs
+              if (dots[i] && dots[i + 1]) {
+                // Check dots exist
+                const newLine = createLine(i, dots[i], dots[i + 1]);
+                if (newLine) lines.push(newLine);
+              }
+            }
+          }
+          // Make lines visible after a short delay to allow creation/positioning
+          setTimeout(() => {
+            lines.forEach((line) => {
+              if (line) line.style.opacity = "1"; // Check if line exists before setting opacity
+            });
+          }, 50); // 50ms delay
+
+          critiqueFeedback.textContent =
+            "Applied 'Causality' (Category): The mind applies categories like causality to understand relationships between appearances (phenomena). The lines suggest perceived connections.";
+          critiqueFeedback.style.borderColor = "#a5b4fc"; // Lighter Indigo border
+        }
+      }
+
+      // --- Aesthetics Interactive ---
+      function analyzeAesthetics(item, judgment) {
+        const feedbackEl = document.getElementById("aesthetics-feedback");
+        let analysis = "";
+        let borderColor = "#6b7280"; // Default border
+
+        if (item === "sunset") {
+          if (judgment === "beautiful") {
+            analysis = `<strong class="text-purple-400">Analysis (Sunset as Beautiful): Likely Kantian Aesthetic Judgment</strong><br>
+                                Judging a sunset as beautiful often involves appreciating its form, colors, and composition disinterestedly (without wanting to possess or consume it). This aligns with Kant's idea of a pure aesthetic judgment based on the 'free play' of cognitive faculties. You claim universal assent.`;
+            borderColor = "#c084fc"; // Purple
+          } else {
+            // agreeable
+            analysis = `<strong class="text-yellow-400">Analysis (Sunset as Agreeable): Possible, but less purely Kantian 'Aesthetic'</strong><br>
+                                While a sunset can be pleasant or agreeable (e.g., makes you feel calm), Kant reserves 'beauty' for a specific disinterested judgment. If your pleasure is tied to a personal feeling or utility (like warmth), it's more 'agreeable' than purely 'beautiful' in his strict sense.`;
+            borderColor = "#facc15"; // Yellow
+          }
+        } else if (item === "cake") {
+          if (judgment === "beautiful") {
+            analysis = `<strong class="text-yellow-400">Analysis (Cake as Beautiful): Less Likely a Pure Kantian Aesthetic Judgment</strong><br>
+                                While a cake can be skillfully decorated (appealing to concepts of 'good' design), the primary appeal is often tied to interest (desire to eat it). Kant would likely classify this pleasure as 'agreeable' rather than the disinterested pleasure associated with pure 'beauty'.`;
+            borderColor = "#facc15"; // Yellow
+          } else {
+            // agreeable
+            analysis = `<strong class="text-green-400">Analysis (Cake as Agreeable): Likely Kantian Judgment of the Agreeable</strong><br>
+                                Judging a cake as 'agreeable' fits Kant's category for pleasure based on interest or desire (you want to eat it!). This judgment is subjective and doesn't claim the universal validity of a judgment of pure beauty.`;
+            borderColor = "#4ade80"; // Green
+          }
+        }
+        if (feedbackEl) {
+          // Check if element exists
+          feedbackEl.innerHTML = analysis;
+          feedbackEl.style.borderColor = borderColor;
+        }
+      }
+
+      // --- Initialization ---
+      document.addEventListener("DOMContentLoaded", () => {
+        // Set year in footer
+        document.getElementById("year").textContent = new Date().getFullYear();
+        // Show home section initially
+        const homeLink = document.querySelector('#nav-links a[href="#home"]');
+        showSection("home", homeLink);
+        // Reset feedback borders
+        ["ethics-feedback", "critique-feedback", "aesthetics-feedback"].forEach(
+          (id) => {
+            const el = document.getElementById(id);
+            if (el) el.style.borderColor = "#6b7280";
+          }
+        );
+        // Initial setup for critique interactive (dots are created when section is first shown)
+        setTimeout(() => {
+          if (
+            !document.getElementById("critique").classList.contains("hidden") &&
+            typeof initializeCritiqueInteractive === "function"
+          ) {
+            initializeCritiqueInteractive();
+          }
+        }, 100);
+      });
+
+      // Re-initialize critique interactive on window resize to adjust dot positions
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (
+            !document.getElementById("critique").classList.contains("hidden") &&
+            typeof initializeCritiqueInteractive === "function"
+          ) {
+            initializeCritiqueInteractive();
+          }
+        }, 250); // Debounce resize event
+      });
+    </script>
+  </body>
+</html>

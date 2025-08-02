@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fernando Pessoa: A Fragmented Universe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for thematic dark mode elements */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #262a33; /* Dark grey-blue */
+            color: #d1d5db; /* Light grey text */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .serif-font {
+            font-family: 'Source Serif 4', serif;
+        }
+        .fragment {
+            background-color: rgba(55, 65, 81, 0.8); /* Darker grey background for fragments */
+            border: 1px solid #4b5563; /* Muted dark border */
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); /* Adjusted shadow for dark bg */
+            transition: all 0.3s ease-in-out;
+            cursor: pointer; /* Indicate interactivity */
+            color: #e5e7eb; /* Lighter text for fragments */
+            padding: 1rem; /* Consistent padding */
+            border-radius: 0.375rem; /* Equivalent to rounded-md */
+        }
+        .fragment:hover {
+            transform: scale(1.02) rotate(-0.5deg); /* Subtle hover effect */
+            background-color: rgba(75, 85, 99, 0.9); /* Slightly lighter on hover */
+            border-color: #6b7280;
+            box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 10; /* Bring hovered fragment to front */
+        }
+        .content-section {
+            display: none; /* Hidden by default */
+            position: fixed; /* Overlay */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Darker overlay */
+            z-index: 50;
+            /* display: flex; */ /* Managed by .active */
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none; /* Allow clicks through when hidden */
+        }
+        .content-section.active {
+            display: flex; /* Show when active */
+            opacity: 1;
+            pointer-events: auto; /* Enable interaction when active */
+        }
+        .content-box {
+            background-color: #374151; /* Dark grey content box */
+            color: #d1d5db; /* Light grey text inside */
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto; /* Enable scroll for content */
+            position: relative;
+            border: 1px solid #4b5563; /* Muted dark border */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); /* Stronger shadow for depth */
+        }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #6b7280; /* Grey button */
+            color: #e5e7eb; /* Light text */
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.2rem;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            z-index: 60; /* Ensure close button is above content */
+        }
+        .close-btn:hover {
+            background-color: #9ca3af; /* Lighter grey on hover */
+        }
+
+        /* Adjust text colors for headers and specific elements */
+        h1, h2, h3, h4, h5, h6 {
+             color: #f3f4f6; /* Slightly brighter white for headers */
+        }
+        header p {
+            color: #9ca3af; /* Muted grey for subtitle */
+        }
+        blockquote {
+            border-left: 4px solid #9ca3af; /* Adjust border color */
+            padding-left: 1rem;
+            margin-bottom: 1.5rem; /* mb-6 */
+            font-style: italic;
+            color: #d1d5db; /* Ensure quote text is light */
+        }
+        blockquote footer {
+            color: #9ca3af; /* Muted grey for footer */
+            font-style: normal;
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.25rem; /* mt-1 */
+        }
+        .text-xs {
+             color: #9ca3af; /* Muted grey for source text */
+             font-size: 0.75rem; /* text-xs */
+             margin-top: 1rem; /* mt-4 */
+        }
+        a { /* Basic link styling for dark mode */
+            color: #93c5fd; /* Light blue */
+            text-decoration: underline;
+        }
+        a:hover {
+            color: #60a5fa; /* Slightly darker blue on hover */
+        }
+        li strong { /* Ensure strong text in lists is visible */
+            color: #e5e7eb;
+            font-weight: 600; /* font-semibold */
+        }
+        ul {
+            list-style: disc;
+            padding-left: 1.5rem; /* list-inside equivalent */
+            margin-bottom: 0.75rem; /* mb-3 */
+        }
+        li {
+             margin-bottom: 0.75rem; /* space-y-3 equivalent */
+        }
+        p {
+            margin-bottom: 0.75rem; /* mb-3 */
+            line-height: 1.6; /* Add some line spacing for readability */
+        }
+
+
+        /* Responsive positioning for fragments */
+        .fragment-container {
+            position: relative;
+            width: 100%;
+            min-height: 80vh; /* Ensure container has height */
+            padding: 2rem;
+            max-width: 64rem; /* max-w-6xl */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Example positions - adjust as needed for desired overlap/scatter */
+        /* Using percentages for better scaling, combined with max-width */
+        #frag-intro { position: absolute; top: 5%; left: 10%; width: 40%; max-width: 300px; transform: rotate(-2deg); z-index: 1;}
+        #frag-heteronyms { position: absolute; top: 15%; left: 55%; width: 35%; max-width: 280px; transform: rotate(1deg); z-index: 2;}
+        #frag-disquiet { position: absolute; top: 40%; left: 25%; width: 45%; max-width: 350px; transform: rotate(3deg); z-index: 3;}
+        #frag-quotes { position: absolute; top: 60%; left: 60%; width: 30%; max-width: 250px; transform: rotate(-1.5deg); z-index: 4;}
+        #frag-further { position: absolute; top: 70%; left: 15%; width: 38%; max-width: 290px; transform: rotate(2deg); z-index: 5;} /* New fragment position */
+        #frag-sources { position: absolute; top: 85%; left: 40%; width: 30%; max-width: 250px; transform: rotate(0.5deg); z-index: 6;} /* Adjusted sources position */
+
+
+        /* Adjust positions for smaller screens */
+        @media (max-width: 768px) {
+            .fragment-container {
+                position: static; /* Stack fragments vertically */
+                padding: 1rem;
+                min-height: auto;
+            }
+            .fragment {
+                position: static !important; /* Override absolute positioning */
+                width: 90% !important; /* Make fragments wider */
+                max-width: none !important;
+                margin: 1rem auto !important; /* Center and add space */
+                transform: none !important; /* Remove rotation */
+                z-index: auto !important; /* Reset z-index */
+            }
+            .content-box {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            .close-btn {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+            h1 { font-size: 2.25rem; } /* text-4xl */
+            h2 { font-size: 1.5rem; } /* text-2xl */
+        }
+
+    </style>
+</head>
+<body class="bg-[#262a33] text-gray-300 p-4 md:p-8">
+    <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold serif-font mb-2 text-gray-100">Fernando Pessoa</h1>
+        <p class="text-xl md:text-2xl italic text-gray-400">A Fragmented Universe</p>
+    </header>
+
+    <main class="fragment-container">
+        <div id="frag-intro" class="fragment" data-target="content-intro">
+            <h2 class="text-lg font-semibold mb-2 serif-font">Who Was Pessoa?</h2>
+            <p class="text-sm">An introduction to the enigmatic man behind the many names...</p>
+        </div>
+
+        <div id="frag-heteronyms" class="fragment" data-target="content-heteronyms">
+            <h2 class="text-lg font-semibold mb-2 serif-font">The Heteronyms</h2>
+            <p class="text-sm">Exploring the "drama in people": Caeiro, Reis, Campos, Soares...</p>
+        </div>
+
+        <div id="frag-disquiet" class="fragment" data-target="content-disquiet">
+            <h2 class="text-lg font-semibold mb-2 serif-font">The Book of Disquiet</h2>
+            <p class="text-sm">Fragments of a soul's diary, an "autobiography without facts"...</p>
+        </div>
+
+        <div id="frag-quotes" class="fragment" data-target="content-quotes">
+            <h2 class="text-lg font-semibold mb-2 serif-font">Whispers of Disunity</h2>
+            <p class="text-sm">Selected quotes reflecting fragmentation, tedium, and the self...</p>
+        </div>
+
+        <div id="frag-further" class="fragment" data-target="content-further">
+            <h2 class="text-lg font-semibold mb-2 serif-font">Further Fragments</h2>
+            <p class="text-sm">More glimpses into identity, dreams, art, and the city...</p>
+        </div>
+
+         <div id="frag-sources" class="fragment" data-target="content-sources">
+            <h2 class="text-lg font-semibold mb-2 serif-font">Sources</h2>
+            <p class="text-sm">Information and inspiration for this page...</p>
+        </div>
+    </main>
+
+    <div id="content-intro" class="content-section">
+        <div class="content-box">
+            <button class="close-btn" onclick="closeContent('content-intro')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 serif-font">Fernando Pessoa (1888-1935)</h2>
+            <p>Fernando António Nogueira Pessoa stands as a towering figure in Portuguese literature and a key voice of European modernism. Born in Lisbon, he spent a significant part of his childhood in Durban, South Africa, where his stepfather was the Portuguese consul. This period endowed him with fluency in English, which deeply influenced his early writings and translations.</p>
+            <p>Returning to Lisbon, he lived a life marked by outward modesty, working as a freelance commercial translator – a role that provided financial subsistence but little creative fulfillment. His true existence unfolded internally, in a relentless exploration of identity, consciousness, and the nature of reality. He famously described himself as containing multitudes, "I am nothing. I'll never be anything. I couldn't want to be anything. Apart from that, I have in me all the dreams in the world." This sentiment is reflected in his creation of numerous literary personas.</p>
+            <p>Pessoa published relatively little under his own name during his lifetime. The vast majority of his writings – poems, prose fragments, philosophical reflections, critical essays, attributed to himself and his heteronyms – were discovered after his death in a large wooden trunk. This posthumous revelation cemented his legacy as one of the most original and complex writers of the 20th century.</p>
+             <p class="text-xs">Source: General biographical information, corroborated by sources like Richard Zenith's biography and encyclopedias. Quote from "Tabacaria" by Álvaro de Campos.</p>
+       </div>
+    </div>
+
+    <div id="content-heteronyms" class="content-section">
+        <div class="content-box">
+            <button class="close-btn" onclick="closeContent('content-heteronyms')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 serif-font">The Many Selves: Heteronyms</h2>
+            <p>Pessoa's most unique contribution is arguably the invention of heteronyms – distinct authorial personalities, complete with their own biographies, physical descriptions, philosophical outlooks, and unique literary styles. He referred to this as creating a "drama em gente" (a drama in people). These were not mere pseudonyms but facets of Pessoa's own fragmented self, allowed to develop independently.</p>
+            <ul>
+                <li><strong>Alberto Caeiro:</strong> Considered the "master" by the other heteronyms (and Pessoa himself). A poet of pastoral simplicity, supposedly uneducated, who rejected metaphysics and embraced the direct, uninterpreted experience of reality. His philosophy is one of pure sensation: "To think is to be sick in the eyes." He sought to "unlearn" interpretation and see things as they are.</li>
+                <li><strong>Ricardo Reis:</strong> A physician by trade, classically educated, Reis embodies Neoclassicism and Stoicism. His poetry, often in ode form, emphasizes emotional detachment, the acceptance of fate ('Fado'), and the Horatian ideal of *carpe diem* (seize the day), albeit with a melancholic awareness of life's brevity and the futility of striving.</li>
+                <li><strong>Álvaro de Campos:</strong> An adventurous naval engineer educated in Glasgow, Campos represents the dynamism and anxieties of modernity. His early work reflects Futurist influences (celebrating speed, machines, sensation in poems like "Ode Triunfal"), while his later poetry descends into profound disillusionment, existential angst ('Spleen'), and a sense of emptiness ("Tabacaria" / "Tobacco Shop" is a key work exploring this void).</li>
+                <li><strong>Bernardo Soares:</strong> Described by Pessoa as a "semi-heteronym" because his personality is less distinct and closer to Pessoa's own, albeit "mutilated." An assistant bookkeeper in Lisbon, Soares is the principal author of <em class="serif-font">The Book of Disquiet</em>. He embodies the introspective, dreamlike, and alienated consciousness navigating the tedium of existence and the nuances of sensation.</li>
+            </ul>
+            <p>Pessoa meticulously crafted these personalities, even writing horoscopes for them. He explained this phenomenon not as insincerity, but as a fundamental aspect of his being: "I put into Caeiro all my power of dramatic depersonalization, into Ricardo Reis all my mental discipline..., into Álvaro de Campos all the emotion that I deny myself in life." The heteronyms allowed him to explore contradictory philosophies and feelings simultaneously.</p>
+            <p class="text-xs">Source: Critical analysis of Pessoa's work, discussions by Richard Zenith, and Pessoa's own writings about the heteronyms.</p>
+       </div>
+    </div>
+
+    <div id="content-disquiet" class="content-section">
+        <div class="content-box">
+            <button class="close-btn" onclick="closeContent('content-disquiet')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 serif-font">The Book of Disquiet (Livro do Desassossego)</h2>
+            <p><em class="serif-font">The Book of Disquiet</em>, primarily attributed to the semi-heteronym Bernardo Soares, is perhaps Pessoa's most celebrated prose work. It's not a linear narrative but a vast collection of aphoristic reflections, diary entries, and prose poems assembled posthumously from hundreds of undated fragments found in Pessoa's trunk.</p>
+            <p>It functions as a "factless autobiography," charting the inner landscape of a solitary, sensitive soul adrift in the modern city (Lisbon). Key themes explored with profound psychological acuity include:</p>
+            <ul>
+                <li><strong>Fragmentation and Depersonalization:</strong> Soares constantly grapples with a sense of unreality and the multiplicity of self. "I feel as if I’m always on the verge of waking up," he writes, capturing the dreamlike state and detachment from a coherent identity. "To be understood is to prostitute oneself," suggests his resistance to being pinned down.</li>
+                <li><strong>Tedium Vitae (Weariness of Life):</strong> An overwhelming sense of boredom, meaninglessness, and the oppressive weight of routine permeates the text. Soares finds the ordinary world drab and suffocating, preferring the realm of imagination. "I wasn't meant for reality, but life is."</li>
+                <li><strong>The Supremacy of the Inner World:</strong> Dreams, introspection, and aesthetic contemplation are elevated above external reality. "To act is to rest," suggests Soares, highlighting the exhaustion reality imposes and the refuge found within. Literature itself becomes a primary mode of experiencing life: "Literature is the most agreeable way of ignoring life."</li>
+                <li><strong>Urban Alienation:</strong> The city of Lisbon is a constant backdrop, portrayed not just physically but as a state of mind – a place of anonymity, fleeting impressions, and profound loneliness amidst the crowds. The descriptions of streets, weather, and interiors often mirror Soares's internal state.</li>
+                <li><strong>Existential Doubt:</strong> Soares questions the nature of perception ("My soul is impatient with itself, as with a bothersome child"), the passage of time, the existence of God, and the possibility of genuine human connection, often arriving at a state of melancholic resignation.</li>
+            </ul>
+            <p>Reading <em class="serif-font">The Book of Disquiet</em> is like navigating the labyrinth of a consciousness ill-at-ease with itself and the world – a seminal work of modernist introspection.</p>
+            <p class="text-xs">Source: Based on the text of *The Book of Disquiet* (trans. Richard Zenith) and common critical interpretations.</p>
+        </div>
+    </div>
+
+    <div id="content-quotes" class="content-section">
+        <div class="content-box">
+            <button class="close-btn" onclick="closeContent('content-quotes')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 serif-font">Whispers of Disunity</h2>
+            <blockquote>
+                "I’d woken up early, and I took a long time getting ready to exist."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+            <blockquote>
+                "Each of us is several, is many, is a profusion of selves. So that the self who disdains his surroundings is not the same as the self who suffers or takes joy in them. In the vast colony of our being there are many species of people who think and feel in different ways."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+             <blockquote>
+                "To pretend is to know oneself. [...] Since I’m incapable of knowing what I am, I pretend to be what I might like to be."
+                 <footer>- Attributed to Fernando Pessoa / Bernardo Soares</footer>
+           </blockquote>
+            <blockquote>
+                "My soul is a hidden orchestra; I know not what instruments, what fiddlestrings and harps, drums and tamboura I sound and clash inside myself. All I hear is the symphony."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+             <blockquote>
+                "Everything tires me, even what doesn't tire me. My fatigue is foundational."
+                 <footer>- The Book of Disquiet</footer>
+           </blockquote>
+             <blockquote>
+                "Life is what we make of it. Travel is the traveler. What we see isn't what we see but what we are."
+                 <footer>- Fernando Pessoa (often cited aphorism)</footer>
+           </blockquote>
+            <p class="text-xs">Source: Quotes primarily from *The Book of Disquiet* (trans. Richard Zenith) and widely attributed Pessoa aphorisms.</p>
+        </div>
+    </div>
+
+    <div id="content-further" class="content-section">
+        <div class="content-box">
+            <button class="close-btn" onclick="closeContent('content-further')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 serif-font">Further Fragments: Echoes of Thought</h2>
+            <p>Pessoa's trunk yielded countless fragments exploring diverse philosophical and existential themes. Here are more glimpses:</p>
+
+            <h3 class="text-xl font-semibold mb-2 serif-font mt-4">On Identity and Self</h3>
+            <blockquote>
+                "I've always been an ironic passerby to my own self. I've watched myself live with a distant curiosity, the way one might watch a stranger."
+                <footer>- Prose Fragment (attribution varies)</footer>
+            </blockquote>
+             <blockquote>
+                "We never know self-realization. We are two abysses - a well staring at the sky."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+             <blockquote>
+                "I bear the creature that I am as a cross, and I’d like to carry it joyfully, but I carry it with sadness."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+
+             <h3 class="text-xl font-semibold mb-2 serif-font mt-4">On Dreams and Reality</h3>
+             <blockquote>
+                "I live always in the present. The future I know not. The past I own not. [...] One weighs on me like the possibility of everything, the other like the reality of nothing."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+            <blockquote>
+                "My dreams are clearer than reality to my eyes. When I see I pay attention, but when I dream I see."
+                 <footer>- Prose Fragment (attribution varies)</footer>
+            </blockquote>
+             <blockquote>
+                "To place yourself above the world is to place yourself on a solitary peak where the wind blows constantly and the view is vast but empty."
+                <footer>- Prose Fragment (attribution varies)</footer>
+            </blockquote>
+
+            <h3 class="text-xl font-semibold mb-2 serif-font mt-4">On Art and Sensation</h3>
+             <blockquote>
+                "Art consists in making others feel what we feel, in freeing them from themselves, proposing to them our personality for their special liberation."
+                <footer>- Prose Fragment (attribution varies)</footer>
+            </blockquote>
+            <blockquote>
+                "To feel everything in every way. / To be all people in all manners possible. / To be the very centre of everything, / And begin to be unsure of oneself."
+                <footer>- Álvaro de Campos (reflecting intense sensation)</footer>
+            </blockquote>
+
+            <h3 class="text-xl font-semibold mb-2 serif-font mt-4">On Time and Futility</h3>
+             <blockquote>
+                "The feelings that hurt most, the emotions that sting most, are those that are absurd - The longing for impossible things, precisely because they are impossible; nostalgia for what never was..."
+                <footer>- The Book of Disquiet</footer>
+            </blockquote>
+            <blockquote>
+                "There are ships sailing to many ports, but not a single one goes where life is not painful."
+                <footer>- Ricardo Reis (Ode reflecting Stoic resignation)</footer>
+            </blockquote>
+
+
+            <h3 class="text-xl font-semibold mb-2 serif-font mt-4">On Lisbon and Atmosphere</h3>
+             <blockquote>
+                "Like the Tagus, my soul has its great lagoons, stagnant, full of swamp things, by the edges of its flowing course."
+                <footer>- Prose Fragment (attribution varies, linking self to Lisbon's river)</footer>
+            </blockquote>
+             <blockquote>
+                "Oh Lisbon, my home! [...] Poor sailors, poor souls drowning in the sea of life, may the distant lights of your quays be for us, in the terrible night of our Being, the eternal dawn of hoped-for harbours!"
+                <footer>- Álvaro de Campos, "Maritime Ode" (excerpt reflecting urban yearning)</footer>
+            </blockquote>
+             <blockquote>
+                "A trace of sunlight, pale and uncertain, appeared in the highest windows, but the street itself remained obscure. It was one of those days that seem to have no morning."
+                <footer>- The Book of Disquiet (evoking Lisbon's mood)</footer>
+            </blockquote>
+
+            <p class="text-xs">Source: Fragments drawn from various collections and translations of Pessoa's prose and poetry, including *The Book of Disquiet* and works by heteronyms like Campos and Reis.</p>
+        </div>
+    </div>
+
+
+     <div id="content-sources" class="content-section">
+        <div class="content-box">
+            <button class="close-btn" onclick="closeContent('content-sources')">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 serif-font">Sources & Further Reading</h2>
+            <ul>
+                <li>Pessoa, Fernando. <em class="serif-font">The Book of Disquiet</em>. Translated by Richard Zenith, Penguin Classics, 2002. (Essential primary source).</li>
+                 <li>Pessoa, Fernando. <em class="serif-font">A Little Larger Than the Entire Universe: Selected Poems</em>. Edited and translated by Richard Zenith, Penguin Classics, 2006. (Excellent selection covering Pessoa and heteronyms).</li>
+                <li>Zenith, Richard. <em class="serif-font">Pessoa: A Biography</em>. Liveright, 2021. (Definitive biography in English).</li>
+                <li>Sadlier, Darlene J. <em class="serif-font">An Introduction to Fernando Pessoa: Modernism and the Paradoxes of Authorship</em>. University Press of Florida, 1998. (Academic introduction).</li>
+                <li>Online Encyclopedias (Britannica, Wikipedia, Stanford Encyclopedia of Philosophy) for foundational details and context.</li>
+                <li><a href="http://arquivopessoa.net/" target="_blank" rel="noopener noreferrer">Arquivo Pessoa</a> (Digital archive - primarily in Portuguese, but invaluable).</li>
+                <li>Academic databases (JSTOR, Project MUSE, etc.) for scholarly articles on specific aspects of Pessoa's work.</li>
+            </ul>
+            <p class="mt-4 text-sm">This page offers a glimpse into Pessoa's complex world. His complete works represent a universe of thought and feeling worthy of sustained exploration.</p>
+        </div>
+    </div>
+
+
+    <script>
+        // JavaScript remains the same - handles fragment clicks and overlay display for all fragments.
+        const fragments = document.querySelectorAll('.fragment');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        fragments.forEach(fragment => {
+            fragment.addEventListener('click', () => {
+                const targetId = fragment.getAttribute('data-target');
+                const targetSection = document.getElementById(targetId);
+                // Close any currently active section first
+                closeAllContent();
+                // If a target section exists, show it
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    // Prevent body scroll when overlay is open
+                    document.body.style.overflow = 'hidden';
+                     // Scroll the content box to the top when opened
+                    targetSection.querySelector('.content-box').scrollTop = 0;
+                }
+            });
+        });
+
+        // Function to close a specific content section
+        function closeContent(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.remove('active');
+                 // Restore body scroll only if no other sections are active
+                if (!document.querySelector('.content-section.active')) {
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+
+        // Function to close all content sections
+        function closeAllContent() {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+             // Restore body scroll
+            document.body.style.overflow = 'auto';
+        }
+
+        // Optional: Close content section if clicking outside the content box
+        contentSections.forEach(section => {
+            section.addEventListener('click', (event) => {
+                // Check if the click was directly on the overlay background
+                if (event.target === section) {
+                    closeContent(section.id);
+                }
+            });
+        });
+
+         // Optional: Close content section with the Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                const activeSection = document.querySelector('.content-section.active');
+                if (activeSection) {
+                    closeContent(activeSection.id);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

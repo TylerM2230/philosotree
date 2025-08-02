@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Aristotle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for a classical dark theme (Aristotle Theme) */
+        :root {
+            --primary-accent: #795548; /* Earthy Brown */
+            --background-dark: #1f1f1f;
+            --background-medium: #2b2b2b;
+            --background-light: #333333;
+            --text-light: #dcdcdc;
+            --text-medium: #c0c0c0;
+            --text-dark: #888888;
+            --border-color: #555555;
+        }
+
+        body {
+            font-family: 'EB Garamond', serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #111111;
+            border-bottom: 1px solid var(--primary-accent);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        h1 {
+             color: var(--text-light);
+             font-family: 'EB Garamond', serif;
+             padding: 0.75rem 0;
+             text-align: center;
+        }
+
+        .main-wrapper {
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            padding: 2rem 1rem;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        /* Navigation container */
+        nav {
+            width: 220px;
+            flex-shrink: 0;
+            padding-top: 1rem;
+        }
+
+        /* Navigation button styles - Scattered Pages Effect */
+        .nav-button {
+            background-color: var(--background-light);
+            color: var(--text-light);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #4a4a4a;
+            border-radius: 3px;
+            font-family: 'EB Garamond', serif;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            width: 95%;
+            margin-bottom: -10px;
+            margin-left: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .nav-button:nth-child(odd) { transform: rotate(-1.5deg); margin-left: 0px; }
+        .nav-button:nth-child(even) { transform: rotate(1deg); z-index: 2; }
+        .nav-button:nth-child(3n) { transform: rotate(0.5deg); z-index: 3; }
+        .nav-button:nth-child(4n) { transform: rotate(-1deg); margin-left: 8px; }
+        .nav-button:nth-child(5n) { transform: rotate(1.8deg); z-index: 4; }
+
+        .nav-button:hover {
+            background-color: #444444;
+            color: #ffffff;
+            transform: rotate(0deg) scale(1.03);
+            z-index: 10;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .nav-button.active {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            font-weight: bold;
+            border: 1px solid var(--primary-accent);
+            box-shadow: 3px 3px 8px rgba(121, 85, 72, 0.5); /* Adjusted shadow color */
+            transform: rotate(0deg) scale(1.01);
+            z-index: 5;
+        }
+         .nav-button.active:hover { transform: rotate(0deg) scale(1.03); }
+
+        /* Content area style */
+        #content-area {
+            background-color: var(--background-medium);
+            border: 1px solid #444444;
+            border-radius: 8px;
+            flex-grow: 1;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: opacity 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: var(--text-light);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-family: 'EB Garamond', serif;
+            flex-shrink: 0;
+        }
+
+        .content-body {
+            font-size: 1.1em;
+            line-height: 1.9;
+            flex-grow: 1;
+        }
+        .content-body p {
+            margin-bottom: 1.2em;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text-medium);
+        }
+        .content-body ul {
+            list-style-type: square;
+            margin-left: 2rem;
+            margin-bottom: 1em;
+            font-family: 'Courier New', Courier, monospace;
+             color: var(--text-medium);
+        }
+        .content-body li { margin-bottom: 0.7em; }
+        .content-body blockquote {
+            border-left: 3px solid var(--primary-accent); /* Brown border */
+            padding-left: 1.2rem;
+            margin: 1.5rem 0.5rem;
+            font-style: italic;
+            color: #b8b8b8;
+            font-family: 'EB Garamond', serif;
+        }
+         .content-body strong {
+             color: var(--text-light);
+             font-weight: 600;
+        }
+
+        /* Quote Card Container (Home Section) */
+        #quote-card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 1rem;
+            min-height: 50vh;
+            position: relative;
+            flex-grow: 1;
+        }
+
+        /* Individual Quote Card Styling */
+        .quote-card {
+            background-color: var(--background-light);
+            color: var(--text-medium);
+            border: 1px solid #4a4a4a;
+            border-radius: 4px;
+            padding: 1.5rem 1rem;
+            width: 220px;
+            height: 160px;
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0s ease 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.9em;
+            line-height: 1.5;
+            z-index: 1;
+        }
+        .quote-card:nth-child(1) { transform: rotate(-4deg) translate(-10px, 5px); z-index: 1; }
+        .quote-card:nth-child(2) { transform: rotate(3deg) translate(5px, -8px); z-index: 2; }
+        .quote-card:nth-child(3) { transform: rotate(-2deg) translate(15px, 10px); z-index: 3; }
+        .quote-card:nth-child(4) { transform: rotate(5deg) translate(-5px, -5px); z-index: 1; }
+        .quote-card:nth-child(5) { transform: rotate(-3.5deg) translate(10px, 0px); z-index: 2; }
+
+         .quote-card::before {
+             content: '“';
+             position: absolute;
+             font-size: 6em;
+             color: var(--primary-accent); /* Brown quote mark */
+             opacity: 0.15;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             font-family: 'EB Garamond', serif;
+             z-index: 0;
+         }
+        .quote-card:hover {
+            transform: rotate(0deg) scale(1.08);
+            box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            border-color: var(--primary-accent);
+        }
+
+        /* Refresh Button Styling */
+         #refresh-quotes-button {
+            display: block;
+            margin: 1.5rem auto 0 auto;
+            background-color: #4a4a4a;
+            color: var(--text-light);
+            padding: 0.7rem 1.4rem;
+            border: 1px solid var(--primary-accent); /* Brown border */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            font-family: 'EB Garamond', serif;
+            font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        #refresh-quotes-button:hover {
+            background-color: var(--primary-accent);
+            color: #ffffff;
+            border-color: var(--primary-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(121, 85, 72, 0.5); /* Adjusted shadow color */
+        }
+
+
+        /* Modal Styles */
+        #quote-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); z-index: 99;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: flex; justify-content: center; align-items: center;
+        }
+        #quote-modal-overlay.visible { opacity: 1; visibility: visible; }
+        #quote-modal {
+            background-color: var(--background-medium); padding: 2.5rem; border-radius: 8px;
+            border: 1px solid var(--border-color); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%; width: 600px; position: relative;
+            transform: scale(0.9); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+         #quote-modal-overlay.visible #quote-modal { transform: scale(1); opacity: 1; }
+        #modal-quote-text {
+            font-family: 'EB Garamond', serif; font-size: 1.5em; font-style: italic;
+            color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.6;
+            border-left: 3px solid var(--primary-accent); padding-left: 1rem; /* Brown border */
+        }
+        #modal-quote-source {
+            font-family: 'EB Garamond', serif; font-size: 1em; color: var(--text-dark);
+            text-align: right; margin-top: 1rem;
+        }
+        #modal-close-button {
+            position: absolute; top: 10px; right: 15px; background: none; border: none;
+            font-size: 2rem; color: var(--text-dark); cursor: pointer; line-height: 1; padding: 0.2rem;
+        }
+        #modal-close-button:hover { color: var(--primary-accent); }
+
+
+        .source-note {
+            font-size: 0.85em; color: #999999; margin-top: 2rem; display: block;
+            font-style: italic; text-align: right; font-family: 'EB Garamond', serif;
+        }
+
+        footer {
+            background-color: #111111; border-top: 1px solid var(--primary-accent); /* Brown border */
+            color: var(--text-dark); font-family: 'EB Garamond', serif;
+            width: 100%; margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+             .main-wrapper { flex-direction: column; padding: 1rem; gap: 1.5rem; }
+             nav {
+                 width: 100%; display: flex; flex-wrap: wrap; justify-content: center;
+                 gap: 0.5rem; padding-top: 0;
+             }
+             .nav-button {
+                 width: auto; flex-basis: calc(50% - 0.5rem); margin: 0 0 0.5rem 0;
+                 transform: rotate(0deg); text-align: center; z-index: 1;
+             }
+             .nav-button:nth-child(n) { transform: rotate(0deg); margin-left: 0; z-index: 1; }
+             .nav-button.sub-item { flex-basis: calc(50% - 0.5rem); width: auto; padding-left: 1rem; margin-left: 0; }
+             .nav-button:hover { transform: scale(1.02); }
+             .nav-button.active { transform: scale(1.01); z-index: 2; }
+
+             #quote-card-container { padding: 1rem 0; gap: 1rem; min-height: 40vh;}
+             .quote-card {
+                 width: 70%; height: auto; min-height: 120px; margin-top: 0;
+                 transform: rotate(0deg) translate(0,0);
+             }
+              .quote-card:hover { transform: scale(1.03); }
+
+             #content-area { width: 100%; padding: 1rem 1.5rem; }
+             #quote-modal { width: 90%; padding: 1.5rem; }
+             #modal-quote-text { font-size: 1.3em; }
+             #refresh-quotes-button { margin-top: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container mx-auto px-4 max-w-7xl">
+            <h1 class="text-3xl font-bold text-center py-4">Understanding Aristotle</h1>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+
+        <nav>
+            <button data-content="home" class="nav-button active">Home (Quote)</button>
+            <button data-content="intro" class="nav-button">Introduction</button>
+            <button data-content="logic" class="nav-button">Empiricism & Logic</button>
+            <button data-content="metaphysics" class="nav-button">Metaphysics</button>
+            <button data-content="four-causes" class="nav-button">Four Causes</button>
+            <button data-content="ethics" class="nav-button">Nicomachean Ethics</button>
+            <button data-content="virtue-ethics" class="nav-button">Virtue / Golden Mean</button>
+            <button data-content="politics" class="nav-button">Politics</button>
+        </nav>
+
+        <section id="content-area">
+            {/* Content loads here */}
+        </section>
+
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="quote-modal-overlay">
+        <div id="quote-modal">
+            <button id="modal-close-button" aria-label="Close modal">&times;</button>
+            <p id="modal-quote-text"></p>
+            <small id="modal-quote-source"></small>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container mx-auto px-4 max-w-7xl py-4">
+            <p class="text-center">&copy; 2025 Aristotle Explorer. Content for educational purposes.</p>
+            <p class="text-center text-xs">Sources primarily include Aristotle's works (Nicomachean Ethics, Politics, Metaphysics, etc.) and reputable philosophical resources.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Aristotle Quotes
+        const quotes = [
+            { text: "Knowing yourself is the beginning of all wisdom.", source: "Attributed (Diogenes Laertius reporting Aristotle)" },
+            { text: "It is the mark of an educated mind to be able to entertain a thought without accepting it.", source: "Attributed / Paraphrase (reflects ideas in Metaphysics/Ethics)" },
+            { text: "Educating the mind without educating the heart is no education at all.", source: "Attributed" },
+            { text: "Happiness is the meaning and the purpose of life, the whole aim and end of human existence.", source: "Nicomachean Ethics" },
+            { text: "Excellence is never an accident. It is always the result of high intention, sincere effort, and intelligent execution...", source: "Attributed (modern paraphrase, origin uncertain)" },
+            { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", source: "Attributed to Aristotle, likely paraphrase by Will Durant summarizing Nicomachean Ethics" },
+            { text: "The educated differ from the uneducated as much as the living differ from the dead.", source: "Diogenes Laertius, Lives (reporting Aristotle)" },
+            { text: "Patience is bitter, but its fruit is sweet.", source: "Attributed" },
+            { text: "Those who know, do. Those that understand, teach.", source: "Attributed" },
+            { text: "Pleasure in the job puts perfection in the work.", source: "Attributed" },
+            { text: "The roots of education are bitter, but the fruit is sweet.", source: "Diogenes Laertius, Lives (reporting Aristotle)" },
+            { text: "A friend to all is a friend to none.", source: "Attributed (Eudemian Ethics/Diogenes Laertius)" },
+            { text: "Wishing to be friends is quick work, but friendship is a slow ripening fruit.", source: "Nicomachean Ethics" },
+            { text: "Happiness depends upon ourselves.", source: "Nicomachean Ethics / Magna Moralia" },
+            { text: "Hope is a waking dream.", source: "Diogenes Laertius, Lives (reporting Aristotle)" },
+            { text: "The antidote for fifty enemies is one friend.", source: "Attributed" },
+            { text: "Poverty is the parent of revolution and crime.", source: "Politics" },
+            { text: "The energy of the mind is the essence of life.", source: "Attributed" },
+            { text: "It is not enough to win a war; it is more important to organize the peace.", source: "Attributed" },
+            { text: "All human actions have one or more of these seven causes: chance, nature, compulsions, habit, reason, passion, desire.", source: "Rhetoric" },
+            { text: "The high-minded man must care more for the truth than for what people think.", source: "Nicomachean Ethics (paraphrase)" },
+            { text: "Man is by nature a political animal.", source: "Politics" },
+            { text: "To perceive is to suffer.", source: "Attributed (likely misinterpretation/misattribution)" }, // Keep with caution note? Or remove? Let's keep for now.
+            { text: "The whole is more than the sum of its parts.", source: "Metaphysics" },
+            { text: "Dignity does not consist in possessing honors, but in the consciousness that we deserve them.", source: "Nicomachean Ethics / Eudemian Ethics (paraphrase)" },
+            { text: "The aim of art is to represent not the outward appearance of things, but their inward significance.", source: "Poetics" },
+            { text: "All paid jobs absorb and degrade the mind.", source: "Politics" },
+            { text: "Quality is not an act, it is a habit.", source: "Paraphrase (related to 'Excellence is a habit')" },
+            { text: "Probable impossibilities are to be preferred to improbable possibilities.", source: "Poetics" },
+            { text: "Choice, not chance, determines your destiny.", source: "Attributed (modern inspirational quote)" } // Likely spurious
+        ];
+
+        // Content data for Aristotle sections
+        const content = {
+            "home": {
+                title: "Scattered Thoughts",
+            },
+            "intro": {
+                title: "Introduction: Aristotle, The Philosopher",
+                body: `
+                    <p>Aristotle (384–322 BCE) stands as one of the most influential figures in the history of Western thought, often referred to simply as "The Philosopher." A student of Plato at the Academy in Athens for nearly two decades, Aristotle later founded his own school, the Lyceum. Unlike Plato, who focused on a transcendent realm of Forms, Aristotle grounded his philosophy firmly in the empirical observation of the natural world.</p>
+                    <p>His writings, though many are lost or survive only as lecture notes (compiled by later editors), cover an astonishing range of subjects, including logic, metaphysics, physics, biology, ethics, politics, rhetoric, and poetics. He essentially invented the field of formal logic and made foundational contributions to nearly every branch of philosophy and science known in his time.</p>
+                    <p>Key aspects of Aristotle's philosophy include:
+                        <ul>
+                            <li><strong>Empiricism and Observation:</strong> Emphasis on sensory experience and observation as the starting point for knowledge, particularly evident in his biological works.</li>
+                            <li><strong>Logic (Organon):</strong> The systematic development of deductive logic, particularly the syllogism, as a tool ('organon') for reasoning.</li>
+                            <li><strong>Metaphysics:</strong> Analysis of being qua being, focusing on concepts like substance, essence, form, matter, potentiality, and actuality. Rejection of Plato's separate realm of Forms.</li>
+                            <li><strong>The Four Causes:</strong> A framework for explaining change and existence through material, formal, efficient, and final causes (telos).</li>
+                            <li><strong>Ethics (Nicomachean Ethics):</strong> A virtue-based ethical system aimed at achieving 'eudaimonia' (human flourishing or happiness) through rational activity in accordance with virtue.</li>
+                            <li><strong>The Golden Mean:</strong> The concept that virtue generally lies in a mean or intermediate state between two extremes (vices) of excess and deficiency.</li>
+                            <li><strong>Politics:</strong> Viewing humans as 'political animals' naturally suited for life in a polis (city-state), and analyzing different forms of government to determine which best promotes human flourishing.</li>
+                        </ul>
+                    </p>
+                    <p>Aristotle's methodical approach, his development of logical tools, and his comprehensive analyses profoundly shaped subsequent philosophy, science, and theology in the Hellenistic, Roman, Islamic, and medieval Christian worlds. His work remains a cornerstone of philosophical education and inquiry.</p>
+                    <blockquote>"All men by nature desire to know." - Metaphysics, Book I</blockquote>
+                    <small class="source-note">Primary Sources: Nicomachean Ethics, Politics, Metaphysics, Physics, Organon, Poetics. Secondary: SEP, IEP entries on Aristotle.</small>
+                `
+            },
+            "logic": {
+                title: "Empiricism & Logic (Organon)",
+                body: `
+                    <p>While influenced by Plato, Aristotle adopted a more empirical approach, grounding knowledge in sensory experience and observation of the natural world. He believed that universal concepts are derived from experiencing particular instances, rather than recollecting transcendent Forms. This empirical stance is evident in his detailed biological studies and his analyses of concrete entities.</p>
+                    <p>Complementing his empiricism, Aristotle developed <strong>formal logic</strong> as the essential tool ('organon') for correct reasoning and acquiring knowledge. His logical works, collectively known as the 'Organon,' laid the foundation for Western logic for over two millennia. Key components include:
+                        <ul>
+                            <li><strong>Categories:</strong> An analysis of the fundamental kinds of predicates that can be asserted of a subject (e.g., substance, quantity, quality, relation, place, time).</li>
+                            <li><strong>On Interpretation:</strong> Deals with propositions (statements), their structure (subject-predicate), truth values, and relationships like contradiction and contrariety.</li>
+                            <li><strong>Prior Analytics:</strong> Introduces the <strong>syllogism</strong>, Aristotle's system of deductive reasoning. A syllogism consists of three propositions: two premises and a conclusion that necessarily follows if the premises are true and the form is valid (e.g., "All men are mortal; Socrates is a man; therefore, Socrates is mortal"). He systematically analyzed valid syllogistic forms.</li>
+                            <li><strong>Posterior Analytics:</strong> Discusses scientific knowledge (episteme), demonstration, and definition. True scientific knowledge requires deducing conclusions from first principles or axioms that are true, primary, immediate, and better known than the conclusions. These first principles are grasped ultimately through induction (epagoge) from sensory experience, guided by intuition (nous).</li>
+                            <li><strong>Topics:</strong> Deals with dialectical reasoning – reasoning from generally accepted opinions (endoxa) to achieve probable conclusions, useful in debate and inquiry where scientific certainty is not possible.</li>
+                            <li><strong>Sophistical Refutations:</strong> Analyzes logical fallacies and how to avoid or refute them.</li>
+                        </ul>
+                    </p>
+                    <p>Aristotle saw logic not as a substantive science itself, but as a necessary prerequisite and instrument for all forms of inquiry, ensuring clarity, consistency, and validity in thought and argument. His systematic treatment of deductive inference, particularly the syllogism, remained the dominant logical framework until the development of modern symbolic logic in the 19th century.</p>
+                    <blockquote>"A syllogism is discourse in which, certain things being stated, something other than what is stated follows of necessity from their being so." - Prior Analytics, 24b18-20</blockquote>
+                    <small class="source-note">Primary Sources: Categories, On Interpretation, Prior Analytics, Posterior Analytics, Topics, Sophistical Refutations (collectively the Organon). Secondary: SEP, IEP entries on Aristotle's Logic.</small>
+                `
+            },
+            "metaphysics": {
+                title: "Metaphysics: Substance, Form, and Matter",
+                body: `
+                    <p>Aristotle's 'Metaphysics' (ta meta ta physika - "the works after the Physics") explores the most fundamental questions about reality, often described by Aristotle himself as the study of "being qua being" or "first philosophy." Unlike Plato's focus on a separate realm of Forms, Aristotle sought to understand the nature and principles of existence within the concrete, observable world.</p>
+                    <p>Central concepts in Aristotle's metaphysics include:
+                        <ul>
+                            <li><strong>Substance (Ousia):</strong> The most fundamental category of being. Primary substances are individual, concrete objects like 'this man' or 'this horse.' They are the ultimate subjects of predication and are not predicated of anything else. Secondary substances are the species (e.g., 'man') and genera (e.g., 'animal') to which primary substances belong.</li>
+                            <li><strong>Hylomorphism (Form and Matter):</strong> Every individual substance (except the Unmoved Mover) is a composite of <strong>Matter (hyle)</strong> and <strong>Form (morphe/eidos)</strong>.
+                                <ul>
+                                    <li><strong>Matter:</strong> The underlying 'stuff' or potentiality out of which a substance is made. It is indeterminate and characterless on its own but has the potential to receive form.</li>
+                                    <li><strong>Form:</strong> The essence, structure, or set of defining characteristics that make a substance the specific kind of thing it is. It is the principle of actuality. For example, the form of a statue is its shape; the form of a human is their soul (specifically, the rational principle).</li>
+                                </ul>
+                                Form and matter are inseparable aspects of any concrete object in the natural world. Form is not a separate entity (as in Plato's theory) but exists only as embodied in matter.
+                            </li>
+                            <li><strong>Potentiality (Dunamis) and Actuality (Energeia/Entelecheia):</strong> These concepts explain change and development. Matter represents potentiality – the capacity to become something else (e.g., an acorn has the potentiality to become an oak tree). Form represents actuality – the realized state or fulfillment of that potential (e.g., the oak tree is the actuality of the acorn). Change is the process by which potentiality is actualized. 'Entelecheia' often emphasizes the state of completion or fulfillment.</li>
+                            <li><strong>The Unmoved Mover (Prime Mover):</strong> To avoid an infinite regress of causes of motion, Aristotle posits an ultimate source of all change and motion in the universe: the Unmoved Mover. This is described as pure actuality (form without matter), eternal, unchanging, and perfect. It causes motion not through physical action but by being the ultimate object of desire or aspiration for the cosmos; the celestial spheres move in imitation of its perfect activity, which Aristotle describes as pure thought thinking itself.</li>
+                        </ul>
+                    </p>
+                    <p>Aristotle's metaphysics provides a framework for understanding individual existents, change, and the overall structure of reality, focusing on the immanent forms and purposes within the natural world rather than a transcendent realm.</p>
+                    <blockquote>"Being is said in many ways..." - Metaphysics, Book IV</blockquote>
+                    <small class="source-note">Primary Source: Aristotle, Metaphysics. Secondary: SEP, IEP entries.</small>
+                `
+            },
+             "four-causes": {
+                title: "The Four Causes (Aitia)",
+                body: `
+                    <p>In his 'Physics' and 'Metaphysics,' Aristotle proposed a framework of <strong>Four Causes (aitia)</strong> to provide a complete explanation for any phenomenon or object in the natural world. 'Aitia' is often translated as 'cause,' but it carries a broader sense of 'explanation' or 'reason why.' To fully understand something, according to Aristotle, one must grasp its four causes:</p>
+                    <p><strong>1. The Material Cause:</strong>
+                        <ul>
+                            <li>This is the underlying matter or 'stuff' out of which something is made.</li>
+                            <li>Example: The bronze of a statue, the wood of a table, the flesh and bones of an animal.</li>
+                            <li>It answers the question: "What is it made of?"</li>
+                        </ul>
+                    </p>
+                    <p><strong>2. The Formal Cause:</strong>
+                        <ul>
+                            <li>This is the form, essence, structure, or pattern that the matter takes; the defining characteristics that make it the kind of thing it is.</li>
+                            <li>Example: The shape or design of the statue, the blueprint of the table, the soul (specifically the rational principle) of a human being.</li>
+                            <li>It answers the question: "What is its form or essence?"</li>
+                        </ul>
+                    </p>
+                    <p><strong>3. The Efficient Cause (or Moving Cause):</strong>
+                        <ul>
+                            <li>This is the agent or source that brings something about or initiates change; the immediate trigger for motion or generation.</li>
+                            <li>Example: The sculptor who makes the statue, the carpenter who builds the table, the parents who conceive a child.</li>
+                            <li>It answers the question: "What brought it about?" (This is closest to the modern scientific notion of 'cause').</li>
+                        </ul>
+                    </p>
+                    <p><strong>4. The Final Cause (Telos):</strong>
+                        <ul>
+                            <li>This is the end, purpose, goal, or 'that for the sake of which' something exists or is done. Aristotle believed that nature, like art, often acts purposefully.</li>
+                            <li>Example: The purpose of the statue might be aesthetic enjoyment or religious devotion; the purpose of the table is to provide a surface for dining or work; the telos of an acorn is to become a mature oak tree; the telos of human life is eudaimonia (flourishing).</li>
+                            <li>It answers the question: "What is its purpose or end?"</li>
+                        </ul>
+                    </p>
+                    <p>Aristotle considered the formal and final causes to be the most important for a complete understanding, especially in biology and ethics. His emphasis on the <strong>telos</strong> (final cause) makes his worldview fundamentally teleological – seeing nature and human action as directed towards specific ends or goals. Understanding these four causes provides a comprehensive explanatory framework applicable across diverse fields of inquiry.</p>
+                    <blockquote>"We do not have knowledge of a thing until we have grasped its 'why', that is to say, its cause." - Physics, 194b17-20</blockquote>
+                    <small class="source-note">Primary Sources: Aristotle, Physics (Book II), Metaphysics (Book V). Secondary: SEP, IEP entries.</small>
+                `
+            },
+             "ethics": {
+                title: "Nicomachean Ethics & Eudaimonia",
+                body: `
+                    <p>Aristotle's 'Nicomachean Ethics' is his most comprehensive and influential work on ethics. Its central aim is to determine the ultimate good for human beings, which he argues is <strong>eudaimonia</strong> – often translated as happiness, but more accurately meaning human flourishing, living well, or thriving.</p>
+                    <p><strong>The Function Argument:</strong> Aristotle arrives at eudaimonia by considering the unique function (ergon) of human beings. Just as the function of a flutist is to play the flute well, the function of a human being lies in the distinctive human capacity: <strong>reason</strong>. Therefore, the human good (eudaimonia) consists in <strong>"activity of the soul in accordance with virtue,"</strong> and if there are multiple virtues, in accordance with the best and most complete virtue, over a complete life. It's not a passive state but an active way of living.</p>
+                    <p><strong>Nature of Eudaimonia:</strong>
+                        <ul>
+                            <li><strong>Activity, Not State:</strong> It's about actively living one's life in a certain way, engaging in virtuous activities guided by reason.</li>
+                            <li><strong>Requires Virtue:</strong> Flourishing requires possessing and exercising the virtues (both moral and intellectual).</li>
+                            <li><strong>Complete Life:</strong> It requires a reasonably complete lifespan; one cannot be judged fully eudaimon based on a short period.</li>
+                            <li><strong>External Goods:</strong> While virtue is central, Aristotle acknowledges that some external goods (like health, moderate wealth, friends, good fortune) are often necessary or conducive to exercising virtue fully, though they are not the essence of eudaimonia itself.</li>
+                            <li><strong>Highest Good:</strong> Eudaimonia is the ultimate end or goal (telos) of human life, desired for its own sake and not for the sake of anything else.</li>
+                        </ul>
+                    </p>
+                    <p><strong>Achieving Eudaimonia:</strong> It is achieved through developing and consistently exercising the virtues. This involves:
+                        <ul>
+                            <li><strong>Moral Virtue:</strong> Developed through habituation and practice, guided by reason, finding the 'Golden Mean' in actions and emotions.</li>
+                            <li><strong>Intellectual Virtue:</strong> Developed through teaching and learning, primarily theoretical wisdom (sophia) and practical wisdom (phronesis). Practical wisdom is crucial for discerning the mean in specific situations.</li>
+                        </ul>
+                    </p>
+                    <p>The highest form of eudaimonia, according to Aristotle (in Book X), is found in the life of contemplation (theoria) – the exercise of theoretical reason – as this is the highest and most divine activity of which humans are capable. However, the life of moral virtue and practical wisdom is also considered a form of flourishing accessible to more people.</p>
+                    <blockquote>"Happiness [Eudaimonia], then, is found to be something perfect and self-sufficient, being the end to which our actions are directed." - Nicomachean Ethics, Book I, 1097b</blockquote>
+                    <small class="source-note">Primary Source: Aristotle, Nicomachean Ethics (esp. Books I, II, VI, X). Secondary: SEP, IEP entries.</small>
+                `
+            },
+            "virtue-ethics": {
+                title: "Virtue Ethics & The Golden Mean",
+                body: `
+                    <p>Aristotle's ethical framework is a form of <strong>Virtue Ethics</strong>, focusing on the character of the person acting rather than solely on rules (deontology) or consequences (consequentialism). The central concept is <strong>aretē (virtue or excellence)</strong>, and living virtuously is key to achieving eudaimonia (flourishing).</p>
+                    <p><strong>Types of Virtue:</strong> Aristotle distinguishes two main types:
+                        <ul>
+                            <li><strong>Moral Virtues (Ethikai Aretai):</strong> Excellences of character related to actions and emotions (e.g., courage, temperance, justice, generosity, proper pride). These are acquired through <strong>habituation</strong> – by repeatedly performing virtuous actions, one develops a stable disposition or character trait to act and feel appropriately.</li>
+                            <li><strong>Intellectual Virtues (Dianoetikai Aretai):</strong> Excellences of the rational part of the soul. Key intellectual virtues include:
+                                <ul>
+                                    <li><em>Sophia (Theoretical Wisdom):</em> Understanding fundamental principles and truths of the universe (contemplation).</li>
+                                    <li><em>Phronesis (Practical Wisdom/Prudence):</em> The ability to deliberate well about practical matters, discerning the right course of action in specific situations. Phronesis guides moral virtue by identifying the mean.</li>
+                                </ul>
+                                These are acquired primarily through teaching and learning.
+                            </li>
+                        </ul>
+                    </p>
+                    <p><strong>The Doctrine of the Mean (The Golden Mean):</strong> Aristotle's most famous contribution to virtue ethics is the idea that moral virtue typically lies in a <strong>mean (meson)</strong> state between two extremes or vices: one of excess and one of deficiency.
+                        <ul>
+                            <li><strong>Relative to Us:</strong> This mean is not a strict mathematical average but is relative to the individual and the specific situation, determined by practical wisdom (phronesis).</li>
+                            <li><strong>Examples:</strong>
+                                <ul>
+                                    <li><strong>Courage</strong> is the mean between Rashness (excess) and Cowardice (deficiency) regarding feelings of fear and confidence.</li>
+                                    <li><strong>Temperance</strong> is the mean between Self-indulgence/Licentiousness (excess) and Insensibility (deficiency) regarding bodily pleasures.</li>
+                                    <li><strong>Generosity</strong> is the mean between Wastefulness (excess) and Stinginess/Ungenerosity (deficiency) regarding giving wealth.</li>
+                                    <li><strong>Proper Pride (Megalopsychia)</strong> is the mean between Vanity (excess) and Undue Humility (deficiency) regarding one's own worth and honor.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Not All Actions Admit a Mean:</strong> Some actions (like murder, theft, adultery) and emotions (like spite, envy) are inherently bad and do not have a virtuous mean.</li>
+                        </ul>
+                    </p>
+                    <p>Living virtuously involves cultivating these dispositions through practice and using practical wisdom to navigate complex situations, aiming for the mean appropriate to the circumstances. It's about becoming the kind of person who reliably acts and feels in the right way, at the right time, towards the right people, for the right reason.</p>
+                    <blockquote>"Virtue, then, is a state of character concerned with choice, lying in a mean, i.e. the mean relative to us, this being determined by a rational principle, and by that principle by which the man of practical wisdom would determine it." - Nicomachean Ethics, Book II, 1106b36-1107a2</blockquote>
+                    <small class="source-note">Primary Source: Aristotle, Nicomachean Ethics (esp. Books II-VI). Secondary: SEP, IEP entries.</small>
+                `
+            },
+             "politics": {
+                title: "Politics: The Human as Political Animal",
+                body: `
+                    <p>For Aristotle, ethics and politics are closely intertwined; his 'Politics' is essentially a continuation of the ethical inquiry begun in the 'Nicomachean Ethics.' Ethics concerns the good for the individual (eudaimonia), while politics concerns the good for the entire community or city-state (polis).</p>
+                    <p><strong>Man as a Political Animal (Zōon Politikon):</strong> A fundamental premise of Aristotle's 'Politics' is that human beings are naturally social and political creatures, uniquely equipped with reason (logos) and language, which allow them to communicate about justice, goodness, and the expedient, forming communities beyond the level of mere survival.
+                        <ul>
+                            <li><strong>Natural Progression:</strong> He sees the polis as developing naturally from simpler forms of association: the family (household), then the village, culminating in the self-sufficient city-state.</li>
+                            <li><strong>Full Potential in the Polis:</strong> Humans can only fully realize their potential and achieve eudaimonia within the context of a well-ordered political community. The polis exists not just for living, but for living well (eu zēn).</li>
+                            <li><strong>Prior to the Individual:</strong> In a conceptual sense, the polis is 'prior' to the individual, as the whole is necessary for the part to function properly (like a hand separated from the body).</li>
+                        </ul>
+                    </p>
+                    <p><strong>Analysis of Constitutions:</strong> Aristotle undertook a large empirical study of existing Greek city-state constitutions. He classifies constitutions based on two criteria:
+                        <ol>
+                             <li><strong>Number of Rulers:</strong> One, Few, or Many.</li>
+                             <li><strong>Goal of Rule:</strong> Whether the rulers govern for the common good (correct constitutions) or for their own private interest (deviant constitutions).</li>
+                        </ol>
+                        This yields six basic forms:
+                        <ul>
+                            <li><strong>Correct Forms (Common Good):</strong>
+                                <ul>
+                                    <li><strong>Kingship (Monarchy):</strong> Rule by one virtuous leader.</li>
+                                    <li><strong>Aristocracy:</strong> Rule by the few best citizens (virtuous elite).</li>
+                                    <li><strong>Polity (Constitutional Government):</strong> Rule by the many (the citizens) under law, mixing elements of oligarchy and democracy. Aristotle often favored this as the most stable and practical form.</li>
+                                </ul>
+                            </li>
+                             <li><strong>Deviant Forms (Rulers' Interest):</strong>
+                                <ul>
+                                    <li><strong>Tyranny:</strong> Rule by one self-interested despot (deviation from Kingship).</li>
+                                    <li><strong>Oligarchy:</strong> Rule by the wealthy few in their own interest (deviation from Aristocracy).</li>
+                                    <li><strong>Democracy:</strong> Rule by the poor masses in their own interest (deviation from Polity). Aristotle was often critical of direct democracy as potentially unstable mob rule.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </p>
+                    <p><strong>The Best Possible State:</strong> While aristocracy or kingship might be ideal if truly virtuous rulers could be found, Aristotle considered <strong>Polity</strong> the best attainable constitution for most actual states. It balances the interests of different classes, relies on a strong middle class, and emphasizes the rule of law. The ultimate aim of the best political community is to cultivate the virtue of its citizens and enable them to achieve eudaimonia.</p>
+                    <blockquote>"He who is unable to live in society, or who has no need because he is sufficient for himself, must be either a beast or a god: he is no part of a polis." - Politics, Book I, 1253a</blockquote>
+                    <small class="source-note">Primary Source: Aristotle, Politics. Secondary: SEP, IEP entries.</small>
+                `
+            }
+
+        };
+
+        const contentArea = document.getElementById('content-area');
+        const navButtons = document.querySelectorAll('.nav-button');
+        const modalOverlay = document.getElementById('quote-modal-overlay');
+        const modal = document.getElementById('quote-modal');
+        const modalQuoteText = document.getElementById('modal-quote-text');
+        const modalQuoteSource = document.getElementById('modal-quote-source');
+        const modalCloseButton = document.getElementById('modal-close-button');
+
+        function openModal(quoteText, quoteSource) {
+            modalQuoteText.textContent = quoteText;
+            modalQuoteSource.textContent = `Source: ${quoteSource}`;
+            modalOverlay.classList.add('visible');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('visible');
+        }
+
+        function getRandomQuotes(numQuotes) {
+            const shuffled = [...quotes].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, numQuotes);
+        }
+
+        function loadContent(contentId) {
+            let sectionTitle = '';
+            let sectionBodyHtml = '';
+            contentArea.innerHTML = ''; // Clear previous content
+
+            if (contentId === 'home') {
+                const numCards = 5; // Number of quote cards
+                const selectedQuotes = getRandomQuotes(numCards);
+                sectionTitle = content['home'].title;
+
+                const cardContainer = document.createElement('div');
+                cardContainer.id = 'quote-card-container';
+
+                selectedQuotes.forEach(quote => {
+                    const card = document.createElement('div');
+                    card.classList.add('quote-card');
+                    card.dataset.fullQuote = quote.text;
+                    card.dataset.source = quote.source;
+                    // Card remains blank
+                    card.addEventListener('click', () => {
+                        openModal(card.dataset.fullQuote, card.dataset.source);
+                    });
+                    cardContainer.appendChild(card);
+                });
+
+                const refreshButton = document.createElement('button');
+                refreshButton.id = 'refresh-quotes-button';
+                refreshButton.textContent = 'Refresh Quotes';
+                refreshButton.addEventListener('click', () => loadContent('home'));
+
+                sectionBodyHtml = cardContainer.outerHTML + refreshButton.outerHTML;
+                contentArea.style.display = 'block'; // Use block for container + button layout
+            }
+            else if (content[contentId]) {
+                const section = content[contentId];
+                sectionTitle = section.title;
+                sectionBodyHtml = `<div class="content-body">${section.body}</div>`;
+                 contentArea.style.display = 'block';
+            }
+            else {
+                sectionTitle = "Error";
+                sectionBodyHtml = '<div class="content-body"><p>Content not found.</p></div>';
+                 contentArea.style.display = 'block';
+            }
+
+            contentArea.style.opacity = 0;
+            setTimeout(() => {
+                 const titleElement = document.createElement('h2');
+                 titleElement.className = 'text-3xl font-semibold mb-6';
+                 titleElement.textContent = sectionTitle;
+                 contentArea.appendChild(titleElement);
+
+                 const bodyWrapper = document.createElement('div');
+                 bodyWrapper.innerHTML = sectionBodyHtml; // Parse HTML
+                 while (bodyWrapper.firstChild) { // Append parsed elements
+                     contentArea.appendChild(bodyWrapper.firstChild);
+                 }
+
+                 // Re-attach listeners after innerHTML update for home section
+                 if (contentId === 'home') {
+                     const cards = contentArea.querySelectorAll('.quote-card');
+                     cards.forEach(card => {
+                         const fullQuote = card.dataset.fullQuote;
+                         const source = card.dataset.source;
+                         card.addEventListener('click', () => {
+                             openModal(fullQuote, source);
+                         });
+                     });
+                     const refreshBtn = contentArea.querySelector('#refresh-quotes-button');
+                     if(refreshBtn) {
+                         refreshBtn.addEventListener('click', () => loadContent('home'));
+                     }
+                 }
+
+                contentArea.style.opacity = 1;
+            }, 200);
+
+            navButtons.forEach(button => {
+                button.classList.toggle('active', button.dataset.content === contentId);
+            });
+        }
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const contentId = e.currentTarget.dataset.content;
+                loadContent(contentId);
+            });
+        });
+
+        modalCloseButton.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (event) => {
+            if (event.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            loadContent('home');
+        });
+
+    </script>
+
+</body>
+</html>
